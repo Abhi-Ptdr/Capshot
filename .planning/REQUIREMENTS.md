@@ -124,9 +124,54 @@
 
 ## Traceability
 
-<!-- Updated by roadmapper after ROADMAP.md creation. Each REQ-ID maps to exactly one phase. -->
+<!-- Each v1 REQ-ID maps to exactly one phase. GATE-* rows map to the phase they gate. -->
 
-(Pending roadmap)
+**Coverage:** 36/36 v1 requirements mapped. 4/4 entry gates assigned.
+
+| REQ-ID | Phase | Status |
+|--------|-------|--------|
+| INFRA-01 | Phase 1 | Pending |
+| INFRA-02 | Phase 1 | Pending |
+| INFRA-03 | Phase 1 | Pending |
+| INFRA-04 | Phase 1 | Pending |
+| INFRA-05 | Phase 1 | Pending |
+| INFRA-06 | Phase 1 | Pending |
+| CONV-01 | Phase 1 | Pending |
+| CONV-02 | Phase 1 | Pending |
+| CONV-03 | Phase 1 | Pending |
+| CONV-04 | Phase 1 | Pending |
+| CONV-05 | Phase 1 | Pending |
+| HERO-01 | Phase 1 | Pending |
+| HERO-02 | Phase 1 | Pending |
+| HOW-01 | Phase 2 | Pending |
+| FLAV-01 | Phase 2 | Pending |
+| FLAV-02 | Phase 2 | Pending |
+| FLAV-03 | Phase 2 | Pending |
+| VAR-01 | Phase 4 | Pending |
+| USP-01 | Phase 4 | Pending |
+| SPORTS-01 | Phase 4 | Pending |
+| PERF-01 | Phase 4 | Pending |
+| PERF-02 | Phase 4 | Pending |
+| TRUST-01 | Phase 5 | Pending |
+| TRUST-02 | Phase 5 | Pending |
+| FAQ-01 | Phase 5 | Pending |
+| ABOUT-01 | Phase 5 | Pending |
+| CONTACT-01 | Phase 5 | Pending |
+| UI-01 | Phase 5 | Pending |
+| UI-02 | Phase 5 | Pending |
+| UI-03 | Phase 5 | Pending |
+| SEO-01 | Phase 5 | Pending |
+| SEO-02 | Phase 5 | Pending |
+| COM-01 | Phase 6 | Pending |
+| COM-02 | Phase 6 | Pending |
+| COM-03 | Phase 6 | Pending |
+| COM-04 | Phase 6 | Pending |
+| GATE-FSSAI | Phase 6 (entry gate) | Pending — client deliverable |
+| GATE-INVENTORY | Phase 6 (entry gate) | Pending — client deliverable |
+| GATE-BUDGET | Phase 6 (entry gate) | Pending — client deliverable |
+| GATE-NUTRITION | Phase 6 (entry gate; also gates Phase 5 Trust production ship) | Pending — client deliverable |
+
+**Note on Phase 3:** Phase 3 (Scroll Storytelling Polish) carries no directly-owned REQ-IDs. It is a cross-cutting polish layer that deepens Phases 1–2 output per the research finding that cinematic Motion scroll choreography is the project's locked creative direction and the whole reason this is a custom React site rather than a Shopify theme. Its success criteria are observable but no v1 REQ-ID uniquely owns them. CONV-05 (LazyMotion / `m.*` primitives) formally lives in Phase 1 but is re-verified in Phase 3.
 
 ---
 
