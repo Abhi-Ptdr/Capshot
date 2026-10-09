@@ -1,14 +1,11 @@
 import { Link } from 'react-router';
-import Button from '@/components/primitives/Button';
+import { PrimaryCTA } from '@/components/ui/PrimaryCTA';
 
 /**
- * Phase 1 Plan 01: branded 404 fallback. Headline per CONTEXT D-17 default
+ * Phase 1 Plan 02 — Branded 404 fallback. Headline per CONTEXT D-17 default
  * (playful on-brand English). Uses Hero display scale (36px/56px) per
- * UI-SPEC §Component 7 since the playful line "deserves weight".
- *
- * `<meta name="robots" content="noindex">` keeps crawlers from indexing
- * 404 variants; the actual HTTP 404 status is served by the preview
- * middleware (dev/preview) and `vercel.json` (production).
+ * UI-SPEC §Component 7. The actual HTTP 404 status is served by the
+ * `spa-fallback-with-404` preview plugin + `vercel.json` in production.
  */
 export default function NotFoundPage() {
   return (
@@ -28,14 +25,9 @@ export default function NotFoundPage() {
             This page doesn&apos;t exist. The flavor still does.
           </p>
           <div className="mt-8 space-y-4">
-            <Button
-              as="a"
-              href="#"
-              aria-label="Try CAPSHOT"
-              className="h-12 px-5 bg-[color:var(--color-accent)] text-[color:var(--color-accent-fg)]"
-            >
-              TRY CAPSHOT
-            </Button>
+            <div className="flex justify-center">
+              <PrimaryCTA size="md" />
+            </div>
             <div>
               <Link
                 to="/"

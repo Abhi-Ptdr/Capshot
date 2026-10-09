@@ -1,9 +1,8 @@
-import Button from '@/components/primitives/Button';
+import { PrimaryCTA } from '@/components/ui/PrimaryCTA';
 
 /**
- * Phase 1 Plan 01: branded coming-soon shell for `/about`. Phase 5 replaces
- * the body with the real founder note + About content. Headline is locked
- * by CONTEXT D-15.
+ * Phase 1 Plan 02 — `/about` coming-soon shell. Phase 5 replaces body with
+ * the real founder note. Headline locked by CONTEXT D-15.
  */
 export default function AboutPage() {
   return (
@@ -22,15 +21,8 @@ export default function AboutPage() {
             A pre-filled flavor cap, dreamt up in India, built for every water
             bottle. The full founder note drops with launch.
           </p>
-          <div className="mt-8">
-            <Button
-              as="a"
-              href="#"
-              aria-label="Try CAPSHOT"
-              className="h-12 px-5 bg-[color:var(--color-accent)] text-[color:var(--color-accent-fg)]"
-            >
-              TRY CAPSHOT
-            </Button>
+          <div className="mt-8 flex justify-center">
+            <PrimaryCTA size="md" />
           </div>
         </div>
       </main>

@@ -1,29 +1,17 @@
-import Section from '@/components/primitives/Section';
-import Container from '@/components/primitives/Container';
+import { Hero } from '@/sections/Hero';
 
 /**
- * Phase 1 Plan 01: minimal coming-soon shell for `/`. Plan 02 replaces this
- * body with the full `<Hero>` (product shot + Hinglish H1 + sub-copy + real
- * PrimaryCTA). The route file path is stable — only the body changes.
+ * Phase 1 Plan 02 — HomePage body is the Hero section.
  *
- * React 19 hoists `<title>` from any component into `<head>`, so this per-
- * route title is enough for Phase 1. Phase 5 switches to `@unhead/react`
- * for per-route OG/Twitter/canonical tags once there's real content.
+ * The `<main id="main">` landmark lives INSIDE `<Hero>` (promoted from the
+ * Hero's outer wrapper) so the skip-link still resolves and the Hero's
+ * section is the first announced content.
+ *
+ * No scroll-reset helper component — Phase 1 has a single scrollable
+ * section so no scroll-reset state exists. Future phases will introduce
+ * multi-section scroll handling when there is more than one section to
+ * scroll.
  */
 export default function HomePage() {
-  return (
-    <>
-      <title>CAPSHOT — Twist karo. Shake karo. BOOM.</title>
-      <main id="main" tabIndex={-1}>
-        <Section>
-          <Container>
-            <h1 className="text-4xl font-bold">CAPSHOT</h1>
-            <p className="mt-4 text-[color:var(--color-fg-muted)]">
-              Twist karo. Shake karo. BOOM. (Hero landing in Plan 02)
-            </p>
-          </Container>
-        </Section>
-      </main>
-    </>
-  );
+  return <Hero />;
 }

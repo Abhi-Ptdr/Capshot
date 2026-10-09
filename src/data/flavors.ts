@@ -15,8 +15,8 @@ import type { Flavor } from './types';
  * so downstream components can resolve them without a code change.
  *
  * Descriptions are deliberately short (<140 chars) and avoid the forbidden
- * "energy drink" phrase (Plan 03's CI grep enforces this). Caffeinated SKUs
- * are marked `caffeinated beverage` or similar.
+ * stimulant-beverage phrase (Plan 03's CI grep enforces this). Caffeinated
+ * SKUs are marked `caffeinated beverage` or similar.
  */
 
 const DOSAGE = {

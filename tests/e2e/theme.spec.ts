@@ -83,17 +83,20 @@ test.describe('Theme + FOUC (CONV-04 + ThemeToggle)', () => {
       viewport: { width: 360, height: 640 },
     });
     const page = await context.newPage();
-    await page.addInitScript(() => {
-      try {
-        window.localStorage.removeItem('capshot-theme');
-      } catch (e) {
-        void e;
-      }
-    });
+    // Cold cache for theme prefs — the newContext starts with an empty
+    // localStorage already (no shared state across contexts), so no init
+    // script is needed. (An init script running on EVERY navigation would
+    // wipe the key after the toggle click → defeats the persistence test.)
     await page.goto('/');
     const toggle = page.getByRole('button', { name: /Switch to dark mode/i });
     await expect(toggle).toBeVisible();
     await toggle.click();
+    // Confirm the toggle wrote the key before reloading.
+    await expect
+      .poll(async () =>
+        page.evaluate(() => window.localStorage.getItem('capshot-theme')),
+      )
+      .toBe('dark');
     await page.reload();
     const hasDark = await page.evaluate(() =>
       document.documentElement.classList.contains('dark'),

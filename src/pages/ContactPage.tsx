@@ -1,9 +1,8 @@
-import Button from '@/components/primitives/Button';
+import { PrimaryCTA } from '@/components/ui/PrimaryCTA';
 
 /**
- * Phase 1 Plan 01: branded coming-soon shell for `/contact`. Phase 5 adds
- * the Instagram handle and email overflow copy. Headline is locked by
- * CONTEXT D-15.
+ * Phase 1 Plan 02 — `/contact` coming-soon shell. Phase 5 adds Instagram
+ * handle + email overflow. Headline locked by CONTEXT D-15.
  */
 export default function ContactPage() {
   return (
@@ -22,15 +21,8 @@ export default function ContactPage() {
             Tap below to open WhatsApp. Instagram (@capshot_twist) and email
             also land in the same inbox.
           </p>
-          <div className="mt-8">
-            <Button
-              as="a"
-              href="#"
-              aria-label="Try CAPSHOT"
-              className="h-12 px-5 bg-[color:var(--color-accent)] text-[color:var(--color-accent-fg)]"
-            >
-              TRY CAPSHOT
-            </Button>
+          <div className="mt-8 flex justify-center">
+            <PrimaryCTA size="md" />
           </div>
         </div>
       </main>

@@ -7,8 +7,9 @@ import { flavors } from './flavors';
  * Phase 2's `/flavors` page composes range filters off this. Phase 6's
  * bundles can reference `range` for cross-sell logic.
  *
- * NOTE: "caffeinated beverages" (not "energy drinks") per the brand
- * positioning policy — Plan 03's CI grep enforces the ban.
+ * NOTE: the premium-sports tagline uses "caffeinated beverages" per the
+ * brand positioning policy — Plan 03's CI grep enforces the ban on the
+ * forbidden stimulant-beverage phrase.
  */
 
 export const ranges: FlavorRangeMeta[] = [

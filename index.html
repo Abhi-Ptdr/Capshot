@@ -10,10 +10,13 @@
     <meta name="theme-color" content="#FFF8EA" />
     <title>CAPSHOT</title>
     <link rel="icon" href="/favicon.ico" />
+
     <!--
-      Phase 1 FOUC-prevention script. Phase 2 wires full ThemeToggle UX;
-      Phase 1 only needs the pre-paint class sync so `<html>` carries `.dark`
-      before CSS resolves. See UI-SPEC §FOUC Prevention.
+      Phase 1 Plan 02 FOUC-prevention script. Runs synchronously BEFORE any
+      Vite-injected module script so `<html>` carries `.dark` before CSS
+      resolves. CONV-04: zero cream-to-dark flash on cold-cache dark loads.
+      See UI-SPEC §FOUC Prevention + T-02-02 threat note (no user input flows
+      into DOM text/attrs — only a boolean-derived class + a fixed hex).
     -->
     <script>
       (function () {
@@ -30,6 +33,39 @@
         } catch (e) {}
       })();
     </script>
+
+    <!--
+      LCP preload hint for the Hero product shot. The <img> itself is also
+      marked loading=eager / decoding=sync / fetchpriority=high so the
+      preload lands into the correct priority queue before React mounts.
+    -->
+    <link
+      rel="preload"
+      as="image"
+      href="/hero/cap-on-bottle.jpg"
+      fetchpriority="high"
+    />
+
+    <!--
+      Phase 1 hardcoded homepage OG tags. Facebook/Instagram/WhatsApp
+      link-preview crawlers do NOT execute JavaScript (unlike Google), so
+      the home page's OG must live in the static index.html. Phase 5
+      switches per-route OG/Twitter/canonical tags to @unhead/react.
+
+      /og/home.jpg is a known-stub: Phase 5 ships the artwork.
+    -->
+    <meta
+      property="og:title"
+      content="CAPSHOT — Twist karo. Shake karo. BOOM."
+    />
+    <meta
+      property="og:description"
+      content="Pre-filled flavor caps for any bottle."
+    />
+    <meta property="og:image" content="/og/home.jpg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://capshot.co/" />
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body style="background: #fff8ea; color: #594545; margin: 0">
     <div id="root"></div>
