@@ -65,7 +65,17 @@ Plans:
   3. Visitor can filter the flavor grid by range (All / Fruity Blast / Desi & Cool / Premium Sports), filter state is reflected in the URL (`?range=…`), and reloading or sharing the URL restores the filtered view.
   4. Visitor on `/` sees a flavor teaser section previewing 6–8 flavors with a visible link to the full `/flavors` page.
 
-**Plans**: TBD
+**Plans:** 3 plans
+Plans:
+**Wave 1**
+
+- [ ] 02-01-PLAN.md — Wave 1 foundation: install @radix-ui/react-dialog, add AnimatePresence re-export, write FlavorCapGraphic + FlavorCard + lightenHex helper (unit-tested), upgrade Nav with Radix Dialog hamburger panel reading WhatsApp href from getCta('nav'), refine flavors.ts descriptions
+
+**Wave 2** *(blocked on Wave 1; 02-02 and 02-03 parallelizable)*
+
+- [ ] 02-02-PLAN.md — HomePage composition: 3 inline React SVGs (TWIST/SHAKE/BOOM) + HowItWorks section with whileInView fade+slide + reduced-motion fallback (HOW-01); FlavorTeaser horizontal scroll-snap scroller with 8 curated flavors + "See all" tile (FLAV-03); move <main id="main"> landmark from Hero to HomePage.tsx; update Phase 1 hero H5/H6 selectors
+- [ ] 02-03-PLAN.md — /flavors catalog: 16-card color-washed grid via Wave 1 FlavorCard (FLAV-01); pill-chip RangeFilter with URL state via useSearchParams (?range= sync, invalid-param cleanup, back-button restore, share-link resilience) (FLAV-02); update Phase 1 skeleton Test 2 for the new H1
+
 **UI hint**: yes
 
 ### Phase 3: Scroll Storytelling Polish
