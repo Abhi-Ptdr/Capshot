@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import Container from '@/components/primitives/Container';
 import { Image } from '@/components/primitives/Image';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { HamburgerMenu } from '@/components/ui/HamburgerMenu';
 
 /**
  * Phase 1 Plan 02 — Nav (UI-SPEC §Component 1).
@@ -46,10 +47,19 @@ export function Nav() {
         <div className="flex-1" aria-hidden="true" />
         <ThemeToggle />
         {/*
+          Phase 2 Plan 01 (D2-11 / D2-12) — hamburger button sits to the
+          right of ThemeToggle. ThemeToggle stays visible in the Nav; the
+          hamburger opens a Radix Dialog slide-in panel with route links
+          + socials. The hamburger panel sources its WhatsApp destination
+          from the centralized CTA config (INFRA-06).
+        */}
+        <HamburgerMenu />
+        {/*
           Phase 1 Plan 01 sr-only route-stub links kept for the SPA-navigation
           Playwright test (Test 7). CONTEXT D-16 lock keeps them invisible —
           they only exist so the e2e harness can dispatch a click without
-          visible navigation. Plan 02 real <Nav> above shows logo + toggle only.
+          visible navigation. The visible hamburger panel from D2-12 provides
+          the user-facing route navigation.
         */}
         <nav aria-label="Phase 1 route stub" className="sr-only">
           <Link to="/flavors" data-testid="nav-link-flavors">
