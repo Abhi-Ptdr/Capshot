@@ -17,7 +17,7 @@ export default function NotFoundPage() {
         tabIndex={-1}
         className="grid min-h-[calc(100dvh-56px)] place-items-center px-4"
       >
-        <div className="mx-auto max-w-md text-center">
+        <div className="mx-auto max-w-[28rem] text-center">
           <h1 className="text-4xl font-bold sm:text-[56px]">
             404 — looks like you took a wrong twist.
           </h1>

@@ -13,7 +13,7 @@ export default function AboutPage() {
         tabIndex={-1}
         className="grid min-h-[calc(100dvh-56px)] place-items-center px-4"
       >
-        <div className="mx-auto max-w-md text-center">
+        <div className="mx-auto max-w-[28rem] text-center">
           <h1 className="text-2xl font-bold sm:text-[32px]">
             Our story is on the way.
           </h1>

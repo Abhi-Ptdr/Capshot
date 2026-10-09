@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import Container from '@/components/primitives/Container';
 import { Image } from '@/components/primitives/Image';
 import { PrimaryCTA } from '@/components/ui/PrimaryCTA';
@@ -5,26 +6,22 @@ import { PrimaryCTA } from '@/components/ui/PrimaryCTA';
 /**
  * Phase 1 Plan 02 — Hero (UI-SPEC §Component 4).
  *
- * The <main> landmark lives HERE (promoted from the HomePage wrapper) so
- * the skip-link's #main target still works and the H1 is the first element
- * announced after the skip. Phase 2 adds subsequent sections BELOW this
- * <main>; Hero stays the only 100dvh section.
+ * Layout rules:
+ *   - Mobile (default): single column, text FIRST (eyebrow → H1 → sub-copy →
+ *     CTAs → trust strip), product image renders BELOW the fold. Text-first
+ *     keeps the CTA above fold on 360×640 (HERO-01 criterion #2).
+ *   - Desktop (lg+): 2-column grid. Text left, product right with an ambient
+ *     brand-rose halo behind the image card.
  *
  * Viewport sizing:
  *   min-height: 100vh   (fallback)
  *   min-height: 100dvh  (modern iOS Safari + Chrome Android)
- * The CSS cascade order means older browsers use the first line and modern
- * browsers use the second — PITFALL #4 (iOS 100vh crop) is mitigated.
+ * Cascade order means older browsers use the first line and modern browsers
+ * use the second — PITFALL #4 (iOS 100vh crop) is mitigated.
  *
- * Hinglish headline is CONTEXT D-05 locked. BOOM is wrapped in a span with
- * a brand-rose underline (UI-SPEC §Typography "underline treatment" decision).
- * Sub-copy is CONTEXT D-06 locked, max-w-28ch so it wraps to 2 lines on 360.
- *
- * The content layout is a 3-row flex column: image band → text stack → CTA.
- * `justify-between` + `min-h-[calc(100dvh-56px)]` on the inner column keep
- * the CTA pinned near the bottom while the image breathes at the top; at
- * 360×640 (nav 56 px subtracted = 584 usable) this fits with cushion per the
- * UI-SPEC vertical-rhythm calculation.
+ * Hinglish headline is CONTEXT D-05 locked. BOOM is wrapped in a span with a
+ * brand-rose underline (UI-SPEC §Typography underline treatment). Sub-copy is
+ * CONTEXT D-06 locked.
  */
 
 export function Hero() {
@@ -39,43 +36,84 @@ export function Hero() {
         name="description"
         content="Pre-filled flavor powder caps that twist onto any 28mm water bottle. Twist, shake, boom — drink ready. Join the India waitlist on WhatsApp."
       />
+
       <section
         aria-labelledby="hero-title"
-        className="relative min-h-screen min-h-[100dvh] px-4 pt-14 pb-[calc(env(safe-area-inset-bottom)+1rem)] sm:pt-16"
+        className="relative overflow-hidden px-4 pt-20 pb-[calc(env(safe-area-inset-bottom)+2rem)] sm:px-6 sm:pt-24 lg:px-8 lg:pt-28 lg:pb-24"
       >
         <Container>
-          <div className="mx-auto flex min-h-[calc(100dvh-56px)] max-w-md flex-col items-center justify-between gap-6 pt-6 pb-4">
-            {/* Product image band — 3:4 portrait on a soft surface card */}
-            <div className="flex aspect-[3/4] w-full items-center justify-center overflow-hidden rounded-lg bg-[color:var(--color-surface)]">
-              <Image
-                src="/hero/cap-on-bottle.jpg"
-                alt="A CAPSHOT flavor cap twisted onto a standard water bottle."
-                width={800}
-                height={1067}
-                priority
-                className="h-full w-full object-contain"
-              />
-            </div>
+          <div className="grid grid-cols-1 items-center gap-12 lg:min-h-[calc(100dvh-7rem)] lg:grid-cols-[1.1fr_1fr] lg:gap-16 xl:gap-24">
+            {/* LEFT — text stack (DOM-first so CTA is above fold on 360×640) */}
+            <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
+              {/* Eyebrow kicker */}
+              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[color:var(--color-brand-rose)] sm:text-xs">
+                Pre-filled flavor caps
+              </p>
 
-            {/* Text stack */}
-            <div className="flex w-full flex-col items-center gap-4">
+              {/* H1 — EXACT CONTEXT D-05 text; <span>BOOM</span> gets the brand-rose underline */}
               <h1
                 id="hero-title"
-                className="text-center text-[36px] leading-[1.05] font-bold tracking-[-0.02em] text-[color:var(--color-fg)] sm:text-[56px] lg:text-[72px]"
+                className="mt-5 text-[40px] leading-[1.02] font-bold tracking-[-0.02em] text-balance text-[color:var(--color-fg)] sm:text-[64px] lg:text-[80px] xl:text-[96px]"
               >
                 Twist karo. Shake karo.{' '}
-                <span className="underline decoration-[color:var(--color-brand-rose)] decoration-[3px] underline-offset-4">
+                <span className="underline decoration-[color:var(--color-brand-rose)] decoration-[4px] underline-offset-[6px] sm:decoration-[6px] sm:underline-offset-[8px] lg:decoration-[8px]">
                   BOOM
                 </span>
                 .
               </h1>
-              <p className="max-w-[28ch] text-center text-[18px] leading-[1.45] text-[color:var(--color-fg-muted)] sm:text-[20px]">
+
+              {/* Sub-copy — EXACT CONTEXT D-06 text */}
+              <p className="mt-5 max-w-[34ch] text-[17px] leading-[1.5] text-[color:var(--color-fg-muted)] sm:text-[20px] lg:mt-7 lg:text-[22px]">
                 Pre-filled flavor caps for any bottle.
+              </p>
+
+              {/* CTAs — primary + secondary */}
+              <div className="mt-8 flex w-full flex-col items-center gap-5 sm:w-auto sm:flex-row sm:gap-7 lg:mt-10">
+                <PrimaryCTA size="lg" className="w-full sm:w-auto" />
+                <Link
+                  to="/flavors"
+                  data-cta="cta_hero_see_flavors"
+                  className="group inline-flex items-center gap-1.5 rounded text-[15px] font-semibold tracking-wide text-[color:var(--color-fg-muted)] transition-colors hover:text-[color:var(--color-fg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[color:var(--color-ring)]"
+                >
+                  See all flavors
+                  <span
+                    aria-hidden="true"
+                    className="transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none motion-reduce:group-hover:translate-x-0"
+                  >
+                    →
+                  </span>
+                </Link>
+              </div>
+
+              {/* Trust strip — three honest claims, no "energy drink" */}
+              <p className="mt-7 text-[13px] text-[color:var(--color-fg-muted)] sm:text-sm lg:mt-8">
+                No prep <span aria-hidden="true">·</span> Zero sugar{' '}
+                <span aria-hidden="true">·</span> Made in India
               </p>
             </div>
 
-            {/* Primary CTA — 56 px tall per HERO-02 */}
-            <PrimaryCTA size="lg" className="w-full sm:w-auto" />
+            {/* RIGHT — product image with ambient brand-rose halo */}
+            <div className="relative mx-auto w-full max-w-[22rem] sm:max-w-[26rem] lg:max-w-none">
+              {/* Ambient halo (decorative) */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center"
+              >
+                <div className="h-[82%] w-[82%] rounded-full bg-[color:var(--color-brand-rose)] opacity-25 blur-3xl dark:opacity-30" />
+              </div>
+
+              {/* Image card */}
+              <div className="relative flex aspect-[3/4] w-full items-center justify-center overflow-hidden rounded-2xl bg-[color:var(--color-surface)] shadow-[0_18px_50px_-12px_rgba(89,69,69,0.22)] ring-1 ring-[color:var(--color-border)]">
+                <Image
+                  src="/hero/cap-on-bottle.jpg"
+                  alt="A CAPSHOT flavor cap twisted onto a standard water bottle."
+                  width={800}
+                  height={1067}
+                  priority
+                  className="h-full w-full object-contain"
+                />
+              </div>
+            </div>
           </div>
         </Container>
       </section>

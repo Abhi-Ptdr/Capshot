@@ -28,14 +28,13 @@
   --font-display: "Satoshi", "Inter", system-ui, sans-serif;
   --font-body:    "Inter", system-ui, sans-serif;
 
-  /* Spacing (8-point scale) */
-  --spacing-xs:  4px;
-  --spacing-sm:  8px;
-  --spacing-md:  16px;
-  --spacing-lg:  24px;
-  --spacing-xl:  32px;
-  --spacing-2xl: 48px;
-  --spacing-3xl: 64px;
+  /*
+   * Spacing: use Tailwind v4 defaults (p-1 = 4px, p-2 = 8px, p-4 = 16px,
+   * p-6 = 24px, p-8 = 32px, p-12 = 48px, p-16 = 64px). Do NOT override
+   * --spacing-* here — in Tailwind v4 that namespace drives EVERY sizing
+   * utility (p-xs, m-md, max-w-md, gap-lg, etc.), so a custom
+   * --spacing-md: 16px silently collapses max-w-md from 28rem to 16px.
+   */
 
   /* Radii */
   --radius-sm:   8px;
