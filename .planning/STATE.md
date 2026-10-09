@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 2 Plan 01 Wave 1 automated work complete; awaiting human-verify checkpoint
-last_updated: "2026-10-09T20:20:22.000Z"
-last_activity: 2026-10-09 -- Phase 02 Plan 01 Wave 1 (FlavorCard + FlavorCapGraphic + lightenHex + HamburgerMenu + Nav upgrade) automated work complete; 51 Vitest + 39 Playwright GREEN; checkpoint pending
+stopped_at: Phase 2 Plan 03 Wave 2 automated work complete — awaiting human-verify checkpoint (13 verification steps in 02-03-PLAN.md <how-to-verify>)
+last_updated: "2026-10-09T20:56:31.025Z"
+last_activity: 2026-10-09
 progress:
   total_phases: 6
-  completed_phases: 1
-  total_plans: 4
-  completed_plans: 4
-  percent: 22
+  completed_phases: 2
+  total_plans: 6
+  completed_plans: 6
+  percent: 33
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-09)
 
 **Core value:** Convert a mobile ad-driven visitor into an engaged pre-launch waitlist signup — and later, a buyer — through premium, scroll-driven brand storytelling that makes the "twist, shake, boom" moment feel inevitable to try.
-**Current focus:** Phase 1 — Foundation + Hero + Conversion Infrastructure
+**Current focus:** Phase 2 — How It Works + Flavor Catalog (Wave 2 complete; both plans awaiting human-verify)
 
 ## Current Position
 
 Phase: 2 of 6 (How It Works + Flavor Catalog)
-Plan: 1 of 3 in current phase — Wave 1 automated work COMPLETE; human-verify checkpoint PENDING
-Status: Phase 2 Plan 01 awaiting developer "approved" signal to unblock Waves 2 + 3 (02-02 + 02-03 parallel)
-Last activity: 2026-10-09 -- Phase 02 Plan 01 Wave 1 automated work complete (51 Vitest + 39 Playwright GREEN)
+Plan: 3 of 3 in current phase — Wave 1 automated work COMPLETE; human-verify checkpoint PENDING
+Status: Ready to execute
+Last activity: 2026-10-09
 
-Progress: [▓▓▓░░░░░░░] 22%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -49,12 +49,15 @@ Progress: [▓▓▓░░░░░░░] 22%
 
 **Recent Trend:**
 
+- 2026-10-10 — Phase 02 Plan 03 Wave 2 (/flavors catalog + range filter with URL state sync) complete (~18 min, 2 commits + metadata, 5 files new + 2 modified; +3 Vitest + 11 Playwright GREEN; FLAV-01 + FLAV-02 locked)
 - 2026-10-09 — Phase 02 Plan 01 Wave 1 (FlavorCard + FlavorCapGraphic + lightenHex + HamburgerMenu + Nav upgrade) complete (~8 min, 2 feat commits + metadata, 8 files new + 6 modified; +15 Vitest + 7 Playwright GREEN)
 - 2026-10-09 — Phase 01 Plan 03 Pixel+CAPI dedup + in-app banner + CI grep gates complete (~30 min, 6 commits, 12 files new + 9 modified, 36 Vitest + 32 Playwright GREEN; 20 new unit specs + 10 new e2e specs)
 - 2026-10-09 — Phase 01 Plan 02 Hero slice + conversion scaffold complete (~19 min, 4 commits, 22 files new + 12 modified, 16 Vitest + 22 Playwright GREEN)
 - 2026-10-09 — Phase 01 Plan 01 Walking Skeleton complete (~50 min, 2 commits, 25 files, 9/9 e2e GREEN)
 
 *Updated after each plan completion*
+| Phase 02 P03 | 18 min | - tasks | - files |
+| Phase 02 P02 | 20 | 2 tasks | 10 files |
 
 ## Accumulated Context
 
@@ -94,6 +97,15 @@ Recent decisions affecting current work:
 - **Phase 2 Plan 01 execution:** FL3 locked-field invariant uses an inline literal array (NOT Vitest `toMatchSnapshot`) to catch handle/title/range/accentHex drift. Snapshot files can silently update; the inline literal fails loudly on diff
 - **Phase 2 Plan 01 execution:** HamburgerMenu z-index 70 (overlay) / 71 (panel) via inline `style={{ zIndex: 70 }}` on the Motion components — matches the Phase 1 banner inline-zIndex pattern (JIT-safe for conditionally-rendered portals)
 - **Phase 2 Plan 01 execution:** Phase 1 flavor descriptions already satisfy D2-14 (max 66 chars, no stimulant phrase); no refinement needed — FL1/FL2/FL3 all pass against unchanged Phase 1 data
+- [Phase ?]: Phase 2 Plan 03 execution: VALID_RANGES tuple defined inline in BOTH FlavorsPage.tsx AND RangeFilter.tsx (NOT exported) — kept small, drift caught by TS 7 satisfies readonly FlavorRange[] + unit RF-U1/U2
+- [Phase ?]: Phase 2 Plan 03 execution: RangeFilter owns invalid-param useEffect cleanup (replace: true) — FlavorsPage already resolves active to null; URL normalization lives alongside the pill UI
+- [Phase ?]: Phase 2 Plan 03 execution: Doc comments rephrased to avoid literal react-router-dom package name — Phase 1 grep-safe prose convention; grep gate doesn't distinguish code from comments
+- [Phase ?]: Phase 2 Plan 03 execution: full npm run test:e2e requires --workers=1 to avoid Vite preview server dying under parallel Chromium load — scoped Plan 02-03 e2e all GREEN (27/27)
+- [Phase ?]: Phase 2 Plan 02 execution: Hero.tsx root demoted from <main> to plain <div> (NOT <section>); the inner <section aria-labelledby='hero-title'> already carries Hero's semantic identity. Outer div retains min-h-[100dvh]
+- [Phase ?]: Phase 2 Plan 02 execution: H6 min-height Playwright assertion walks section.parentElement + Math.max of ancestor + self minHeight — landmark-position-agnostic across future refactors
+- [Phase ?]: Phase 2 Plan 02 execution: FlavorTeaser scroller full-bleed OUTSIDE Container (mobile peek-of-next-card affordance requires bleeding past the 1200px lane); heading block stays inside Container to control paragraph measure
+- [Phase ?]: Phase 2 Plan 02 execution: TWIST/SHAKE/BOOM are inline React SVGs (NOT svgr, NOT <img>) — Phase 3 Motion needs addressable paths for cap-twist + path-morph choreography without an svg-to-img boundary
+- [Phase ?]: Phase 2 Plan 02 execution: Shake illustration's 4 shake-lines rendered OUTSIDE the rotated bottle <g transform='rotate(3 200 260)'> group — shake lines stay axis-aligned with viewBox rather than rotating with the bottle (visual-metaphor correctness)
 
 ### Pending Todos
 
@@ -123,6 +135,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-09T20:20:22.000Z
-Stopped at: Phase 2 Plan 01 Wave 1 automated work complete — awaiting human-verify checkpoint (12 verification steps in 02-01-PLAN.md <how-to-verify>)
-Resume file: .planning/phases/02-how-it-works-flavor-catalog/02-01-SUMMARY.md
+Last session: 2026-10-09T20:56:19.532Z
+Stopped at: Phase 2 Plan 03 Wave 2 automated work complete — awaiting human-verify checkpoint (13 verification steps in 02-03-PLAN.md <how-to-verify>)
+Resume file: None

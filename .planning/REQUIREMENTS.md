@@ -32,13 +32,13 @@
 
 ### How It Works
 
-- [ ] **HOW-01**: Visitor can see a 3-step visual explanation (TWIST → SHAKE → BOOM) with animated illustrations on scroll, with `prefers-reduced-motion` fallback to static graphics
+- [x] **HOW-01**: Visitor can see a 3-step visual explanation (TWIST → SHAKE → BOOM) with animated illustrations on scroll, with `prefers-reduced-motion` fallback to static graphics
 
 ### Flavors Catalog
 
-- [ ] **FLAV-01**: Visitor can browse all 16 flavors on `/flavors` with each flavor rendered as a color-washed card using its accent hex
-- [ ] **FLAV-02**: Visitor can filter the flavor grid by range (All / Fruity Blast / Desi & Cool / Premium Sports) via URL-synced filter state (`?range=…`)
-- [ ] **FLAV-03**: Visitor can see a flavor teaser section on `/` that previews 6–8 flavors and links to the full `/flavors` page
+- [x] **FLAV-01**: Visitor can browse all 16 flavors on `/flavors` with each flavor rendered as a color-washed card using its accent hex
+- [x] **FLAV-02**: Visitor can filter the flavor grid by range (All / Fruity Blast / Desi & Cool / Premium Sports) via URL-synced filter state (`?range=…`)
+- [x] **FLAV-03**: Visitor can see a flavor teaser section on `/` that previews 6–8 flavors and links to the full `/flavors` page
 
 ### Product Education
 
@@ -143,10 +143,10 @@
 | CONV-05 | Phase 1 | Complete (Plan 02) |
 | HERO-01 | Phase 1 | Complete (Plan 02) |
 | HERO-02 | Phase 1 | Complete (Plan 02) |
-| HOW-01 | Phase 2 | Pending |
-| FLAV-01 | Phase 2 | Pending |
-| FLAV-02 | Phase 2 | Pending |
-| FLAV-03 | Phase 2 | Pending |
+| HOW-01 | Phase 2 | Complete |
+| FLAV-01 | Phase 2 | Complete |
+| FLAV-02 | Phase 2 | Complete |
+| FLAV-03 | Phase 2 | Complete |
 | VAR-01 | Phase 4 | Pending |
 | USP-01 | Phase 4 | Pending |
 | SPORTS-01 | Phase 4 | Pending |

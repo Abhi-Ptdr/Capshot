@@ -14,7 +14,7 @@ CAPSHOT is a pre-launch India D2C beverage brand. v1 ships a premium, mobile-fir
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation + Hero + Conversion Infrastructure** — Deployable Hero + waitlist CTA on top of the full conversion scaffold (CTA config, LazyMotion, dvh, FOUC, Pixel+CAPI, in-app browser nudge, Shopify-shaped flavor stub)
-- [ ] **Phase 2: How It Works + Flavor Catalog** — 3-step product explainer plus 16-flavor browsing with range filters live on `/` and `/flavors`
+- [x] **Phase 2: How It Works + Flavor Catalog** — 3-step product explainer plus 16-flavor browsing with range filters live on `/` and `/flavors` (completed 2026-10-09)
 - [ ] **Phase 3: Scroll Storytelling Polish** — Cinematic Motion choreography layered across every shipped section, with `prefers-reduced-motion` honored throughout
 - [ ] **Phase 4: USP + Variants + Premium Sports + Lighthouse Perf Pass** — Full homepage commercial argument plus verified Lighthouse mobile ≥90 before paid-ad scale
 - [ ] **Phase 5: Trust + FAQ + About + Contact + SEO + Accessibility** — All trust/legal/SEO/a11y content complete and audited before Phase 6 KYC
@@ -65,7 +65,7 @@ Plans:
   3. Visitor can filter the flavor grid by range (All / Fruity Blast / Desi & Cool / Premium Sports), filter state is reflected in the URL (`?range=…`), and reloading or sharing the URL restores the filtered view.
   4. Visitor on `/` sees a flavor teaser section previewing 6–8 flavors with a visible link to the full `/flavors` page.
 
-**Plans:** 3 plans
+**Plans:** 3/3 plans complete
 Plans:
 **Wave 1**
 
@@ -73,8 +73,8 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1; 02-02 and 02-03 parallelizable)*
 
-- [ ] 02-02-PLAN.md — HomePage composition: 3 inline React SVGs (TWIST/SHAKE/BOOM) + HowItWorks section with whileInView fade+slide + reduced-motion fallback (HOW-01); FlavorTeaser horizontal scroll-snap scroller with 8 curated flavors + "See all" tile (FLAV-03); move <main id="main"> landmark from Hero to HomePage.tsx; update Phase 1 hero H5/H6 selectors
-- [ ] 02-03-PLAN.md — /flavors catalog: 16-card color-washed grid via Wave 1 FlavorCard (FLAV-01); pill-chip RangeFilter with URL state via useSearchParams (?range= sync, invalid-param cleanup, back-button restore, share-link resilience) (FLAV-02); update Phase 1 skeleton Test 2 for the new H1
+- [x] 02-02-PLAN.md — HomePage composition: 3 inline React SVGs (TWIST/SHAKE/BOOM) + HowItWorks section with whileInView fade+slide + reduced-motion fallback (HOW-01); FlavorTeaser horizontal scroll-snap scroller with 8 curated flavors + "See all" tile (FLAV-03); move <main id="main"> landmark from Hero to HomePage.tsx; update Phase 1 hero H5/H6 selectors
+- [x] 02-03-PLAN.md — /flavors catalog: 16-card color-washed grid via Wave 1 FlavorCard (FLAV-01); pill-chip RangeFilter with URL state via useSearchParams (?range= sync, invalid-param cleanup, back-button restore, share-link resilience) (FLAV-02); update Phase 1 skeleton Test 2 for the new H1
 
 **UI hint**: yes
 
@@ -159,7 +159,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation + Hero + Conversion Infrastructure | 3/3 | Awaiting human-verify checkpoint | - |
-| 2. How It Works + Flavor Catalog | 0/TBD | Not started | - |
+| 2. How It Works + Flavor Catalog | 3/3 | Complete   | 2026-10-09 |
 | 3. Scroll Storytelling Polish | 0/TBD | Not started | - |
 | 4. USP + Variants + Premium Sports + Lighthouse Perf Pass | 0/TBD | Not started | - |
 | 5. Trust + FAQ + About + Contact + SEO + Accessibility | 0/TBD | Not started | - |
