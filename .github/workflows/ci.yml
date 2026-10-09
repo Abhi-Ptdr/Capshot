@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  quality:
+    name: Quality (grep, lint, unit, typecheck, build, e2e)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 22.22 (React Router v8 floor per CLAUDE.md)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint (deferred no-op until typescript-eslint TS 7 compat lands)
+        run: npm run lint
+
+      - name: CI grep gates (INFRA-06 — wa.me outside cta.ts + energy drink)
+        run: npm run grep:ci
+
+      - name: Vitest unit + CI script tests
+        run: npm run test
+
+      - name: Typecheck (tsc --noEmit)
+        run: npx tsc --noEmit
+
+      - name: Production build
+        run: npm run build
+
+      - name: CAPI token not shipped to client bundle (T-03-01)
+        run: |
+          if grep -r "META_CAPI_ACCESS_TOKEN" dist/ 2>/dev/null; then
+            echo "::error::META_CAPI_ACCESS_TOKEN leaked into dist/"
+            exit 1
+          else
+            echo "✓ META_CAPI_ACCESS_TOKEN not in dist/"
+          fi
+
+      - name: Install Playwright chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Playwright e2e
+        run: npm run test:e2e
+
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 7

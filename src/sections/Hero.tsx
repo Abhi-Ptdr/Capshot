@@ -113,7 +113,7 @@ export function Hero() {
                 </Link>
               </div>
 
-              {/* Trust strip — three honest claims, no "energy drink" */}
+              {/* Trust strip — three honest claims; FSSAI-compliant copy (no stimulant-beverage phrasing). */}
               <p className="mt-7 text-[13px] text-[color:var(--color-fg-muted)] sm:text-sm lg:mt-8">
                 No prep <span aria-hidden="true">·</span> Zero sugar{' '}
                 <span aria-hidden="true">·</span> Made in India

@@ -10,7 +10,7 @@
  *
  * Fire-and-forget is a hard requirement:
  *   - trackLead MUST NOT await the fetch — the anchor's default navigation
- *     to wa.me must proceed immediately. We use `keepalive: true` so the
+ *     to WhatsApp must proceed immediately. We use `keepalive: true` so the
  *     browser keeps the connection alive across the imminent navigation.
  *   - All error paths (ad-blocker shadowing fbq, CAPI endpoint down,
  *     network broken) are swallowed. The CTA's user-visible outcome
@@ -71,9 +71,10 @@ export function trackLead(input: TrackLeadInput): void {
   }
 
   // (2) Server-side CAPI. keepalive:true keeps the fetch connection alive
-  //     through the imminent navigation to wa.me. Any sync throw (CSP,
-  //     network layer refusal) is caught here; any async rejection is
-  //     caught on the returned promise. Both paths swallow silently.
+  //     through the imminent navigation to the WhatsApp deep-link. Any sync
+  //     throw (CSP, network layer refusal) is caught here; any async
+  //     rejection is caught on the returned promise. Both paths swallow
+  //     silently so the CTA's user-visible outcome never depends on CAPI.
   try {
     const req = fetch('/api/track-lead', {
       method: 'POST',

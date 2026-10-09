@@ -13,7 +13,8 @@
     "test": "vitest run",
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
-    "test:e2e:install": "playwright install chromium"
+    "test:e2e:install": "playwright install chromium",
+    "grep:ci": "node scripts/ci-grep-forbidden-strings.mjs"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
