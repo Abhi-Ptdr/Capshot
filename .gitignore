@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/
+
+# Build output
+dist/
+build/
+.vite/
+.output/
+
+# Environment
+.env
+.env.local
+.env.*.local
+*.env
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+*.swp
+*.swo
+
+# Testing / coverage
+coverage/
+.nyc_output/
+
+# TypeScript
+*.tsbuildinfo
+
+# Local Claude settings not meant to be shared
+.claude/settings.local.json
+
+# User-level / generic skills (not CAPSHOT-specific; belong in ~/.claude/skills/)
+.claude/skills/skill-creator/
+.claude/skills/react-perf-optimizer/
+
+# Local MCP config — contains plaintext credentials, never commit
+.mcp.json

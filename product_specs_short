@@ -1,0 +1,77 @@
+SHI-28 CAPSHOT - FINAL SPEC SHEET
+
+Product: SHI-28 CAPSHOT | Premium Refreshing Drink Cap
+
+Tagline: TWIST.SHAKE.BOOM
+
+Concept: Powder cap ke andar pre-filled. Kisi bhi normal paani ki bottle (28mm) pe lagao, twist karo, shake karo, BOOM - instant drink ready.
+
+Variants:
+200ml - 250ml Bottle: 3-4 gm powder (Light & Refreshing)
+350ml - 500ml Bottle: 7-8 gm powder (Strong & Punchy)
+
+FLAVOUR RANGE - 15 Flavours:
+
+Fruity Blast:
+1. Orange
+2. Mixed Berry
+3. Mango
+4. Pineapple
+5. Watermelon
+6. Guava
+7. Pomegranate
+8. Strawberry
+9. Apple
+
+Desi & Cool:
+10. Citrus Mint
+11. Jaljeera
+12. ORS (Electrolyte)
+
+Premium Sports Range:
+13. Japanese Matcha
+14. Black Pump
+15. Java Pump
+16. ⁠coffee
+
+
+# For Website
+
+Creative Direction:
+Feel: Modern, Creative, Premium, Elegant.
+
+Color Theme:
+Primary palette:
+#594545
+#815B5B
+#9E7676
+#FFF8EA
+
+Light mode:
+Background #FFF8EA, surfaces white/off-white, text #594545, accents #815B5B/#9E7676.
+Dark mode:
+Background #594545, surfaces #815B5B, text #FFF8EA, accents #9E7676.
+Swap these colors intelligently between modes while maintaining WCAG contrast.
+
+Technology:
+React + TypeScript + Vite, Tailwind CSS, Framer Motion (or Motion), GSAP only where needed, React Router, ESLint, Prettier, lazy loading, image optimization, accessibility, SEO, dark mode, reusable components. Future-ready for Node.js, Express, MySQL, Cloudinary and CMS.
+
+Performance:
+Desktop-first with fully responsive mobile using interaction patterns optimized for touch. Lighthouse >90. Code splitting, lazy media, optimized assets.
+
+Asset Usage:
+The workspace contains photos, videos of the product. Use the Images as best possible creative way you can. I think no need to use videos as it is or render them on website. those are just for information about the product and how to use it. If you need any other media like owner/founder Profile image fro about us section ask me at run time or use placeholder and I will submit the image later.
+
+Instructions to Claude Code:
+Act as Product Designer, Creative Director, Senior UI/UX Designer and Senior React Engineer. Do not generate the whole project at once. Build phase-by-phase, maintaining production quality, clean architecture, comments only where valuable.
+
+Social:
+Gmail shi28.capshot@gmail.com 
+Contact-9203975762
+Whatsapp business- 9203975762
+Instagram:
+handle - @capshot_twist
+url - https://www.instagram.com/capshot_twist/
+
+
+
