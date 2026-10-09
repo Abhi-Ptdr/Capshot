@@ -138,18 +138,20 @@ Write to `src/index.css`. These are the only tokens Phase 1 ships; Phase 2+ exte
 
 ## Typography
 
-**Scale: 4 sizes, 2 weights.** Hinglish restricted to display/H1 and section-shout micro-copy only; all other text is English.
+**Scale: 4 sizes (16/18/24/36 at mobile), 2 weights (400 regular, 700 bold).** Hinglish restricted to display/H1 and section-shout micro-copy only; all other text is English.
 
 | Role | Size (mobile 360px) | Size (≥640px) | Weight | Line Height | Letter Spacing | Font Family |
 |------|---------------------|---------------|--------|-------------|----------------|-------------|
 | **Display / H1** | 36px (2.25rem) | 56px (3.5rem) desktop ≥1024 → 72px (4.5rem) | 700 (bold) | 1.05 | -0.02em | display |
-| **Heading / H2** | 24px (1.5rem) | 32px (2rem) | 600 (semibold) | 1.15 | -0.01em | display |
+| **Heading / H2** | 24px (1.5rem) | 32px (2rem) | 700 (bold) | 1.15 | -0.01em | display |
 | **Body-lg / sub-headline** | 18px (1.125rem) | 20px (1.25rem) | 400 (regular) | 1.45 | normal | body |
 | **Body / default** | 16px (1rem) | 16px (1rem) | 400 (regular) | 1.5 | normal | body |
-| **Button / CTA** | 16px (1rem) | 16px (1rem) | 600 (semibold) | 1 (flush) | +0.04em (UPPERCASE) | display |
-| **Caption / banner** | 14px (0.875rem) | 14px (0.875rem) | 400 (regular) | 1.4 | normal | body |
+| **Button / CTA** | 16px (1rem) | 16px (1rem) | 700 (bold) | 1 (flush) | +0.04em (UPPERCASE) | display |
+| **Caption / banner-sm** (role, not size) | 16px (1rem) | 16px (1rem) | 400 (regular) | 1.4 | normal | body + `color-fg-muted` |
 
-**Weight contract (strict):** Only `400` (regular) and `600` (semibold)/`700` (bold display) in Phase 1. No `300`, no `500`, no italics for brand copy. If a visual needs more weight contrast, use `color-fg` vs `color-fg-muted` instead.
+**Weight contract (strict):** Only `400` (regular) and `700` (bold) in Phase 1. No `300`, `500`, `600`, no italics for brand copy. Two weights only — if a visual needs more weight contrast, use `color-fg` vs `color-fg-muted` or the type-scale size gap instead. The 36px→24px→16px size cascade is the primary hierarchy mechanism; weight is secondary.
+
+**Size contract (strict):** Only `16`, `18`, `24`, `36` px at mobile baseline (4 sizes). The 56/72 values are responsive scaling of the Display/H1 role; the 32 value is responsive scaling of the Heading/H2 role. Caption-role text (banner body, 404 sub-copy, nav link labels) renders at `16px` (body size) with `color-fg-muted` plus tighter line-height (`1.4`) to differentiate from paragraph body copy — never a smaller font-size.
 
 **Hero H1 copy (locked, CONTEXT D-05):** `Twist karo. Shake karo. BOOM.`
 - Rendered on 360px as 36px / line-height 1.05 / weight 700 / letter-spacing -0.02em.
@@ -331,7 +333,7 @@ Per-element copy for Phase 1. All strings here are **locked by CONTEXT.md** exce
 | `size: md` (coming-soon shells, 404) | `px: 20px, py: 12px` | 48px | `auto`, min-width 200px | UPPERCASE |
 
 **Base style (both variants):**
-- Font: display, weight 600, size 16px, letter-spacing +0.04em.
+- Font: display, weight 700, size 16px, letter-spacing +0.04em.
 - Border radius: `pill` (`9999px`).
 - Background: `color-accent` (= `brand-deep` light / `brand-cream` dark).
 - Text color: `color-accent-fg` (= `brand-cream` light / `brand-deep` dark).
@@ -446,7 +448,7 @@ Uses `min-height` (not `height`) so landscape rotation and content growth don't 
 
 - Background: `color-fg` (= `brand-deep` light / `brand-cream` dark) — inverted from page, reads as a system alert.
 - Text color: `color-bg` (= inverse — `brand-cream` light / `brand-deep` dark).
-- Font: body, 14px, weight 400.
+- Font: body, 16px (body-size — never a smaller type scale per Size contract), weight 400, line-height 1.4, `color-bg` (inverted on `color-fg` surface).
 - Right-arrow glyph `→` is literal Unicode `→`, kerned with 4px left margin from the preceding word. Signals "action required" per CONTEXT D-12.
 - Dismiss affordance: lucide-react `X` icon, 20×20px stroked, hit target 40×40px, right-aligned 16px from right edge.
 
