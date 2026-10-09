@@ -7,8 +7,14 @@ import { ThemeToggle } from '@/components/ui/ThemeToggle';
  * Phase 1 Plan 02 — Nav (UI-SPEC §Component 1).
  *
  * Logo-only + ThemeToggle (CONTEXT D-16). No hamburger, no in-nav links.
- * Fixed top; 56 px mobile / 64 px ≥sm. z-index 50 (below Plan 03's in-app
- * banner at z-60).
+ * 56 px mobile / 64 px ≥sm. z-index 50 (below Plan 03's in-app banner at z-60).
+ *
+ * Phase 1 Plan 03 — Nav uses `position: sticky; top: 0` (not `fixed`) so when
+ * the InAppBrowserBanner renders (Instagram/Facebook WebView visitors), the
+ * banner sits in document flow above the Nav and the Nav moves DOWN by the
+ * banner's height — satisfying CONTEXT D-10 ("banner pushes hero content
+ * down"). Sticky positioning keeps the Nav visually pinned on scroll like
+ * `fixed` would, but respects the banner's flow placement.
  *
  * On dark theme the metallic-black wordmark sits on a cream rounded surface
  * so the logo stays legible without recoloring the asset itself
@@ -19,7 +25,7 @@ export function Nav() {
   return (
     <header
       role="banner"
-      className="fixed inset-x-0 top-0 z-50 bg-[color:var(--color-bg)]"
+      className="sticky top-0 z-50 w-full bg-[color:var(--color-bg)]"
     >
       <Container className="flex h-14 items-center sm:h-16">
         <Link

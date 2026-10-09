@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router';
 import { ThemeProvider } from '@/theme/ThemeProvider';
 import { LazyMotion, domAnimation } from '@/lib/motion';
+import { InAppBrowserBanner } from '@/components/ui/InAppBrowserBanner';
 import { Nav } from '@/sections/Nav';
 import HomePage from '@/pages/HomePage';
 import FlavorsPage from '@/pages/FlavorsPage';
@@ -9,11 +10,14 @@ import ContactPage from '@/pages/ContactPage';
 import NotFoundPage from '@/pages/NotFoundPage';
 
 /**
- * Phase 1 Plan 02 — App shell.
+ * Phase 1 Plan 02 + Plan 03 — App shell.
  *
  * Composition order (outermost → innermost):
  *   <ThemeProvider>              — Context for { theme, toggle }
  *     <LazyMotion features={domAnimation}>  — CONV-05 provider contract
+ *       <InAppBrowserBanner />   — Plan 03, CONV-02; sticky-top z-60, flow
+ *                                  element so Nav + Hero push DOWN by
+ *                                  banner height when visible (CONTEXT D-10)
  *       <BrowserRouter>          — React Router v8 declarative mode
  *         skip-link              — keyboard a11y, anchors to #main
  *         <Nav />                — fixed-top, logo + ThemeToggle (CONTEXT D-16)
@@ -24,6 +28,11 @@ import NotFoundPage from '@/pages/NotFoundPage';
  * from `@/lib/motion` ANYWHERE in the tree without first refactoring
  * App.tsx. Features context is already present (CONV-05 provider contract
  * closed in Phase 1).
+ *
+ * The in-app banner is OUTSIDE <BrowserRouter> so it survives every route
+ * change — a visitor who taps TRY CAPSHOT and bounces back inside the
+ * Instagram WebView will still see the Safari-nudge on return. The banner
+ * renders nothing when the UA is a plain Safari/Chrome.
  *
  * ThemeProvider wraps LazyMotion so if Motion ever needs to react to theme
  * class changes it can — but Phase 1 does not animate theme flips.
@@ -36,6 +45,14 @@ export default function App() {
   return (
     <ThemeProvider>
       <LazyMotion features={domAnimation}>
+        {/*
+          Phase 1 Plan 03 — InAppBrowserBanner mounts ABOVE <BrowserRouter>
+          so it survives route changes AND sits above Nav (z-60 vs z-50).
+          The banner is a sticky-top flow element — Nav + Hero content push
+          DOWN by banner height when visible (CONTEXT D-10). Renders nothing
+          when UA is not an Instagram/Facebook WebView.
+        */}
+        <InAppBrowserBanner />
         <BrowserRouter>
           <a
             href="#main"
