@@ -41,12 +41,36 @@ export function Hero() {
         aria-labelledby="hero-title"
         className="relative overflow-hidden px-4 pt-20 pb-[calc(env(safe-area-inset-bottom)+2rem)] sm:px-6 sm:pt-24 lg:px-8 lg:pt-28 lg:pb-24"
       >
+        {/*
+          Decorative background layer. Three soft radial glows + a subtle
+          cream-to-warm gradient give the section depth without any image
+          or JS. All elements are pointer-events-none and aria-hidden.
+          The vertical gradient uses var(--color-brand-cream) at both ends
+          with a hint of brand-rose in between so dark mode stays coherent.
+        */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-20 bg-gradient-to-b from-[color:var(--color-bg)] via-[color:var(--color-brand-rose)]/5 to-[color:var(--color-bg)]"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-20 -left-24 -z-10 h-[520px] w-[520px] rounded-full bg-[color:var(--color-brand-rose)] opacity-20 blur-3xl sm:h-[640px] sm:w-[640px] dark:opacity-25"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-32 -bottom-40 -z-10 hidden h-[560px] w-[560px] rounded-full bg-[color:var(--color-brand-mid)] opacity-15 blur-3xl lg:block dark:opacity-20"
+        />
+
         <Container>
           <div className="grid grid-cols-1 items-center gap-12 lg:min-h-[calc(100dvh-7rem)] lg:grid-cols-[1.1fr_1fr] lg:gap-16 xl:gap-24">
             {/* LEFT — text stack (DOM-first so CTA is above fold on 360×640) */}
             <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
-              {/* Eyebrow kicker */}
-              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[color:var(--color-brand-rose)] sm:text-xs">
+              {/* Eyebrow kicker — small cream pill in brand-mid for presence */}
+              <p className="inline-flex items-center gap-2 rounded-full bg-[color:var(--color-brand-rose)]/15 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-[color:var(--color-brand-mid)] ring-1 ring-[color:var(--color-brand-rose)]/25 sm:text-xs dark:bg-[color:var(--color-brand-rose)]/20 dark:text-[color:var(--color-fg)] dark:ring-[color:var(--color-brand-rose)]/40">
+                <span
+                  aria-hidden="true"
+                  className="h-1.5 w-1.5 rounded-full bg-[color:var(--color-brand-rose)]"
+                />
                 Pre-filled flavor caps
               </p>
 
@@ -62,8 +86,12 @@ export function Hero() {
                 .
               </h1>
 
-              {/* Sub-copy — EXACT CONTEXT D-06 text */}
-              <p className="mt-5 max-w-[34ch] text-[17px] leading-[1.5] text-[color:var(--color-fg-muted)] sm:text-[20px] lg:mt-7 lg:text-[22px]">
+              {/*
+                Sub-copy — EXACT CONTEXT D-06 text. Uses --color-fg (not
+                fg-muted) so the primary value prop keeps full brand-deep
+                punch on cream; fg-muted felt faded in light mode.
+              */}
+              <p className="mt-5 max-w-[34ch] text-[18px] leading-[1.5] font-medium text-[color:var(--color-fg)] sm:text-[20px] lg:mt-7 lg:text-[22px]">
                 Pre-filled flavor caps for any bottle.
               </p>
 

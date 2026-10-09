@@ -12,6 +12,20 @@
     <link rel="icon" href="/favicon.ico" />
 
     <!--
+      First-paint color baseline. The main stylesheet ships inside the Vite
+      module bundle (loads after HTML parse), so without this block the body
+      is briefly white before Tailwind's @theme kicks in. The .dark branch
+      is driven by the FOUC inline script below. Body intentionally has no
+      background so it inherits from html — otherwise a static color on
+      <body> would override var(--color-bg) once the stylesheet loads.
+    -->
+    <style>
+      html { background: #FFF8EA; color: #594545; }
+      html.dark { background: #594545; color: #FFF8EA; }
+      body { margin: 0; min-height: 100dvh; font-family: Inter, system-ui, sans-serif; }
+    </style>
+
+    <!--
       Phase 1 Plan 02 FOUC-prevention script. Runs synchronously BEFORE any
       Vite-injected module script so `<html>` carries `.dark` before CSS
       resolves. CONV-04: zero cream-to-dark flash on cold-cache dark loads.
@@ -67,7 +81,7 @@
     <meta property="og:url" content="https://capshot.co/" />
     <meta name="twitter:card" content="summary_large_image" />
   </head>
-  <body style="background: #fff8ea; color: #594545; margin: 0">
+  <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
