@@ -13,7 +13,7 @@ CAPSHOT is a pre-launch India D2C beverage brand. v1 ships a premium, mobile-fir
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation + Hero + Conversion Infrastructure** — Deployable Hero + waitlist CTA on top of the full conversion scaffold (CTA config, LazyMotion, dvh, FOUC, Pixel+CAPI, in-app browser nudge, Shopify-shaped flavor stub)
+- [x] **Phase 1: Foundation + Hero + Conversion Infrastructure** — Deployable Hero + waitlist CTA on top of the full conversion scaffold (CTA config, LazyMotion, dvh, FOUC, Pixel+CAPI, in-app browser nudge, Shopify-shaped flavor stub)
 - [ ] **Phase 2: How It Works + Flavor Catalog** — 3-step product explainer plus 16-flavor browsing with range filters live on `/` and `/flavors`
 - [ ] **Phase 3: Scroll Storytelling Polish** — Cinematic Motion choreography layered across every shipped section, with `prefers-reduced-motion` honored throughout
 - [ ] **Phase 4: USP + Variants + Premium Sports + Lighthouse Perf Pass** — Full homepage commercial argument plus verified Lighthouse mobile ≥90 before paid-ad scale
