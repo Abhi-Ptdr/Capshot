@@ -47,7 +47,24 @@ const STEPS = [
 
 export function HowItWorks() {
   return (
-    <Section className="pt-8 pb-16 sm:pt-12 md:pt-16 lg:pt-20 lg:pb-24" background="bg">
+    <Section
+      background="bg"
+      className={[
+        // Inverted theme vs the rest of the page: in light mode the
+        // section bg is brand-deep (dark) with cream text; in dark mode
+        // it's cream with brand-deep text. Achieved by overriding the
+        // three semantic CSS variables locally — every descendant that
+        // reads --color-bg / --color-fg / --color-fg-muted picks up the
+        // flipped values automatically (Section's own bg too).
+        '[--color-bg:var(--color-brand-deep)]',
+        '[--color-fg:var(--color-brand-cream)]',
+        '[--color-fg-muted:rgb(255_248_234_/_0.72)]',
+        'dark:[--color-bg:var(--color-brand-cream)]',
+        'dark:[--color-fg:var(--color-brand-deep)]',
+        'dark:[--color-fg-muted:rgb(89_69_69_/_0.68)]',
+        'pt-8 pb-16 sm:pt-12 md:pt-16 lg:pt-20 lg:pb-24',
+      ].join(' ')}
+    >
       <Container>
         <div className="grid items-center gap-10 lg:grid-cols-[auto_1fr] lg:gap-14 xl:gap-20">
           {/*
@@ -100,8 +117,12 @@ export function HowItWorks() {
             }}
             className="order-1 flex flex-col items-center text-center motion-reduce:!transform-none motion-reduce:!opacity-100 lg:order-2 lg:items-start lg:text-left"
           >
-            {/* Eyebrow kicker — matches Hero's pill style */}
-            <p className="inline-flex items-center gap-2 rounded-full bg-[color:var(--color-brand-rose)]/15 px-3 py-1 text-[11px] font-bold tracking-[0.2em] text-[color:var(--color-brand-mid)] uppercase ring-1 ring-[color:var(--color-brand-rose)]/30 sm:text-xs dark:bg-[color:var(--color-brand-rose)]/25 dark:text-[color:var(--color-fg)] dark:ring-[color:var(--color-brand-rose)]/50">
+            {/*
+              Eyebrow kicker — uses --color-fg so it inherits the
+              section's inverted theme (cream text on brand-deep section
+              in light mode; brand-deep text on cream section in dark).
+            */}
+            <p className="inline-flex items-center gap-2 rounded-full bg-[color:var(--color-brand-rose)]/20 px-3 py-1 text-[11px] font-bold tracking-[0.2em] text-[color:var(--color-fg)] uppercase ring-1 ring-[color:var(--color-brand-rose)]/40 sm:text-xs">
               <span
                 aria-hidden="true"
                 className="h-1.5 w-1.5 rounded-full bg-[color:var(--color-brand-rose)]"
