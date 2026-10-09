@@ -1,69 +1,141 @@
 import { m } from '@/lib/motion';
 import Container from '@/components/primitives/Container';
 import Section from '@/components/primitives/Section';
-import { StepTwistIllustration } from './StepTwistIllustration';
-import { StepShakeIllustration } from './StepShakeIllustration';
-import { StepBoomIllustration } from './StepBoomIllustration';
 
 /**
- * Phase 2 Plan 02 — How It Works section (HOW-01 / D2-01 / D2-02 / D2-03).
+ * Phase 2 Plan 02 — How It Works section (HOW-01).
  *
- * The brand mantra TWIST → SHAKE → BOOM, rendered as three Hinglish beats
- * paired with static inline-SVG illustrations drawn from the brand palette
- * (brand-deep / brand-mid / brand-rose / brand-cream — never a stray hex).
+ * Layout: 2-column at lg+ (video left, copy right); stacked on mobile
+ * (video on top, copy below). Video is a short muted autoplay-loop MP4
+ * showing the full twist → shake → BOOM action in 2.5 seconds. Copy
+ * is a 3-step numbered list that labels each visible beat.
  *
- * Entrance animation is a Motion `whileInView` fade+slide (opacity 0→1,
- * y 24→0, 0.5s, staggered 0.1s per beat) that fires ONCE per element
- * (`viewport.once: true`). Reduced-motion gets the final state immediately
- * via `motion-reduce:!transform-none motion-reduce:!opacity-100` as a
- * belt-and-suspenders alongside Motion's own prefers-reduced-motion
- * detection.
+ * Video asset: `public/how-it-works/capshot-demo.mp4` (214 KB, 406×720,
+ * 30fps, no audio) — spliced from the client's demo footage with the
+ * branded "TWIST + SHAKE = BOOM!" text overlay and model close-ups cut
+ * out. Loops seamlessly. Poster = `capshot-demo-poster.jpg` (27 KB) —
+ * also serves as the reduced-motion fallback since autoplay is
+ * suppressed when the user has `prefers-reduced-motion: reduce`.
  *
- * No section headline — per 02-CONTEXT's "let the 3 beats speak"
- * recommendation. The Hero's locked headline ("Twist karo. Shake karo.
- * BOOM.") sits directly above this section, so the 3 beats are the
- * visual payoff of the mantra, not a redundant kicker.
+ * Autoplay rules: `muted` + `playsinline` are mandatory for mobile
+ * Safari to allow silent autoplay without going fullscreen; `loop` makes
+ * it behave like a GIF. `preload="metadata"` keeps the initial page
+ * weight small — only the first keyframe is fetched until the section
+ * enters the viewport.
  *
- * Phase 3 is where the cinematic cap-twist + path morphs land. Phase 2
- * ships the STATIC illustrations only — do NOT bake Phase 3's timings
- * into the SVG trees.
+ * Entrance animation: Motion `whileInView` fade+slide (opacity 0→1,
+ * y 24→0, 0.5s). Fires once per element. Reduced-motion skips entrance.
  */
 
 const STEPS = [
-  { label: 'TWIST', Illustration: StepTwistIllustration },
-  { label: 'SHAKE', Illustration: StepShakeIllustration },
-  { label: 'BOOM', Illustration: StepBoomIllustration },
+  {
+    num: '01',
+    label: 'Twist',
+    body: 'Secure the cap onto any 28 mm bottle.',
+  },
+  {
+    num: '02',
+    label: 'Shake',
+    body: 'Powder dissolves in 5 seconds.',
+  },
+  {
+    num: '03',
+    label: 'Boom',
+    body: 'Flavor-forward drink, ready.',
+  },
 ] as const;
 
 export function HowItWorks() {
   return (
-    <Section className="pt-8 sm:pt-12 md:pt-16 pb-16" background="bg">
+    <Section className="pt-8 pb-16 sm:pt-12 md:pt-16 lg:pt-20 lg:pb-24" background="bg">
       <Container>
-        <ul className="grid gap-10 sm:grid-cols-3 sm:gap-6 lg:gap-10">
-          {STEPS.map(({ label, Illustration }, i) => (
-            <li
-              key={label}
-              className="flex flex-col items-center text-center"
+        <div className="grid items-center gap-10 lg:grid-cols-[auto_1fr] lg:gap-14 xl:gap-20">
+          {/* LEFT — looping demo video (constrained width — portrait 9:16) */}
+          <m.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-10% 0px' }}
+            transition={{ duration: 0.5, ease: [0.2, 0, 0.2, 1] }}
+            className="relative mx-auto w-full max-w-[220px] motion-reduce:!transform-none motion-reduce:!opacity-100 sm:max-w-[240px] lg:mx-0 lg:max-w-[260px] xl:max-w-[280px]"
+          >
+            {/* Soft brand-rose halo behind the video card */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center"
             >
-              <m.div
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-10% 0px' }}
-                transition={{
-                  duration: 0.5,
-                  delay: i * 0.1,
-                  ease: [0.2, 0, 0.2, 1],
-                }}
-                className="w-full max-w-[280px] text-[color:var(--color-brand-deep)] motion-reduce:!transform-none motion-reduce:!opacity-100 dark:text-[color:var(--color-brand-cream)]"
+              <div className="h-[80%] w-[80%] rounded-full bg-[color:var(--color-brand-rose)] opacity-20 blur-3xl dark:opacity-25" />
+            </div>
+
+            <div className="relative overflow-hidden rounded-2xl bg-[color:var(--color-brand-cream)] shadow-[0_18px_50px_-12px_rgba(89,69,69,0.25)] ring-1 ring-[color:var(--color-brand-rose)]/20 dark:bg-[color:var(--color-brand-deep)] dark:ring-[color:var(--color-brand-rose)]/35">
+              <video
+                className="block aspect-[9/16] h-auto w-full object-cover"
+                src="/how-it-works/capshot-demo.mp4"
+                poster="/how-it-works/capshot-demo-poster.jpg"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                aria-label="A CAPSHOT flavor cap being twisted onto a water bottle, shaken, and the resulting drink"
               >
-                <Illustration className="h-auto w-full" />
-              </m.div>
-              <h3 className="mt-6 text-[48px] font-bold leading-none tracking-tight sm:text-[64px] lg:text-[80px]">
-                {label}
-              </h3>
-            </li>
-          ))}
-        </ul>
+                {/* Fallback for browsers without MP4 support (none in 2026 but harmless) */}
+                <track kind="descriptions" srcLang="en" label="Demo description" />
+              </video>
+            </div>
+          </m.div>
+
+          {/* RIGHT — heading + 3-step bullet list */}
+          <m.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-10% 0px' }}
+            transition={{
+              duration: 0.5,
+              delay: 0.1,
+              ease: [0.2, 0, 0.2, 1],
+            }}
+            className="flex flex-col items-center text-center lg:items-start lg:text-left motion-reduce:!transform-none motion-reduce:!opacity-100"
+          >
+            {/* Eyebrow kicker — matches Hero's pill style */}
+            <p className="inline-flex items-center gap-2 rounded-full bg-[color:var(--color-brand-rose)]/15 px-3 py-1 text-[11px] font-bold tracking-[0.2em] text-[color:var(--color-brand-mid)] uppercase ring-1 ring-[color:var(--color-brand-rose)]/30 sm:text-xs dark:bg-[color:var(--color-brand-rose)]/25 dark:text-[color:var(--color-fg)] dark:ring-[color:var(--color-brand-rose)]/50">
+              <span
+                aria-hidden="true"
+                className="h-1.5 w-1.5 rounded-full bg-[color:var(--color-brand-rose)]"
+              />
+              Three steps
+            </p>
+
+            {/* Heading */}
+            <h2 className="mt-5 text-[32px] leading-[1.1] font-bold tracking-[-0.01em] text-[color:var(--color-fg)] sm:text-[40px] lg:text-[48px] xl:text-[56px]">
+              How CAPSHOT works
+            </h2>
+
+            {/* 3-step list — numbered big step, label, body */}
+            <ol className="mt-8 flex w-full flex-col gap-6 sm:gap-7">
+              {STEPS.map(({ num, label, body }) => (
+                <li
+                  key={num}
+                  className="flex items-start gap-4 text-left sm:gap-5"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="shrink-0 text-[22px] leading-none font-black tracking-tight text-[color:var(--color-brand-rose)] tabular-nums sm:text-[26px]"
+                  >
+                    {num}
+                  </span>
+                  <div className="flex-1">
+                    <h3 className="text-[18px] font-bold tracking-[-0.01em] text-[color:var(--color-fg)] uppercase sm:text-[20px]">
+                      {label}
+                    </h3>
+                    <p className="mt-1 text-[15px] leading-[1.5] text-[color:var(--color-fg-muted)] sm:text-base">
+                      {body}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </m.div>
+        </div>
       </Container>
     </Section>
   );

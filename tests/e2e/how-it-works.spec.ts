@@ -3,131 +3,124 @@ import { test, expect, devices } from '@playwright/test';
 /**
  * Phase 2 Plan 02 — How It Works section E2E (HOW-01).
  *
- * Static 3-step visuals (TWIST / SHAKE / BOOM) with Motion whileInView
- * fade+slide entrance and a reduced-motion fallback that renders the
- * final state immediately. Illustrations use brand palette only.
+ * Looping muted MP4 demo + heading + 3-step numbered list (01/02/03
+ * TWIST/SHAKE/BOOM) side-by-side on desktop, stacked on mobile. Entrance
+ * is Motion whileInView fade+slide; reduced-motion suppresses it.
  *
- * All assertions run at the 360×800 Pixel 7 baseline — the mobile
- * viewport ad traffic lands on. Pattern mirrors hero.spec.ts (no
- * mobile-chrome project; per-suite devices override).
+ * All assertions at the 360×800 Pixel 7 baseline.
  */
 
 test.use({ ...devices['Pixel 7'] });
 
 test.describe('HowItWorks (HOW-01) @ 360×800', () => {
-  test('HW1: three Hinglish beats TWIST / SHAKE / BOOM visible on scroll', async ({
+  test('HW1: heading "How CAPSHOT works" + three step labels visible', async ({
     page,
   }) => {
     await page.goto('/');
-    // Scroll the first beat into view; whileInView fires once per element.
-    await page.getByText('TWIST', { exact: true }).scrollIntoViewIfNeeded();
+    const heading = page.getByRole('heading', {
+      level: 2,
+      name: /^How CAPSHOT works$/,
+    });
+    await heading.scrollIntoViewIfNeeded();
+    await expect(heading).toBeVisible();
 
-    const twist = page.getByRole('heading', { level: 3, name: /^TWIST$/ });
-    const shake = page.getByRole('heading', { level: 3, name: /^SHAKE$/ });
-    const boom = page.getByRole('heading', { level: 3, name: /^BOOM$/ });
-
+    const twist = page.getByRole('heading', { level: 3, name: /^Twist$/i });
+    const shake = page.getByRole('heading', { level: 3, name: /^Shake$/i });
+    const boom = page.getByRole('heading', { level: 3, name: /^Boom$/i });
     await expect(twist).toBeVisible();
     await expect(shake).toBeVisible();
     await expect(boom).toBeVisible();
 
-    // Exactly 3 beat labels on the page — no more, no fewer.
-    const beatHeadings = page.locator('h3', {
-      hasText: /^(TWIST|SHAKE|BOOM)$/,
+    const stepHeadings = page.locator('h3', {
+      hasText: /^(Twist|Shake|Boom)$/i,
     });
-    await expect(beatHeadings).toHaveCount(3);
+    await expect(stepHeadings).toHaveCount(3);
   });
 
-  test('HW2: exactly three [data-testid="step-illustration"] SVGs exist', async ({
+  test('HW2: demo video element present with required autoplay attributes', async ({
     page,
   }) => {
     await page.goto('/');
-    await page.getByText('TWIST', { exact: true }).scrollIntoViewIfNeeded();
-    const illustrations = page.locator('[data-testid="step-illustration"]');
-    await expect(illustrations).toHaveCount(3);
-  });
+    const video = page.locator('video').first();
+    await video.scrollIntoViewIfNeeded();
+    await expect(video).toBeAttached();
 
-  test('HW3: each illustration SVG has aria-hidden="true" (decorative)', async ({
-    page,
-  }) => {
-    await page.goto('/');
-    await page.getByText('TWIST', { exact: true }).scrollIntoViewIfNeeded();
-    const ariaValues = await page
-      .locator('[data-testid="step-illustration"]')
-      .evaluateAll((nodes) =>
-        nodes.map((n) => n.getAttribute('aria-hidden')),
-      );
-    expect(ariaValues).toHaveLength(3);
-    for (const v of ariaValues) {
-      expect(v).toBe('true');
-    }
-  });
-
-  test('HW5: illustration SVG palette uses only brand CSS variables + currentColor + rgba() + none', async ({
-    page,
-  }) => {
-    await page.goto('/');
-    await page.getByText('TWIST', { exact: true }).scrollIntoViewIfNeeded();
-    // Enumerate every fill / stroke on children of the 3 illustrations.
-    const paintValues = await page.evaluate(() =>
-      Array.from(
-        document.querySelectorAll('[data-testid="step-illustration"] *'),
-      )
-        .flatMap((el) => [
-          el.getAttribute('fill'),
-          el.getAttribute('stroke'),
-        ])
-        .filter((v): v is string => typeof v === 'string' && v.length > 0),
+    // Autoplay-as-GIF contract: muted + loop + playsinline + autoplay
+    expect(await video.getAttribute('src')).toBe(
+      '/how-it-works/capshot-demo.mp4',
     );
-    // At minimum, each step has multiple paths; the three SVGs together
-    // should contribute 10+ paint attributes.
-    expect(paintValues.length).toBeGreaterThanOrEqual(10);
-    // Palette-only rule: brand CSS variables, currentColor, raw rgba(...),
-    // or "none". Any out-of-palette hex literal fails this regex.
-    const PALETTE_RE =
-      /^(none|currentColor|var\(--color-brand-[a-z]+\)|rgba?\([^)]+\))$/;
-    for (const v of paintValues) {
-      expect(v).toMatch(PALETTE_RE);
-    }
+    expect(await video.getAttribute('poster')).toBe(
+      '/how-it-works/capshot-demo-poster.jpg',
+    );
+    // Boolean attributes in HTML — presence counts, value may be '' or 'true'
+    const attrs = await video.evaluate((v) => ({
+      muted: (v as HTMLVideoElement).muted,
+      loop: (v as HTMLVideoElement).loop,
+      autoplay: (v as HTMLVideoElement).autoplay,
+      playsInline: (v as HTMLVideoElement).playsInline,
+    }));
+    expect(attrs.muted).toBe(true);
+    expect(attrs.loop).toBe(true);
+    expect(attrs.autoplay).toBe(true);
+    expect(attrs.playsInline).toBe(true);
+  });
+
+  test('HW3: video has aria-label describing the content (not just empty alt)', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const video = page.locator('video').first();
+    const label = await video.getAttribute('aria-label');
+    expect(label).toBeTruthy();
+    expect(label!.length).toBeGreaterThan(10);
+  });
+
+  test('HW4: 3 step numbers (01/02/03) and bodies render in order', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const heading = page.getByRole('heading', { level: 2, name: /How CAPSHOT works/i });
+    await heading.scrollIntoViewIfNeeded();
+
+    // Numbered markers in order
+    const nums = await page.locator('ol li span[aria-hidden="true"]').allTextContents();
+    const stepNums = nums.filter((n) => /^0\d$/.test(n.trim()));
+    expect(stepNums).toEqual(['01', '02', '03']);
+
+    // Bodies include the key phrases
+    await expect(page.getByText(/28\s*mm bottle/i)).toBeVisible();
+    await expect(page.getByText(/5 seconds/i)).toBeVisible();
+    await expect(page.getByText(/Flavor-forward drink/i)).toBeVisible();
   });
 });
 
 test.describe('HowItWorks reduced motion', () => {
-  // test.use at the top of the file already applies Pixel 7; here we only
-  // overlay the reduced-motion context flag so the browser worker is reused.
   test.use({ reducedMotion: 'reduce' });
 
-  test('HW4: entrance animation suppressed — opacity:1 + no translate at mount', async ({
+  test('HW5: entrance animation suppressed — opacity:1 + no translate at mount', async ({
     page,
   }) => {
     await page.goto('/');
-    // Do NOT scroll — we want to assert the final state is already present
-    // before whileInView would normally fire. Reduced-motion must skip the
-    // entrance animation entirely (motion-reduce:!opacity-100 + Motion's
-    // auto-detect + !transform-none belt-and-suspenders).
-    const twist = page.getByText('TWIST', { exact: true });
-    await expect(twist).toBeVisible();
+    // Do NOT scroll — reduced-motion must render the final state immediately.
+    const heading = page.getByRole('heading', { level: 2, name: /How CAPSHOT works/i });
+    await expect(heading).toBeVisible();
 
-    // Find the m.div wrapper (ancestor of a step illustration) and read its
-    // computed opacity + transform. The reduced-motion contract says: no
-    // translate (identity transform OR 'none') and opacity 1.
     const computed = await page.evaluate(() => {
-      const illus = document.querySelector('[data-testid="step-illustration"]');
-      if (!illus) return null;
-      // The m.div wrapper is the direct parent of the SVG per the plan
-      // composition (see HowItWorks.tsx — <m.div ...><Illustration/></m.div>).
-      const wrap = illus.parentElement;
+      const h = Array.from(document.querySelectorAll('h2')).find((el) =>
+        /How CAPSHOT works/i.test(el.textContent ?? ''),
+      );
+      if (!h) return null;
+      // h2 is a child of the m.div copy wrapper
+      const wrap = h.closest('[style], div');
       if (!wrap) return null;
       const style = getComputedStyle(wrap);
-      return {
-        opacity: style.opacity,
-        transform: style.transform,
-      };
+      return { opacity: style.opacity, transform: style.transform };
     });
     expect(computed).not.toBeNull();
     expect(computed!.opacity).toBe('1');
-    // Identity transform may serialize as 'none' OR 'matrix(1, 0, 0, 1, 0, 0)'
-    // depending on the engine; both are the no-translate state.
-    expect(computed!.transform === 'none' ||
-      computed!.transform === 'matrix(1, 0, 0, 1, 0, 0)').toBe(true);
+    expect(
+      computed!.transform === 'none' ||
+        computed!.transform === 'matrix(1, 0, 0, 1, 0, 0)',
+    ).toBe(true);
   });
 });
