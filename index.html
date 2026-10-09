@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#FFF8EA" />
+    <title>CAPSHOT</title>
+    <link rel="icon" href="/favicon.ico" />
+    <!--
+      Phase 1 FOUC-prevention script. Phase 2 wires full ThemeToggle UX;
+      Phase 1 only needs the pre-paint class sync so `<html>` carries `.dark`
+      before CSS resolves. See UI-SPEC §FOUC Prevention.
+    -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('capshot-theme');
+          var systemDark =
+            window.matchMedia &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var isDark = saved === 'dark' || (!saved && systemDark);
+          if (isDark) document.documentElement.classList.add('dark');
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta)
+            meta.setAttribute('content', isDark ? '#594545' : '#FFF8EA');
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body style="background: #fff8ea; color: #594545; margin: 0">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

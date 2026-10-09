@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+# Sitemap lands in Phase 5 (SEO-02). Reference is intentional pre-publish so
+# we don't have to touch robots.txt again when the sitemap is generated.
+Sitemap: https://capshot.co/sitemap.xml
