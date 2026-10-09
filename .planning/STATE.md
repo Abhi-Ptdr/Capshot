@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 1 Plan 01 complete — awaiting human-verify checkpoint
-last_updated: "2026-10-09T09:40:00.000Z"
-last_activity: 2026-10-09 -- Phase 01 Plan 01 Walking Skeleton complete (9/9 e2e GREEN)
+stopped_at: Phase 1 Plan 02 complete — awaiting human-verify checkpoint before Plan 03
+last_updated: "2026-10-09T10:18:46.000Z"
+last_activity: 2026-10-09 -- Phase 01 Plan 02 Hero slice + conversion scaffold complete (16 Vitest + 22 Playwright GREEN)
 progress:
   total_phases: 6
   completed_phases: 0
   total_plans: 3
-  completed_plans: 1
-  percent: 5
+  completed_plans: 2
+  percent: 11
 ---
 
 # Project State
@@ -26,28 +26,29 @@ See: .planning/PROJECT.md (updated 2026-10-09)
 ## Current Position
 
 Phase: 1 of 6 (Foundation + Hero + Conversion Infrastructure)
-Plan: 1 of 3 complete in current phase
-Status: Awaiting human-verify checkpoint before Plan 02 (conversion scaffold + real Hero)
-Last activity: 2026-10-09 -- Phase 01 Plan 01 Walking Skeleton complete (9/9 e2e GREEN)
+Plan: 2 of 3 complete in current phase
+Status: Awaiting human-verify checkpoint before Plan 03 (Pixel+CAPI + in-app browser banner + CI greps)
+Last activity: 2026-10-09 -- Phase 01 Plan 02 Hero slice + conversion scaffold complete (16 Vitest + 22 Playwright GREEN)
 
-Progress: [▓░░░░░░░░░] 5%
+Progress: [▓▓░░░░░░░░] 11%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 1
-- Average duration: ~50 min
-- Total execution time: ~50 min
+- Total plans completed: 2
+- Average duration: ~35 min
+- Total execution time: ~69 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1 (Foundation) | 1 / 3 | ~50 min | ~50 min |
+| 1 (Foundation) | 2 / 3 | ~69 min | ~35 min |
 
 **Recent Trend:**
 
+- 2026-10-09 — Phase 01 Plan 02 Hero slice + conversion scaffold complete (~19 min, 4 commits, 22 files new + 12 modified, 16 Vitest + 22 Playwright GREEN)
 - 2026-10-09 — Phase 01 Plan 01 Walking Skeleton complete (~50 min, 2 commits, 25 files, 9/9 e2e GREEN)
 
 *Updated after each plan completion*
@@ -69,6 +70,13 @@ Recent decisions affecting current work:
 - **Plan 01 execution:** Playwright drives system Google Chrome via `channel: 'chrome'` + `--proxy-bypass-list=<-loopback>` because the exec host's HTTP_PROXY env and the bundled-Chromium CDN block prevented the default `npx playwright install chromium` path from working
 - **Plan 01 execution:** `npm run lint` is a no-op in Phase 1 pending @typescript-eslint TS 7 support (upstream issue typescript-eslint/typescript-eslint#10940) and eslint-plugin-react ESLint 10 compatibility; `tsc --noEmit` in `npm run build` catches type errors
 - **Plan 01 execution:** TS 7 config adjustments: `baseUrl` removed (TS 7 removal), composite project reference dropped (noEmit incompatibility), `src/env.d.ts` added for CSS side-effect import
+- **Plan 02 execution (2026-10-09):** Vitest pinned EXACTLY to `5.0.3` (NOT `^5.0.3`) per CLAUDE.md Dev Tools table — required a manual package.json edit after `npm install` added a caret range
+- **Plan 02 execution:** Playwright config dropped the `mobile-chrome` project — hero/theme suites override to Pixel 7 per-suite via `test.use(devices['Pixel 7'])`, so a separate project would double-run every suite (44 instead of 22)
+- **Plan 02 execution:** Hero image is Media/Image1.jpg cover-cropped to 800×1067 via sharp (110 KB JPG); UNRETOUCHED — Phase 4 PERF-02 drops a retouched master alongside AVIF/WebP srcset work
+- **Plan 02 execution:** Logo copied verbatim from Media/Logo_SHI-28.png (5.7 MB PNG, 4128×1024); NEVER recolored per capshot-brand SKILL — Phase 4 PERF-02 should drop a right-sized WebP variant
+- **Plan 02 execution:** Comments must stay grep-safe — Plan 03's CI greps (`wa.me`, `energy drink`, `<ScrollToTop`) don't distinguish code from comments. Project rule: paraphrase bans without using the banned literal phrase
+- **Plan 02 execution:** ThemeProvider initial state reads from `<html>.classList` (synced by inline FOUC script), NOT from matchMedia — re-reading prefers-color-scheme risks a flash
+- **Plan 02 execution:** LazyMotion provider mounted in src/App.tsx between ThemeProvider and BrowserRouter — Phase 3+ can drop `m.*` primitives in without refactoring App.tsx (CONV-05 provider contract closed in Phase 1)
 
 ### Pending Todos
 
@@ -98,6 +106,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-09T09:40:00.000Z
-Stopped at: Phase 1 Plan 01 complete — awaiting human-verify checkpoint before Plan 02
-Resume file: .planning/phases/01-foundation-hero-conversion-infrastructure/01-01-SUMMARY.md
+Last session: 2026-10-09T10:18:46.000Z
+Stopped at: Phase 1 Plan 02 complete — awaiting human-verify checkpoint before Plan 03
+Resume file: .planning/phases/01-foundation-hero-conversion-infrastructure/01-02-SUMMARY.md

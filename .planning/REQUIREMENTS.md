@@ -10,25 +10,25 @@
 
 ### Infrastructure & Scaffold
 
-- [ ] **INFRA-01**: Developer can build the site locally with `npm install && npm run dev` using React 19 + TypeScript 7 + Vite 8 + Tailwind 4.3 + Motion 14 + React Router 8 on current package names
-- [ ] **INFRA-02**: Visitor can access `/`, `/flavors`, `/about`, `/contact` as client-side routes with a 404 fallback for unknown paths
-- [ ] **INFRA-03**: Developer can change the primary CTA destination for the entire site by editing one file (`src/config/cta.ts`) — no component modifications required
-- [ ] **INFRA-04**: Developer can read all 16 flavors from `src/data/flavors.ts` typed to a Shopify-aligned schema (handle, title, description, images, range, accentHex, dosage, nullable priceInr/shopifyProductId/available)
-- [ ] **INFRA-05**: Developer can toggle Phase 6 commerce features via boolean flags in `src/config/features.ts` without changing component code
+- [x] **INFRA-01**: Developer can build the site locally with `npm install && npm run dev` using React 19 + TypeScript 7 + Vite 8 + Tailwind 4.3 + Motion 14 + React Router 8 on current package names
+- [x] **INFRA-02**: Visitor can access `/`, `/flavors`, `/about`, `/contact` as client-side routes with a 404 fallback for unknown paths
+- [x] **INFRA-03**: Developer can change the primary CTA destination for the entire site by editing one file (`src/config/cta.ts`) — no component modifications required
+- [x] **INFRA-04**: Developer can read all 16 flavors from `src/data/flavors.ts` typed to a Shopify-aligned schema (handle, title, description, images, range, accentHex, dosage, nullable priceInr/shopifyProductId/available)
+- [x] **INFRA-05**: Developer can toggle Phase 6 commerce features via boolean flags in `src/config/features.ts` without changing component code
 - [ ] **INFRA-06**: CI pipeline fails any commit that introduces `wa.me` outside `src/config/cta.ts` or the string "energy drink" anywhere in `src/`
 
 ### Conversion Infrastructure (Phase 1 non-negotiables)
 
 - [ ] **CONV-01**: Site fires a `Lead` event via Meta Pixel (client-side) AND Conversions API (server-side edge function) with a shared `event_id` whenever a visitor clicks a primary waitlist CTA
 - [ ] **CONV-02**: Visitors arriving inside the Instagram or Facebook in-app WKWebView see a sticky, dismissible banner recommending they open the site in Safari (iOS) or auto-redirecting to Chrome via `intent://` (Android)
-- [ ] **CONV-03**: Hero section uses `100dvh` with `100vh` fallback so the primary CTA remains visible on iPhones with dynamic Safari toolbars
-- [ ] **CONV-04**: Dark mode preference is applied before React mounts via an inline blocking `<script>` in `index.html`, preventing cream-to-dark flash on cold-cache loads
-- [ ] **CONV-05**: Motion animations use `LazyMotion` + `m.*` primitives (never `motion.div`) so the entry bundle stays under 10 KB gzip for Motion
+- [x] **CONV-03**: Hero section uses `100dvh` with `100vh` fallback so the primary CTA remains visible on iPhones with dynamic Safari toolbars
+- [x] **CONV-04**: Dark mode preference is applied before React mounts via an inline blocking `<script>` in `index.html`, preventing cream-to-dark flash on cold-cache loads
+- [x] **CONV-05**: Motion animations use `LazyMotion` + `m.*` primitives (never `motion.div`) so the entry bundle stays under 10 KB gzip for Motion
 
 ### Hero & Conversion
 
-- [ ] **HERO-01**: Visitor can understand the TWIST.SHAKE.BOOM concept and primary action within 5 seconds of landing on `/` on a 360×640 mobile viewport
-- [ ] **HERO-02**: Visitor can tap one visible CTA button in the hero (≥56 px tap target) to open WhatsApp Business with a pre-filled waitlist message
+- [x] **HERO-01**: Visitor can understand the TWIST.SHAKE.BOOM concept and primary action within 5 seconds of landing on `/` on a 360×640 mobile viewport
+- [x] **HERO-02**: Visitor can tap one visible CTA button in the hero (≥56 px tap target) to open WhatsApp Business with a pre-filled waitlist message
 
 ### How It Works
 
@@ -130,19 +130,19 @@
 
 | REQ-ID | Phase | Status |
 |--------|-------|--------|
-| INFRA-01 | Phase 1 | Pending |
-| INFRA-02 | Phase 1 | Pending |
-| INFRA-03 | Phase 1 | Pending |
-| INFRA-04 | Phase 1 | Pending |
-| INFRA-05 | Phase 1 | Pending |
-| INFRA-06 | Phase 1 | Pending |
-| CONV-01 | Phase 1 | Pending |
-| CONV-02 | Phase 1 | Pending |
-| CONV-03 | Phase 1 | Pending |
-| CONV-04 | Phase 1 | Pending |
-| CONV-05 | Phase 1 | Pending |
-| HERO-01 | Phase 1 | Pending |
-| HERO-02 | Phase 1 | Pending |
+| INFRA-01 | Phase 1 | Complete (Plan 01) |
+| INFRA-02 | Phase 1 | Complete (Plan 01) |
+| INFRA-03 | Phase 1 | Complete (Plan 02) |
+| INFRA-04 | Phase 1 | Complete (Plan 02) |
+| INFRA-05 | Phase 1 | Complete (Plan 02) |
+| INFRA-06 | Phase 1 | Pending (Plan 03) |
+| CONV-01 | Phase 1 | Pending (Plan 03) |
+| CONV-02 | Phase 1 | Pending (Plan 03) |
+| CONV-03 | Phase 1 | Complete (Plan 02) |
+| CONV-04 | Phase 1 | Complete (Plan 02) |
+| CONV-05 | Phase 1 | Complete (Plan 02) |
+| HERO-01 | Phase 1 | Complete (Plan 02) |
+| HERO-02 | Phase 1 | Complete (Plan 02) |
 | HOW-01 | Phase 2 | Pending |
 | FLAV-01 | Phase 2 | Pending |
 | FLAV-02 | Phase 2 | Pending |

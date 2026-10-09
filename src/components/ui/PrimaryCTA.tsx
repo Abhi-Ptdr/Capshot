@@ -8,8 +8,10 @@ import { cn } from '@/lib/cn';
  * Phase 1 Plan 02 — PrimaryCTA (UI-SPEC §Component 3).
  *
  * Reads destination + label + aria + tracking from `@/config/cta`. CI grep
- * will enforce (Plan 03) that no component outside this file reaches for
- * `wa.me` directly — every "Try CAPSHOT" button in the site composes this.
+ * will enforce (Plan 03) that the WhatsApp deep-link lives ONLY inside
+ * `src/config/cta.ts` — every "Try CAPSHOT" button in the site composes
+ * this component, which composes `getCta()`, which is the sole legal
+ * reader of the destination.
  *
  * cva size variants:
  *  - `lg` (default — Hero): 56 px tall, full-width on mobile, min-width 240 ≥sm.
