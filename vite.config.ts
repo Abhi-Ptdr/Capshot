@@ -16,33 +16,32 @@ function spaFallbackWith404(): PluginOption {
   const KNOWN_ROUTES = new Set(['/', '/flavors', '/about', '/contact']);
   return {
     name: 'capshot-spa-fallback-with-404',
-    apply: 'serve',
     configurePreviewServer(server) {
+      // Register BEFORE Vite's built-in static middleware so our 404 handler
+      // runs first for unknown paths. For known routes and static assets we
+      // call next() so Vite's static server handles them normally.
       const distDir = resolve(server.config.root, 'dist');
       const indexHtmlPath = resolve(distDir, 'index.html');
-      return () => {
-        server.middlewares.use((req, res, next) => {
-          const url = req.url?.split('?')[0] ?? '/';
-          // Known client-side route → serve index.html with 200.
-          if (KNOWN_ROUTES.has(url)) {
-            return next();
-          }
-          // Static asset (anything with a file extension) → let Vite serve it.
-          if (extname(url) !== '') {
-            return next();
-          }
-          // Unknown path → serve SPA shell but with HTTP 404 status so
-          // crawlers see the real status code (CONTEXT D-17).
-          if (existsSync(indexHtmlPath)) {
-            const html = readFileSync(indexHtmlPath, 'utf-8');
-            res.statusCode = 404;
-            res.setHeader('Content-Type', 'text/html; charset=utf-8');
-            res.end(html);
-            return;
-          }
+      server.middlewares.use((req, res, next) => {
+        const url = (req.url ?? '/').split('?')[0];
+        // Known client-side route → let Vite's SPA fallback serve index.html.
+        if (KNOWN_ROUTES.has(url)) {
           return next();
-        });
-      };
+        }
+        // Static asset (any path with a file extension) → let Vite serve it.
+        if (extname(url) !== '') {
+          return next();
+        }
+        // Unknown path → serve SPA shell but with HTTP 404 status (CONTEXT D-17).
+        if (existsSync(indexHtmlPath)) {
+          const html = readFileSync(indexHtmlPath, 'utf-8');
+          res.statusCode = 404;
+          res.setHeader('Content-Type', 'text/html; charset=utf-8');
+          res.end(html);
+          return;
+        }
+        return next();
+      });
     },
   };
 }

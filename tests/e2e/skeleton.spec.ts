@@ -62,7 +62,13 @@ test('client-side navigation does not trigger a full-page reload', async ({
     (window as unknown as { __spa_marker__?: number }).__spa_marker__ =
       Date.now();
   });
-  await page.getByTestId('nav-link-flavors').click();
+  // Nav-link stub is sr-only (visually hidden) in Phase 1 — Plan 02 ships the
+  // real <Nav>. Dispatching a synthetic click via the DOM element itself
+  // bypasses pointer-event intercepts while still routing through React
+  // Router's onClick handler, so the SPA navigation path is exercised.
+  await page
+    .getByTestId('nav-link-flavors')
+    .evaluate((el: HTMLElement) => el.click());
   await expect(page.locator('h1')).toHaveText('All 16 flavors coming soon.');
   const stillHasMarker = await page.evaluate(
     () =>
