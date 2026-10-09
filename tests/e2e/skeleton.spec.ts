@@ -30,9 +30,9 @@ test('/ renders exact Hinglish Hero H1 and page title contains CAPSHOT', async (
   );
 });
 
-test('/flavors renders locked coming-soon H1', async ({ page }) => {
+test('/flavors renders Phase 2 catalog H1', async ({ page }) => {
   await page.goto('/flavors');
-  await expect(page.locator('h1')).toHaveText('All 16 flavors coming soon.');
+  await expect(page.locator('h1')).toHaveText('All 16 flavors.');
 });
 
 test('/about renders locked coming-soon H1', async ({ page }) => {
@@ -76,7 +76,7 @@ test('client-side navigation does not trigger a full-page reload', async ({
   await page
     .getByTestId('nav-link-flavors')
     .evaluate((el: HTMLElement) => el.click());
-  await expect(page.locator('h1')).toHaveText('All 16 flavors coming soon.');
+  await expect(page.locator('h1')).toHaveText('All 16 flavors.');
   const stillHasMarker = await page.evaluate(
     () =>
       typeof (window as unknown as { __spa_marker__?: number })
