@@ -69,7 +69,7 @@ Plans:
 Plans:
 **Wave 1**
 
-- [ ] 02-01-PLAN.md — Wave 1 foundation: install @radix-ui/react-dialog, add AnimatePresence re-export, write FlavorCapGraphic + FlavorCard + lightenHex helper (unit-tested), upgrade Nav with Radix Dialog hamburger panel reading WhatsApp href from getCta('nav'), refine flavors.ts descriptions
+- [x] 02-01-PLAN.md — Wave 1 foundation: install @radix-ui/react-dialog, add AnimatePresence re-export, write FlavorCapGraphic + FlavorCard + lightenHex helper (unit-tested), upgrade Nav with Radix Dialog hamburger panel reading WhatsApp href from getCta('nav'), refine flavors.ts descriptions *(automated work complete 2026-10-09; awaiting human-verify checkpoint)*
 
 **Wave 2** *(blocked on Wave 1; 02-02 and 02-03 parallelizable)*
 
