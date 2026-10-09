@@ -15,7 +15,10 @@ import { fileURLToPath, URL } from 'node:url';
 export default defineConfig({
   test: {
     environment: 'jsdom',
-    include: ['tests/unit/**/*.spec.{ts,tsx}'],
+    include: [
+      'tests/unit/**/*.spec.{ts,tsx}',
+      'tests/ci/**/*.spec.{ts,tsx}',
+    ],
     globals: false,
   },
   resolve: {
