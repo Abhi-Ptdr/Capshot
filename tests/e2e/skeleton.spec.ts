@@ -16,11 +16,18 @@ import { resolve } from 'node:path';
  * a hashed assets folder. Test 9 verifies keyboard a11y for the skip-link.
  */
 
-test('/ renders CAPSHOT H1 and page title contains CAPSHOT', async ({ page }) => {
+test('/ renders exact Hinglish Hero H1 and page title contains CAPSHOT', async ({
+  page,
+}) => {
   await page.goto('/');
   await expect(page).toHaveTitle(/CAPSHOT/i);
-  const h1 = page.locator('h1');
-  await expect(h1).toContainText(/CAPSHOT/i);
+  // Plan 02 ships the real <Hero>; the H1 lives inside <main> and reads the
+  // locked CONTEXT D-05 copy. The underlined `BOOM` span is still part of
+  // the H1's textContent, so a normalized comparison is correct.
+  const h1Text = (await page.locator('main h1').first().textContent()) ?? '';
+  expect(h1Text.replace(/\s+/g, ' ').trim()).toBe(
+    'Twist karo. Shake karo. BOOM.',
+  );
 });
 
 test('/flavors renders locked coming-soon H1', async ({ page }) => {

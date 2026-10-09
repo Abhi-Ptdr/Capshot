@@ -42,19 +42,14 @@ export default defineConfig({
   },
   projects: [
     {
+      // Single-project run. Phase 1 Plan 02 adds hero.spec.ts and theme.spec.ts
+      // which both call `test.use({ ...devices['Pixel 7'] })` to override to the
+      // mobile viewport per-suite — so we don't need a separate `mobile-chrome`
+      // project. Keeping a single project means the e2e count stays legible
+      // (22 Playwright tests at Plan 02 close: 9 skeleton + 8 hero + 5 theme).
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        channel: 'chrome',
-        launchOptions: {
-          args: ['--proxy-bypass-list=<-loopback>'],
-        },
-      },
-    },
-    {
-      name: 'mobile-chrome',
-      use: {
-        ...devices['Pixel 7'],
         channel: 'chrome',
         launchOptions: {
           args: ['--proxy-bypass-list=<-loopback>'],
