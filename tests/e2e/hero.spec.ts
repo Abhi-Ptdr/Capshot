@@ -50,6 +50,10 @@ test.describe('Hero (HERO-01, HERO-02, CONV-03) @ 360×640', () => {
     expect(href).toMatch(/^https:\/\/wa\.me\/919203975762/);
   });
 
+  // H5/H6 updated in Plan 02-02 after HomePage.tsx took over the
+  // `<main id="main">` landmark. The outer wrapper on Hero is now a
+  // plain <div>; the inner <section aria-labelledby="hero-title"> is
+  // the viewport-height-sized container that carries min-h-[100dvh].
   test('H5: CTA bottom edge ≤ viewport height (visible above fold at 100dvh)', async ({
     page,
   }) => {
@@ -65,15 +69,29 @@ test.describe('Hero (HERO-01, HERO-02, CONV-03) @ 360×640', () => {
     expect(box!.y + box!.height).toBeLessThanOrEqual(640);
   });
 
-  test('H6: main element min-height ≥ 600 px at 640 viewport (100dvh fallback cascade)', async ({
+  test('H6: hero section min-height ≥ 600 px at 640 viewport (100dvh fallback cascade)', async ({
     page,
   }) => {
     await page.setViewportSize({ width: 360, height: 640 });
     await page.goto('/');
     const minHeightPx = await page.evaluate(() => {
-      const main = document.querySelector('main');
-      if (!main) return 0;
-      return parseFloat(getComputedStyle(main).minHeight);
+      // The Hero's root element — a <div> wrapping an inner
+      // <section aria-labelledby="hero-title"> — carries min-h-[100dvh].
+      // We target the inner section (which is now the Hero landmark since
+      // Plan 02-02 moved <main> up to HomePage.tsx).
+      const section = document.querySelector(
+        'section[aria-labelledby="hero-title"]',
+      );
+      if (!section) return 0;
+      // Walk up to find whichever ancestor carries the min-height.
+      // Hero's wrapper div is the parent of the section.
+      const wrap = section.parentElement ?? section;
+      const sectionMin = parseFloat(getComputedStyle(section).minHeight);
+      const wrapMin = parseFloat(getComputedStyle(wrap).minHeight);
+      return Math.max(
+        Number.isFinite(sectionMin) ? sectionMin : 0,
+        Number.isFinite(wrapMin) ? wrapMin : 0,
+      );
     });
     expect(minHeightPx).toBeGreaterThanOrEqual(600);
   });

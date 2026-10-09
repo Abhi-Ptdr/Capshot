@@ -22,15 +22,18 @@ import { PrimaryCTA } from '@/components/ui/PrimaryCTA';
  * Hinglish headline is CONTEXT D-05 locked. BOOM is wrapped in a span with a
  * brand-rose underline (UI-SPEC §Typography underline treatment). Sub-copy is
  * CONTEXT D-06 locked.
+ *
+ * Phase 2 Plan 02 — The homepage main landmark moved OUT of this
+ * component and UP into HomePage so Hero + HowItWorks + FlavorTeaser
+ * share one landmark (and the skip-link lands on the whole homepage, not
+ * just the Hero). The Hero's root is now a plain div carrying the
+ * min-h-[100dvh] sizing; the inner section with aria-labelledby="hero-title"
+ * is the Hero's semantic landmark and the Playwright H5/H6 target.
  */
 
 export function Hero() {
   return (
-    <main
-      id="main"
-      tabIndex={-1}
-      className="relative min-h-screen min-h-[100dvh]"
-    >
+    <div className="relative min-h-screen min-h-[100dvh]">
       <title>CAPSHOT — Twist karo. Shake karo. BOOM.</title>
       <meta
         name="description"
@@ -145,6 +148,6 @@ export function Hero() {
           </div>
         </Container>
       </section>
-    </main>
+    </div>
   );
 }
