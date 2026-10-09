@@ -50,13 +50,17 @@ export function HowItWorks() {
     <Section className="pt-8 pb-16 sm:pt-12 md:pt-16 lg:pt-20 lg:pb-24" background="bg">
       <Container>
         <div className="grid items-center gap-10 lg:grid-cols-[auto_1fr] lg:gap-14 xl:gap-20">
-          {/* LEFT — looping demo video (constrained width — portrait 9:16) */}
+          {/*
+            LEFT (desktop) / BELOW (mobile) — looping demo video.
+            Mobile order flips via CSS `order` so text + 3 steps read
+            first above the fold on 360-wide; desktop keeps video left.
+          */}
           <m.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-10% 0px' }}
             transition={{ duration: 0.5, ease: [0.2, 0, 0.2, 1] }}
-            className="relative mx-auto w-full max-w-[220px] motion-reduce:!transform-none motion-reduce:!opacity-100 sm:max-w-[240px] lg:mx-0 lg:max-w-[260px] xl:max-w-[280px]"
+            className="relative order-2 mx-auto w-full max-w-[220px] motion-reduce:!transform-none motion-reduce:!opacity-100 sm:max-w-[240px] lg:order-1 lg:mx-0 lg:max-w-[260px] xl:max-w-[280px]"
           >
             {/* Soft brand-rose halo behind the video card */}
             <div
@@ -84,7 +88,7 @@ export function HowItWorks() {
             </div>
           </m.div>
 
-          {/* RIGHT — heading + 3-step bullet list */}
+          {/* RIGHT (desktop) / ABOVE (mobile) — heading + 3-step bullet list */}
           <m.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -94,7 +98,7 @@ export function HowItWorks() {
               delay: 0.1,
               ease: [0.2, 0, 0.2, 1],
             }}
-            className="flex flex-col items-center text-center lg:items-start lg:text-left motion-reduce:!transform-none motion-reduce:!opacity-100"
+            className="order-1 flex flex-col items-center text-center motion-reduce:!transform-none motion-reduce:!opacity-100 lg:order-2 lg:items-start lg:text-left"
           >
             {/* Eyebrow kicker — matches Hero's pill style */}
             <p className="inline-flex items-center gap-2 rounded-full bg-[color:var(--color-brand-rose)]/15 px-3 py-1 text-[11px] font-bold tracking-[0.2em] text-[color:var(--color-brand-mid)] uppercase ring-1 ring-[color:var(--color-brand-rose)]/30 sm:text-xs dark:bg-[color:var(--color-brand-rose)]/25 dark:text-[color:var(--color-fg)] dark:ring-[color:var(--color-brand-rose)]/50">
