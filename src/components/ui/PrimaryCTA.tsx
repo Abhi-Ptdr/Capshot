@@ -1,7 +1,9 @@
+import type { MouseEvent as ReactMouseEvent } from 'react';
 import { cva } from 'class-variance-authority';
 import { ArrowUpRight } from 'lucide-react';
 import { getCta } from '@/config/cta';
 import Button from '@/components/primitives/Button';
+import { trackLead } from '@/lib/tracking';
 import { cn } from '@/lib/cn';
 
 /**
@@ -54,15 +56,36 @@ type PrimaryCTAProps = {
   slot?: 'primary' | 'nav';
   size?: 'lg' | 'md';
   className?: string;
+  onClick?: (e: ReactMouseEvent<HTMLAnchorElement>) => void;
 };
 
 export function PrimaryCTA({
   slot = 'primary',
   size = 'lg',
   className,
+  onClick,
 }: PrimaryCTAProps) {
   const cta = getCta(slot);
   const isExternal = cta.kind === 'whatsapp' || cta.kind === 'shopify';
+
+  // Phase 1 Plan 03 — fire-and-forget Pixel + CAPI Lead event BEFORE the
+  // anchor's default navigation. Must NOT call e.preventDefault(): the
+  // browser handles the WhatsApp handoff via the anchor's target=_blank;
+  // we only want to ride-along a telemetry call. trackLead itself does not
+  // await the fetch (keepalive:true) and swallows every error path so the
+  // CTA's user-visible outcome never depends on tracking succeeding.
+  const handleClick = (e: ReactMouseEvent<HTMLAnchorElement>) => {
+    try {
+      trackLead({
+        event_source_url:
+          typeof window !== 'undefined' ? window.location.href : cta.href,
+      });
+    } catch {
+      /* belt-and-suspenders: trackLead already swallows errors */
+    }
+    if (onClick) onClick(e);
+  };
+
   return (
     <Button
       as="a"
@@ -71,6 +94,7 @@ export function PrimaryCTA({
       rel={isExternal ? 'noopener noreferrer' : undefined}
       aria-label={cta.ariaLabel ?? cta.label}
       data-cta={cta.trackingId}
+      onClick={handleClick}
       className={cn(primaryCtaVariants({ size }), className)}
     >
       {cta.label}

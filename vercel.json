@@ -3,5 +3,10 @@
   "routes": [
     { "handle": "filesystem" },
     { "src": "/.*", "status": 404, "dest": "/index.html" }
-  ]
+  ],
+  "functions": {
+    "api/track-lead.ts": {
+      "runtime": "edge"
+    }
+  }
 }

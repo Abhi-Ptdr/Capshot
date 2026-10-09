@@ -61,6 +61,76 @@
     />
 
     <!--
+      Phase 1 Plan 03 — Meta Pixel base code (CONV-01).
+
+      Vite replaces %VITE_META_PIXEL_ID% with the env var value at build time
+      (per Vite's HTML env substitution). When the env var is unset, Vite
+      leaves the literal placeholder; the guard below detects that case by
+      checking that %VITE_META_PIXEL_ID% does NOT look like a literal
+      placeholder (replace the sentinel substring and compare — if the
+      strings are equal, no substitution happened → do NOT call fbq('init')).
+      In that case the fbq function stub still exists so trackLead's
+      typeof-check branches cleanly, but no PageView fires.
+
+      Server-side CAPI (api/track-lead.ts) picks up the slack when the Pixel
+      is missing OR when the client's cookies are stripped (iOS WKWebView —
+      research/PITFALLS Pitfall 4).
+
+      Threat note (T-03-06): snippet is static IIFE; %VITE_META_PIXEL_ID% is
+      a numeric Pixel ID set in Vercel env (not attacker-controlled). No
+      user input flows into DOM text or attrs; no eval; no innerHTML.
+    -->
+    <script>
+      !(function (f, b, e, v, n, t, s) {
+        if (f.fbq) return;
+        n = f.fbq = function () {
+          n.callMethod
+            ? n.callMethod.apply(n, arguments)
+            : n.queue.push(arguments);
+        };
+        if (!f._fbq) f._fbq = n;
+        n.push = n;
+        n.loaded = !0;
+        n.version = '2.0';
+        n.queue = [];
+        t = b.createElement(e);
+        t.async = !0;
+        t.src = v;
+        s = b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t, s);
+      })(
+        window,
+        document,
+        'script',
+        'https://connect.facebook.net/en_US/fbevents.js',
+      );
+      (function () {
+        var raw = '%VITE_META_PIXEL_ID%';
+        // Guard: if Vite did NOT substitute the placeholder (env var unset),
+        // `raw` will still contain the literal "VITE_META_PIXEL_ID" sentinel.
+        // Compare `raw` against raw.replace(sentinel, '_') — equal means the
+        // sentinel was NOT present → substitution happened → safe to init.
+        if (raw && raw !== raw.replace('VITE_META_PIXEL_ID', '_')) return;
+        if (!raw) return;
+        try {
+          fbq('init', raw);
+          fbq('track', 'PageView');
+        } catch (e) {
+          /* ignore ad-blocker shadow */
+        }
+      })();
+    </script>
+    <noscript>
+      <img
+        height="1"
+        width="1"
+        style="display: none"
+        src="https://www.facebook.com/tr?id=%VITE_META_PIXEL_ID%&ev=PageView&noscript=1"
+        alt=""
+      />
+    </noscript>
+
+    <!--
       Phase 1 hardcoded homepage OG tags. Facebook/Instagram/WhatsApp
       link-preview crawlers do NOT execute JavaScript (unlike Google), so
       the home page's OG must live in the static index.html. Phase 5
