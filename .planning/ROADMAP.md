@@ -148,7 +148,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation + Hero + Conversion Infrastructure | 2/3 | In Progress | - |
+| 1. Foundation + Hero + Conversion Infrastructure | 3/3 | Awaiting human-verify checkpoint | - |
 | 2. How It Works + Flavor Catalog | 0/TBD | Not started | - |
 | 3. Scroll Storytelling Polish | 0/TBD | Not started | - |
 | 4. USP + Variants + Premium Sports + Lighthouse Perf Pass | 0/TBD | Not started | - |

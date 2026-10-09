@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 1 Plan 02 complete — awaiting human-verify checkpoint before Plan 03
-last_updated: "2026-10-09T10:18:46.000Z"
-last_activity: 2026-10-09 -- Phase 01 Plan 02 Hero slice + conversion scaffold complete (16 Vitest + 22 Playwright GREEN)
+stopped_at: Phase 1 Plan 03 automated work complete — awaiting Phase 1 close-out human-verify checkpoint
+last_updated: "2026-10-09T17:50:00.000Z"
+last_activity: 2026-10-09 -- Phase 01 Plan 03 Pixel+CAPI dedup + in-app banner + CI grep gates complete (36 Vitest + 32 Playwright GREEN)
 progress:
   total_phases: 6
   completed_phases: 0
   total_plans: 3
-  completed_plans: 2
-  percent: 11
+  completed_plans: 3
+  percent: 17
 ---
 
 # Project State
@@ -26,28 +26,29 @@ See: .planning/PROJECT.md (updated 2026-10-09)
 ## Current Position
 
 Phase: 1 of 6 (Foundation + Hero + Conversion Infrastructure)
-Plan: 2 of 3 complete in current phase
-Status: Awaiting human-verify checkpoint before Plan 03 (Pixel+CAPI + in-app browser banner + CI greps)
-Last activity: 2026-10-09 -- Phase 01 Plan 02 Hero slice + conversion scaffold complete (16 Vitest + 22 Playwright GREEN)
+Plan: 3 of 3 complete in current phase
+Status: Awaiting Phase 1 close-out human-verify checkpoint (verifications 7–11: Meta Events Manager Lead-event dedup + real-device Android Chrome handoff)
+Last activity: 2026-10-09 -- Phase 01 Plan 03 Pixel+CAPI dedup + in-app banner + CI grep gates complete (36 Vitest + 32 Playwright GREEN)
 
-Progress: [▓▓░░░░░░░░] 11%
+Progress: [▓▓░░░░░░░░] 17%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 2
-- Average duration: ~35 min
-- Total execution time: ~69 min
+- Total plans completed: 3
+- Average duration: ~33 min
+- Total execution time: ~99 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1 (Foundation) | 2 / 3 | ~69 min | ~35 min |
+| 1 (Foundation) | 3 / 3 | ~99 min | ~33 min |
 
 **Recent Trend:**
 
+- 2026-10-09 — Phase 01 Plan 03 Pixel+CAPI dedup + in-app banner + CI grep gates complete (~30 min, 6 commits, 12 files new + 9 modified, 36 Vitest + 32 Playwright GREEN; 20 new unit specs + 10 new e2e specs)
 - 2026-10-09 — Phase 01 Plan 02 Hero slice + conversion scaffold complete (~19 min, 4 commits, 22 files new + 12 modified, 16 Vitest + 22 Playwright GREEN)
 - 2026-10-09 — Phase 01 Plan 01 Walking Skeleton complete (~50 min, 2 commits, 25 files, 9/9 e2e GREEN)
 
@@ -77,6 +78,13 @@ Recent decisions affecting current work:
 - **Plan 02 execution:** Comments must stay grep-safe — Plan 03's CI greps (`wa.me`, `energy drink`, `<ScrollToTop`) don't distinguish code from comments. Project rule: paraphrase bans without using the banned literal phrase
 - **Plan 02 execution:** ThemeProvider initial state reads from `<html>.classList` (synced by inline FOUC script), NOT from matchMedia — re-reading prefers-color-scheme risks a flash
 - **Plan 02 execution:** LazyMotion provider mounted in src/App.tsx between ThemeProvider and BrowserRouter — Phase 3+ can drop `m.*` primitives in without refactoring App.tsx (CONV-05 provider contract closed in Phase 1)
+- **Plan 03 execution (2026-10-09):** Nav switched from `fixed top-0` → `sticky top-0` so the InAppBrowserBanner (also sticky) sits ABOVE Nav in flow — satisfies CONTEXT D-10 "banner pushes hero content down" without a fixed/overlay dance
+- **Plan 03 execution:** InAppBrowserBanner z-index uses inline `style={{ zIndex: 60 }}` NOT Tailwind arbitrary-value `z-[60]` — the JIT scanner is nondeterministic on utilities that appear only in conditionally-rendered components; inline style sidesteps JIT for this one critical property
+- **Plan 03 execution:** Android `intent://` navigation attempt is observable via `window.__capshot_intent_attempted__` written BEFORE the `window.location.href = intent` line in `redirectAndroidToChromeIntent`. Chromium blocks the actual navigation at the renderer level (user-gesture gate); the attribute is the test observable. Real-device Chrome handoff outcome deferred to the Phase 1 close-out human checkpoint
+- **Plan 03 execution:** CAPI edge function returns HTTP 200 on EVERY path (success, Meta error, env-missing). Fire-and-forget client semantics require the fetch promise to resolve, not reject. Response body shape (`{ok:true}` / `{ok:false,status,text}` / `{skipped:true,reason:'env-missing'}`) distinguishes outcomes without surfacing errors through HTTP status
+- **Plan 03 execution:** `META_CAPI_ACCESS_TOKEN` + `META_CAPI_DATASET_ID` are server-side ONLY (NO `VITE_` prefix). CI step `grep -r "META_CAPI_ACCESS_TOKEN" dist/` is an invariant check in `.github/workflows/ci.yml` and ran green locally
+- **Plan 03 execution:** GitHub Actions pins `node-version: "22.22"` exactly (NOT `>=22.22` or `lts/*`) per CLAUDE.md Version Compatibility table — float pins invite silent drift on a stack with a hard Router v8 floor
+- **Plan 03 execution:** CI grep script (`scripts/ci-grep-forbidden-strings.mjs`) is pure-Node (no `grep` shell-out) for CI-runner portability across GNU/BSD/busybox. `wa.me` allowlisted ONLY in `src/config/cta.ts`; `/energy\s+drink/i` has NO allowlist
 
 ### Pending Todos
 
@@ -106,6 +114,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-09T10:18:46.000Z
-Stopped at: Phase 1 Plan 02 complete — awaiting human-verify checkpoint before Plan 03
-Resume file: .planning/phases/01-foundation-hero-conversion-infrastructure/01-02-SUMMARY.md
+Last session: 2026-10-09T17:50:00.000Z
+Stopped at: Phase 1 Plan 03 automated work complete — awaiting Phase 1 close-out human-verify checkpoint (verifications 7–11 require Meta credentials + physical Android device)
+Resume file: .planning/phases/01-foundation-hero-conversion-infrastructure/01-03-SUMMARY.md

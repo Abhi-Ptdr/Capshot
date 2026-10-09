@@ -15,12 +15,12 @@
 - [x] **INFRA-03**: Developer can change the primary CTA destination for the entire site by editing one file (`src/config/cta.ts`) — no component modifications required
 - [x] **INFRA-04**: Developer can read all 16 flavors from `src/data/flavors.ts` typed to a Shopify-aligned schema (handle, title, description, images, range, accentHex, dosage, nullable priceInr/shopifyProductId/available)
 - [x] **INFRA-05**: Developer can toggle Phase 6 commerce features via boolean flags in `src/config/features.ts` without changing component code
-- [ ] **INFRA-06**: CI pipeline fails any commit that introduces `wa.me` outside `src/config/cta.ts` or the string "energy drink" anywhere in `src/`
+- [x] **INFRA-06**: CI pipeline fails any commit that introduces `wa.me` outside `src/config/cta.ts` or the string "energy drink" anywhere in `src/`
 
 ### Conversion Infrastructure (Phase 1 non-negotiables)
 
-- [ ] **CONV-01**: Site fires a `Lead` event via Meta Pixel (client-side) AND Conversions API (server-side edge function) with a shared `event_id` whenever a visitor clicks a primary waitlist CTA
-- [ ] **CONV-02**: Visitors arriving inside the Instagram or Facebook in-app WKWebView see a sticky, dismissible banner recommending they open the site in Safari (iOS) or auto-redirecting to Chrome via `intent://` (Android)
+- [x] **CONV-01**: Site fires a `Lead` event via Meta Pixel (client-side) AND Conversions API (server-side edge function) with a shared `event_id` whenever a visitor clicks a primary waitlist CTA
+- [x] **CONV-02**: Visitors arriving inside the Instagram or Facebook in-app WKWebView see a sticky, dismissible banner recommending they open the site in Safari (iOS) or auto-redirecting to Chrome via `intent://` (Android)
 - [x] **CONV-03**: Hero section uses `100dvh` with `100vh` fallback so the primary CTA remains visible on iPhones with dynamic Safari toolbars
 - [x] **CONV-04**: Dark mode preference is applied before React mounts via an inline blocking `<script>` in `index.html`, preventing cream-to-dark flash on cold-cache loads
 - [x] **CONV-05**: Motion animations use `LazyMotion` + `m.*` primitives (never `motion.div`) so the entry bundle stays under 10 KB gzip for Motion
@@ -135,9 +135,9 @@
 | INFRA-03 | Phase 1 | Complete (Plan 02) |
 | INFRA-04 | Phase 1 | Complete (Plan 02) |
 | INFRA-05 | Phase 1 | Complete (Plan 02) |
-| INFRA-06 | Phase 1 | Pending (Plan 03) |
-| CONV-01 | Phase 1 | Pending (Plan 03) |
-| CONV-02 | Phase 1 | Pending (Plan 03) |
+| INFRA-06 | Phase 1 | Complete (Plan 03) |
+| CONV-01 | Phase 1 | Complete (Plan 03) |
+| CONV-02 | Phase 1 | Complete (Plan 03) |
 | CONV-03 | Phase 1 | Complete (Plan 02) |
 | CONV-04 | Phase 1 | Complete (Plan 02) |
 | CONV-05 | Phase 1 | Complete (Plan 02) |
