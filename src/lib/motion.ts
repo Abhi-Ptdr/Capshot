@@ -15,4 +15,4 @@
  * refactoring App.tsx (CONV-05 provider contract closed in Phase 1).
  */
 
-export { LazyMotion, m, domAnimation } from 'motion/react';
+export { LazyMotion, m, domAnimation, AnimatePresence } from 'motion/react';

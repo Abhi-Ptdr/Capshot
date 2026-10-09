@@ -81,3 +81,66 @@ describe('flavors — Shopify-shaped stub (INFRA-04)', () => {
     }
   });
 });
+
+/**
+ * Phase 2 Plan 01 — D2-14 invariants (RESEARCH §11.8).
+ *
+ * FL1: every description still fits the card's 1-line budget (<=140 chars)
+ *      after any Wave 1 refinement.
+ * FL2: zero stimulant-beverage phrase anywhere in flavor descriptions
+ *      (Premium Sports uses "caffeinated beverage" instead; the forbidden
+ *      phrase is excluded by case-insensitive regex /energy\s+drink/i).
+ * FL3: handle / title / range / accentHex are byte-identical to the
+ *      pre-Phase-2 Phase 1 shipped state — these fields are LOCKED. Any
+ *      accidental edit to a locked field is caught here, not at runtime.
+ */
+
+const LOCKED_FLAVOR_IDENTITY: ReadonlyArray<{
+  handle: string;
+  title: string;
+  range: 'fruity-blast' | 'desi-cool' | 'premium-sports';
+  accentHex: string;
+}> = [
+  // Fruity Blast (9)
+  { handle: 'orange', title: 'Orange', range: 'fruity-blast', accentHex: '#F57C1F' },
+  { handle: 'mixed-berry', title: 'Mixed Berry', range: 'fruity-blast', accentHex: '#6E3482' },
+  { handle: 'mango', title: 'Mango', range: 'fruity-blast', accentHex: '#F9B233' },
+  { handle: 'pineapple', title: 'Pineapple', range: 'fruity-blast', accentHex: '#F7CA18' },
+  { handle: 'watermelon', title: 'Watermelon', range: 'fruity-blast', accentHex: '#E63950' },
+  { handle: 'guava', title: 'Guava', range: 'fruity-blast', accentHex: '#F297B1' },
+  { handle: 'pomegranate', title: 'Pomegranate', range: 'fruity-blast', accentHex: '#B4213B' },
+  { handle: 'strawberry', title: 'Strawberry', range: 'fruity-blast', accentHex: '#E85A75' },
+  { handle: 'apple', title: 'Apple', range: 'fruity-blast', accentHex: '#8FC13E' },
+  // Desi & Cool (3)
+  { handle: 'citrus-mint', title: 'Citrus Mint', range: 'desi-cool', accentHex: '#7ED6A5' },
+  { handle: 'jaljeera', title: 'Jaljeera', range: 'desi-cool', accentHex: '#7A5A36' },
+  { handle: 'ors-electrolyte', title: 'ORS (Electrolyte)', range: 'desi-cool', accentHex: '#4FA3D1' },
+  // Premium Sports (4)
+  { handle: 'japanese-matcha', title: 'Japanese Matcha', range: 'premium-sports', accentHex: '#5B8A3A' },
+  { handle: 'black-pump', title: 'Black Pump', range: 'premium-sports', accentHex: '#1A1A1A' },
+  { handle: 'java-pump', title: 'Java Pump', range: 'premium-sports', accentHex: '#3E2817' },
+  { handle: 'coffee', title: 'Coffee', range: 'premium-sports', accentHex: '#6B4423' },
+];
+
+describe('flavors — D2-14 refinement + locked-field invariants (Phase 2 Plan 01)', () => {
+  it('FL1: every description is <=140 chars', () => {
+    for (const f of flavors) {
+      expect(f.description.length).toBeLessThanOrEqual(140);
+    }
+  });
+
+  it('FL2: no description contains the forbidden stimulant-beverage phrase', () => {
+    const bad = flavors.filter((f) => /energy\s+drink/i.test(f.description));
+    expect(bad).toEqual([]);
+  });
+
+  it('FL3: handle/title/range/accentHex are byte-identical to the Phase 1 locked snapshot', () => {
+    const actual = flavors.map((f) => ({
+      handle: f.handle,
+      title: f.title,
+      range: f.range,
+      accentHex: f.accentHex,
+    }));
+    expect(actual).toEqual(LOCKED_FLAVOR_IDENTITY);
+  });
+});
