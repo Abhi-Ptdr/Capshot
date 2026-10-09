@@ -31,16 +31,22 @@ describe('TrustBadge — evidenceUrl contract (Pitfall #2 / TRUST-02)', () => {
 
   it('throws in production (import.meta.env.PROD) when evidenceUrl is empty', () => {
     vi.stubEnv('MODE', 'production');
-    vi.stubEnv('PROD', 'true');
+    vi.stubEnv('PROD', true);
     expect(() =>
-      render(
-        <TrustBadge
-          // @ts-expect-error — "FSSAI Approved" is intentionally NOT in the union literal;
-          // this line must be a TypeScript error (verified via tsc --noEmit in CI).
-          label={'FSSAI Approved' as unknown as 'FSSAI Licensed'}
-          evidenceUrl=""
-        />,
-      ),
+      render(<TrustBadge label="FSSAI Licensed" evidenceUrl="" />),
     ).toThrow(/evidenceUrl in production/);
+  });
+
+  it('rejects a non-union label at compile time (TypeScript enforcement)', () => {
+    // The `@ts-expect-error` directive on the next line is intentional —
+    // "FSSAI Approved" is NOT in the TrustBadgeProps `label` union, so passing
+    // it should be a type error. We don't actually render; the compile-time
+    // check (via `tsc --noEmit` in CI) is the real assertion. Runtime: trivially
+    // ignored by `expect(true).toBe(true)` since the component path is never hit.
+    const forbidden = () => (
+      // @ts-expect-error "FSSAI Approved" is deprecated FSSAI nomenclature and must be a type error
+      <TrustBadge label="FSSAI Approved" evidenceUrl="https://example.com" />
+    );
+    expect(typeof forbidden).toBe('function');
   });
 });
