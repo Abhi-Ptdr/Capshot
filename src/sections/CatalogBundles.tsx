@@ -78,9 +78,10 @@ export function CatalogBundles() {
           >
             Pick your CAPSHOT.
           </h2>
-          <p className="mx-auto mt-3 max-w-[52ch] text-base text-[color:var(--color-fg-muted)] sm:text-lg">
-            Two steps. Pick a flavor you'll actually drink, then pick a pack
-            that matches how often you'll use it.
+          <p className="mx-auto mt-3 max-w-[60ch] text-base text-[color:var(--color-fg-muted)] sm:text-lg">
+            Two steps. Pick a flavor you'll actually drink — sixteen caps
+            across fruity, desi, and caffeinated — then pick a pack that
+            matches how often you'll use it.
           </p>
         </Container>
       </m.div>
@@ -115,9 +116,6 @@ export function CatalogBundles() {
             Step 1 — Pick your flavor
           </span>
         </div>
-        <p className="mt-3 max-w-[48ch] text-base text-[color:var(--color-fg-muted)] sm:text-lg">
-          Sixteen caps, three ranges. Fruity, desi, caffeinated.
-        </p>
       </Container>
 
       <FlavorTeaser />
