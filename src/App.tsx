@@ -3,6 +3,7 @@ import { ThemeProvider } from '@/theme/ThemeProvider';
 import { LazyMotion } from '@/lib/motion';
 import { InAppBrowserBanner } from '@/components/ui/InAppBrowserBanner';
 import { Nav } from '@/sections/Nav';
+import { Footer } from '@/sections/Footer';
 import HomePage from '@/pages/HomePage';
 import FlavorsPage from '@/pages/FlavorsPage';
 import AboutPage from '@/pages/AboutPage';
@@ -69,6 +70,7 @@ export default function App() {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
+          <Footer />
         </BrowserRouter>
       </LazyMotion>
     </ThemeProvider>

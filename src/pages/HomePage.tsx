@@ -21,8 +21,10 @@ import { TrustBadges } from '@/sections/TrustBadges';
  *
  * Phase 3.1 Plan 04 — TrustBadges joins as the LAST section inside <main>
  * (D3.1-09). Final composition: Hero -> HowItWorks -> UspComparison ->
- * CatalogBundles -> TrustBadges. Phase 5 will insert a Footer as a sibling
- * AFTER </main> without touching the TrustBadges section.
+ * CatalogBundles -> TrustBadges. Footer is mounted site-wide in App.tsx
+ * (after <Routes>) so it appears below <main> on every route — see
+ * src/sections/Footer.tsx. HomePage itself only owns the <main> landmark
+ * and its 5 sections.
  *
  * No scroll-reset helper component — the homepage is a single-direction
  * scroll from top to bottom; future phases can introduce multi-section
