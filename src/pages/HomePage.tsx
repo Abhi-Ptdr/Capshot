@@ -1,5 +1,6 @@
 import { Hero } from '@/sections/Hero';
 import { HowItWorks } from '@/sections/HowItWorks/HowItWorks';
+import { UspComparison } from '@/sections/UspComparison';
 import { FlavorTeaser } from '@/sections/FlavorTeaser';
 
 /**
@@ -21,6 +22,7 @@ export default function HomePage() {
     <main id="main" tabIndex={-1}>
       <Hero />
       <HowItWorks />
+      <UspComparison />
       <FlavorTeaser />
     </main>
   );
