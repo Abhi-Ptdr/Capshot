@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import Container from '@/components/primitives/Container';
 import Section from '@/components/primitives/Section';
+import { m } from '@/lib/motion';
 import { flavors } from '@/data/flavors';
 import { FlavorCard } from '@/components/ui/FlavorCard';
 import type { Flavor } from '@/data/types';
@@ -37,6 +38,25 @@ import type { Flavor } from '@/data/types';
  * the Phase 1 CI grep gate (`npm run grep:ci`) catches regressions.
  *
  * Reuses `<FlavorCard>` from Wave 1 — no teaser-only fork (RESEARCH §9).
+ *
+ * Phase 3 Plan 03 Task 1 — Section-level entrance (D3-11).
+ * The two Containers (heading + scroller) are wrapped in a single
+ * `<m.section>` with `whileInView` fade+slide (opacity 0 → 1 + y 32 → 0,
+ * 0.6s, ease [0.2, 0, 0.2, 1], once, margin -10% 0px). Individual cards
+ * do NOT stagger — section-level entrance only (D3-11 locked).
+ *
+ * The motion wrapper sits INSIDE the semantic `<Section>` (not around
+ * it) so Section's `pt-*` layout classes stay on the outer layout
+ * element and the `<m.section>` is purely a motion wrapper. The
+ * horizontal scroll-snap region is OUTSIDE/below any transform parent
+ * only in render terms — the touch physics attach to `scrollerRef`
+ * which never gets a motion transform applied to it, so native
+ * swipe/snap are byte-identical to Phase 2 (D2-10 preserved).
+ *
+ * Tailwind `motion-reduce:!transform-none motion-reduce:!opacity-100`
+ * on the `<m.section>` collapses the entrance to final-state
+ * immediately for reduced-motion users (D3-16; same pattern as the
+ * HowItWorks per-step `<m.li>`).
  */
 
 const TEASER_HANDLES = [
@@ -94,21 +114,28 @@ export function FlavorTeaser() {
 
   return (
     <Section className="pt-8 sm:pt-12 md:pt-16" background="bg">
-      <Container>
-        <h2 className="text-[28px] font-bold tracking-tight sm:text-[36px]">
-          Pick your flavor.
-        </h2>
-        <p className="mt-3 max-w-[48ch] text-base text-[color:var(--color-fg-muted)] sm:text-lg">
-          Sixteen caps, three ranges. Fruity, desi, caffeinated.
-        </p>
-      </Container>
+      <m.section
+        initial={{ opacity: 0, y: 32 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-10% 0px' }}
+        transition={{ duration: 0.6, ease: [0.2, 0, 0.2, 1] }}
+        className="motion-reduce:!transform-none motion-reduce:!opacity-100"
+      >
+        <Container>
+          <h2 className="text-[28px] font-bold tracking-tight sm:text-[36px]">
+            Pick your flavor.
+          </h2>
+          <p className="mt-3 max-w-[48ch] text-base text-[color:var(--color-fg-muted)] sm:text-lg">
+            Sixteen caps, three ranges. Fruity, desi, caffeinated.
+          </p>
+        </Container>
 
-      {/*
-        Scroll region contained inside the SAME Container as the heading
-        so left/right gutters align exactly. Arrow buttons sit in the
-        padding gutter on desktop.
-      */}
-      <Container className="relative mt-6">
+        {/*
+          Scroll region contained inside the SAME Container as the heading
+          so left/right gutters align exactly. Arrow buttons sit in the
+          padding gutter on desktop.
+        */}
+        <Container className="relative mt-6">
         <div
           ref={scrollerRef}
           role="region"
@@ -165,7 +192,8 @@ export function FlavorTeaser() {
         >
           <ChevronRight size={20} strokeWidth={2.25} aria-hidden="true" />
         </button>
-      </Container>
+        </Container>
+      </m.section>
     </Section>
   );
 }

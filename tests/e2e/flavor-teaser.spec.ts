@@ -118,4 +118,48 @@ test.describe('FlavorTeaser (FLAV-03) @ 360×800', () => {
     expect(second).toEqual(first);
     expect(second).toEqual([...EXPECTED_HANDLES]);
   });
+
+  // Phase 3 Plan 03 Task 1 — Section-level motion wrapper (D3-11).
+  // The <m.section> that wraps the heading + scroller Containers emits
+  // the Tailwind motion-reduce utility classes directly on itself so
+  // reduced-motion users collapse to final state immediately.
+  test('FT-P3-1: FlavorTeaser is wrapped in a motion <section> with motion-reduce fallback (Phase 3)', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    await page
+      .getByRole('region', { name: 'Flavor teaser' })
+      .scrollIntoViewIfNeeded();
+    // The <m.section> carries the `motion-reduce:!transform-none` utility
+    // class, which Tailwind escapes to `motion-reduce:\!transform-none` in
+    // the selector. Use a class-containing selector to find the wrapper.
+    const motionWrapperExists = await page
+      .locator('section.motion-reduce\\:\\!transform-none')
+      .count();
+    expect(motionWrapperExists).toBeGreaterThanOrEqual(1);
+  });
+});
+
+test.describe('FlavorTeaser reduced-motion (Phase 3)', () => {
+  // Device override is at the file-level `test.use(...devices['Pixel 7'])`
+  // at the top of this file; reducedMotion is a per-test fixture that is
+  // safe to combine inside a describe group (unlike `defaultBrowserType`).
+  test.use({ reducedMotion: 'reduce' });
+
+  test('FT-P3-2: section renders at final-state opacity 1 when reducedMotion = reduce', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const region = page.getByRole('region', { name: 'Flavor teaser' });
+    await region.scrollIntoViewIfNeeded();
+    await expect(region).toBeVisible();
+    // The m.section wrapper's computed opacity should be 1 (final state)
+    // when reduced-motion is on — Tailwind motion-reduce:!opacity-100
+    // overrides the Motion-emitted inline opacity.
+    const wrapperOpacity = await page
+      .locator('section.motion-reduce\\:\\!transform-none')
+      .first()
+      .evaluate((el) => getComputedStyle(el).opacity);
+    expect(wrapperOpacity).toBe('1');
+  });
 });
