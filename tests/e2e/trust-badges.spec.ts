@@ -87,7 +87,7 @@ test.describe('TrustBadges (TRUST-01, TRUST-02) @ 360×800', () => {
     await expect(ul).toBeVisible();
   });
 
-  test('TB5: strip wraps to 2x2 on narrow mobile (360x640) — D3.1-10', async ({
+  test('TB5: strip wraps to STRICT 2x2 on narrow mobile (360x640) — D3.1-10', async ({
     page,
   }) => {
     await page.setViewportSize({ width: 360, height: 640 });
@@ -95,14 +95,17 @@ test.describe('TrustBadges (TRUST-01, TRUST-02) @ 360×800', () => {
     const items = page.locator('ul[aria-label="Trust indicators"] > li');
     await items.first().scrollIntoViewIfNeeded();
     await expect(items).toHaveCount(4);
-    const first = await items.nth(0).boundingBox();
-    const third = await items.nth(2).boundingBox();
-    expect(first).toBeTruthy();
-    expect(third).toBeTruthy();
-    // If the strip is on one row, the 3rd item has the same `y` as the
-    // 1st. If it wrapped, the 3rd item sits on a new row — its y will be
-    // greater than the 1st item's y + half of its height.
-    expect(third!.y).toBeGreaterThan(first!.y + first!.height * 0.5);
+    // WR-05: assert the EXPLICIT 2x2 layout contract — items 0+1 on row 1,
+    // items 2+3 on row 2, row 2 strictly below row 1. The previous assertion
+    // only checked "3rd item below 1st" which trivially passes for degenerate
+    // 1+3 or 1+1+1+1 layouts.
+    const positions = await Promise.all(
+      [0, 1, 2, 3].map((i) => items.nth(i).boundingBox()),
+    );
+    for (const pos of positions) expect(pos).toBeTruthy();
+    expect(positions[0]!.y).toBe(positions[1]!.y); // row 1 shared y
+    expect(positions[2]!.y).toBe(positions[3]!.y); // row 2 shared y
+    expect(positions[2]!.y).toBeGreaterThan(positions[0]!.y); // row 2 below row 1
   });
 
   test('TB6: TrustBadges motion wrapper carries motion-reduce fallback utility (D3.1-11)', async ({
