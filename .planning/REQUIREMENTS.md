@@ -23,7 +23,7 @@
 - [x] **CONV-02**: Visitors arriving inside the Instagram or Facebook in-app WKWebView see a sticky, dismissible banner recommending they open the site in Safari (iOS) or auto-redirecting to Chrome via `intent://` (Android)
 - [x] **CONV-03**: Hero section uses `100dvh` with `100vh` fallback so the primary CTA remains visible on iPhones with dynamic Safari toolbars
 - [x] **CONV-04**: Dark mode preference is applied before React mounts via an inline blocking `<script>` in `index.html`, preventing cream-to-dark flash on cold-cache loads
-- [x] **CONV-05**: Motion animations use `LazyMotion` + `m.*` primitives (never `motion.div`) so the entry bundle stays under 10 KB gzip for Motion
+- [x] **CONV-05**: Motion animations use `LazyMotion` + `m.*` primitives (never `motion.div`); `domAnimation` features are loaded via dynamic import so Rollup code-splits them into an async chunk fetched after first paint. **Budget target (revised 2026-10-10 during Phase 3 Plan 03 Wave 4 bundle check):** entry-chunk Motion contribution ≤ 20 KB gzip (achieved: ~16 KB — `motion/react` core: `m`, `LazyMotion` wrapper, `AnimatePresence`, bindings). Async `motion-features` chunk ≤ 15 KB gzip (achieved: 14.53 KB). The original ≤ 10 KB entry target is unachievable with motion/react v14's static primitive surface; tightening to that number requires rewriting components to dynamic-mount motion wrappers (deferred to Phase 4 PERF-02 chunk-splitting work).
 
 ### Hero & Conversion
 

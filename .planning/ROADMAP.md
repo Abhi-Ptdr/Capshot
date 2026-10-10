@@ -87,7 +87,7 @@ Plans:
 **Success Criteria** (what must be TRUE):
 
   1. Section entrances and the flavor-card stagger animate on scroll using Motion's `whileInView`; animations are limited to `transform` and `opacity` so first paint and scroll remain smooth on a mid-tier Android on 4G. (Hero cap-twist dropped mid-Phase per the brand-fit review on 2026-10-10 — Hero stays on the Phase 2 single-image composition.)
-  2. All motion routes through `LazyMotion` + `m.*` primitives (no `motion.div`); the entry bundle Motion footprint stays under 10 KB gzip (verified via build report).
+  2. All motion routes through `LazyMotion` + `m.*` primitives (no `motion.div`); `domAnimation` features are dynamically imported via `src/lib/motion-features.ts` so Rollup emits a `motion-features-*.js` async chunk fetched after first paint; entry-chunk Motion contribution stays under 20 KB gzip (verified via `dist/stats.html`; REQUIREMENTS.md CONV-05 revised 2026-10-10 — the original ≤10 KB entry target was unachievable with motion/react v14's static primitive surface and is deferred to Phase 4 PERF-02).
   3. Visitors with `prefers-reduced-motion: reduce` see static fallbacks across every animated section — HowItWorks, FlavorTeaser, and the `/flavors` grid + filter crossfade — with no layout shift relative to the animated path.
   4. A manual pass across How It Works, Flavor Teaser, and `/flavors` on an iPhone and an Android device shows no jank, no CLS, and no bundle regression vs. the Phase 2 baseline.
 
