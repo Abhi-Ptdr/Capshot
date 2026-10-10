@@ -90,3 +90,34 @@ test.describe('Range filter URL sync', () => {
     expect(scrollable).toBe(false);
   });
 });
+
+// Phase 3 Plan 03 Task 2 — AnimatePresence crossfade (D3-13).
+// Proves the AnimatePresence wrapper does NOT break the Phase 2
+// URL-sync contract (RF-E1..RF-E6). AnimatePresence emits no DOM node
+// of its own — it intercepts mount/unmount of its children for the
+// filter-tied `key={active ?? 'all'}` swap. The strongest check is
+// that filter changes still complete cleanly AND the final card count
+// is correct, which demonstrates AnimatePresence did not interfere.
+test.describe('Range filter AnimatePresence crossfade (Phase 3)', () => {
+  test('RF-P3-1: URL sync still works through AnimatePresence (click Fruity Blast → ?range=fruity-blast + grid updates)', async ({
+    page,
+  }) => {
+    await page.goto('/flavors');
+    await page.getByRole('button', { name: 'Fruity Blast' }).click();
+    await expect(page).toHaveURL(/\?range=fruity-blast$/);
+    // Give AnimatePresence time to complete the ~160ms exit + the new
+    // grid's whileInView mount before counting final cards.
+    await page.waitForTimeout(400);
+    await expect(page.locator('[data-flavor]')).toHaveCount(9);
+  });
+
+  test('RF-P3-2: filter changes complete cleanly through AnimatePresence (All → Desi & Cool → All)', async ({
+    page,
+  }) => {
+    await page.goto('/flavors?range=desi-cool');
+    await expect(page.locator('[data-flavor]')).toHaveCount(3);
+    await page.getByRole('button', { name: 'All' }).click();
+    await page.waitForTimeout(400);
+    await expect(page.locator('[data-flavor]')).toHaveCount(16);
+  });
+});

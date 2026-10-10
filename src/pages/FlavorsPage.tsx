@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useSearchParams } from 'react-router';
 import Container from '@/components/primitives/Container';
 import Section from '@/components/primitives/Section';
+import { AnimatePresence } from '@/lib/motion';
 import { RangeFilter } from '@/components/ui/RangeFilter';
 import { FlavorGrid } from '@/sections/FlavorGrid';
 import { flavors } from '@/data/flavors';
@@ -39,6 +40,25 @@ import type { FlavorRange } from '@/data/types';
  *
  * The `<FlavorGrid>` renders OUTSIDE this file's `<Container>` because
  * FlavorGrid already wraps itself in a Container — avoids double-padding.
+ *
+ * Phase 3 Plan 03 Task 2 — AnimatePresence filter crossfade (D3-13).
+ * `<FlavorGrid>` is wrapped in `<AnimatePresence mode="sync">` and
+ * carries `key={active ?? 'all'}` so the whole grid exits + enters as
+ * one unit when the range filter flips. Combined with the per-<m.li>
+ * `exit={{ opacity: 0, transition: { duration: 0.16 } }}` inside
+ * FlavorGrid, the user sees a ~160ms crossfade between the old 16-card
+ * view and the new filtered view (9 / 3 / 4 cards for Fruity Blast /
+ * Desi & Cool / Premium Sports).
+ *
+ * `mode="sync"` is the planner default (D3-13). If manual-pass shows
+ * grid pumping during 16 → 3 transition, flip to `mode="popLayout"`
+ * (NOT `"wait"` — RESEARCH Q4 priority: wait doubles perceived
+ * duration which is bad for a filter users tap repeatedly).
+ *
+ * The AnimatePresence wrapper is PURELY cosmetic — it does not read
+ * or write search params. useSearchParams + VALID_RANGES + active
+ * resolution + visible useMemo are BYTE-IDENTICAL to Phase 2 (FLAV-02
+ * URL-sync contract preserved).
  */
 
 const VALID_RANGES: readonly FlavorRange[] = [
@@ -85,7 +105,9 @@ export default function FlavorsPage() {
               }}
             />
           </Container>
-          <FlavorGrid flavors={visible} />
+          <AnimatePresence mode="sync">
+            <FlavorGrid key={active ?? 'all'} flavors={visible} />
+          </AnimatePresence>
         </Section>
       </main>
     </>
