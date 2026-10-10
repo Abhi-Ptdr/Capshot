@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router';
 import { ThemeProvider } from '@/theme/ThemeProvider';
-import { LazyMotion, domAnimation } from '@/lib/motion';
+import { LazyMotion } from '@/lib/motion';
 import { InAppBrowserBanner } from '@/components/ui/InAppBrowserBanner';
 import { Nav } from '@/sections/Nav';
 import HomePage from '@/pages/HomePage';
@@ -14,7 +14,7 @@ import NotFoundPage from '@/pages/NotFoundPage';
  *
  * Composition order (outermost → innermost):
  *   <ThemeProvider>              — Context for { theme, toggle }
- *     <LazyMotion features={domAnimation}>  — CONV-05 provider contract
+ *     <LazyMotion features={() => import(...)} strict>  — CONV-05 provider contract (async features)
  *       <InAppBrowserBanner />   — Plan 03, CONV-02; sticky-top z-60, flow
  *                                  element so Nav + Hero push DOWN by
  *                                  banner height when visible (CONTEXT D-10)
@@ -44,7 +44,7 @@ import NotFoundPage from '@/pages/NotFoundPage';
 export default function App() {
   return (
     <ThemeProvider>
-      <LazyMotion features={domAnimation}>
+      <LazyMotion features={() => import('@/lib/motion-features').then((mod) => mod.domAnimation)} strict>
         {/*
           Phase 1 Plan 03 — InAppBrowserBanner mounts ABOVE <BrowserRouter>
           so it survives route changes AND sits above Nav (z-60 vs z-50).

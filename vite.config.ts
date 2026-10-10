@@ -83,21 +83,4 @@ export default defineConfig(({ mode }) => ({
   server: {
     port: 5173,
   },
-  // Phase 3 Plan 03 (D3-17 CONV-05 verification) — isolate Motion into its
-  // own vendor chunk so `rollup-plugin-visualizer`'s per-module gzip (which
-  // reports 0 for non-entry modules under Rolldown) resolves to a readable
-  // chunk-level number. The CONV-05 budget check now reads the `motion`
-  // chunk's gzip size directly from dist/stats.html.
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes('node_modules/motion') || id.includes('node_modules/framer-motion') || id.includes('node_modules/motion-dom') || id.includes('node_modules/motion-utils')) {
-            return 'motion';
-          }
-          return undefined;
-        },
-      },
-    },
-  },
 }));
