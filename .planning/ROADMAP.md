@@ -110,7 +110,7 @@ Plans:
   3. Visitor sees a near-footer Trust Badges strip rendered via `<TrustBadge>` components (declared in Phase 1 Plan 02; evidenceUrl requirement in PROD). Four badges: **FSSAI Licensed** (placeholder evidenceUrl + 14-digit number marker until GATE-FSSAI resolves; `import.meta.env.PROD` render-gate from Phase 1 enforced), **Plant-based ingredients** (regulator-safe swap for the blueprint's "Vegan & Non-GMO" per `capshot-brand` — avoids FSSAI vegan-logo approval requirement), **Made in India**, **Secure Checkout** (shown with a "Coming soon with Phase 6 commerce" context note OR rendered hidden until Phase 6 — decision captured in discuss-phase).
   4. All three sections render on 360×640 mobile with no horizontal overflow, honor light/dark + prefers-reduced-motion contracts, and the full Phase 1-3 e2e suite stays GREEN with ≥3 new e2e specs (one per section). The Phase 2 FT1–FT6 + Phase 3 FT-P3-1/FT-P3-2 flavor-teaser specs remain GREEN (relocated DOM still satisfies the heading + 8-handle enumeration + "See all" + scroll-snap + motion-reduce assertions).
 
-**Plans:** 4/4 plans complete + 3 gap-closure plans (opened 2026-10-11 after real-device UAT; all Wave 1 — no inter-plan dependencies)
+**Plans:** 5/7 plans executed
 Plans:
 **Wave 1** *(Plans 01 and 02 parallelizable; Plan 01 ships shared primitives, Plan 02 ships Section 3 USP)*
 
@@ -127,7 +127,7 @@ Plans:
 
 **Gap-closure Wave (opened 2026-10-11 after real-device UAT on 2026-10-11; all plans parallelizable — zero file overlap)**
 
-- [ ] 03.1-05-PLAN.md — GAP-01 closure (TrustBadges reads as orphaned chrome): add `<h2>Why trust us.</h2>` heading above the 4-badge `<ul>` + flip `<Section background="bg">` → `<Section background="surface">` so the strip tonally separates from Bundles above; preserve D3.1-07a locked labels + visual-only variant + reduced-motion contract; extend trust-badges.spec.ts in-place with TB7/TB8 (heading + surface tone), preserving TB1-TB6 + TB-RM-1. Restores ROADMAP SC3.
+- [x] 03.1-05-PLAN.md — GAP-01 closure (TrustBadges reads as orphaned chrome): add `<h2>Why trust us.</h2>` heading above the 4-badge `<ul>` + flip `<Section background="bg">` → `<Section background="surface">` so the strip tonally separates from Bundles above; preserve D3.1-07a locked labels + visual-only variant + reduced-motion contract; extend trust-badges.spec.ts in-place with TB7/TB8 (heading + surface tone), preserving TB1-TB6 + TB-RM-1. Restores ROADMAP SC3.
 - [ ] 03.1-06-PLAN.md — GAP-02 closure (CatalogBundles reads as 3 disconnected sub-sections): approach (a) — add explicit numbered step markers "01 / Step 1 — Pick your flavor" above FlavorTeaser and "02 / Step 2 — Pick your pack" above Bundles in CatalogBundles.tsx; remove the inline eyebrow+H3+intro paragraph band inside Bundles.tsx so the parent step marker is the sole Step 2 scaffolding; FlavorTeaser.tsx remains BYTE-IDENTICAL per D3.1-05a (sha256 verified); extend catalog-bundles.spec.ts in-place with CB7/CB8/CB9 (step markers + inner-H3 regression guard), preserving CB1-CB6 + CB-RM-1 + FT1-FT6 + FT-P3-1/FT-P3-2. Restores ROADMAP SC2.
 - [ ] 03.1-07-PLAN.md — GAP-03 + GAP-04 closure (USP table missing first-column header + table too shallow): add `<th scope="col">Feature</th>` to the previously-blank top-left cell (GAP-03); append 2 new rows to ROWS tuple — Taste variety (icon: lucide `Repeat`; bottled: "1 flavor per bottle, locked"; CAPSHOT: "16 flavors, three ranges — swap any time") + Price per drink (icon: lucide `IndianRupee`; bottled: "₹30-₹50 per bottle"; CAPSHOT: "₹24-₹30 per cap*"; row carries `data-pricing-pending="true"`) + asterisk footnote `* CAPSHOT per-cap price range pending client final approval before Phase 6.` matching the Phase 3.1 bundles.ts pricingNote posture (GAP-04); extend usp-comparison.spec.ts in-place with UC3b/UC7/UC8/UC9 + update UC2 to 5-row order; preserve D3.1-02a locked rows + D3.1-11 motion contract + D3.1-12 mobile overflow contract + CI grep gate. Restores ROADMAP SC1.
 
@@ -220,7 +220,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Foundation + Hero + Conversion Infrastructure | 3/3 | Awaiting human-verify checkpoint | - |
 | 2. How It Works + Flavor Catalog | 3/3 | Complete   | 2026-10-09 |
 | 3. Scroll Storytelling Polish | 3/3 | Complete   | 2026-10-10 |
-| 3.1 (INSERTED 2026-10-10). Content & Conversion — USP + Catalog+Bundles + Trust | 4/4 | Complete   | 2026-10-10 |
+| 3.1 (INSERTED 2026-10-10). Content & Conversion — USP + Catalog+Bundles + Trust | 5/7 | In Progress|  |
 | 4. Variants + Premium Sports + Lighthouse Perf Pass | 0/TBD | Not started | - |
 | 5. FAQ + About + Contact + SEO + Accessibility | 0/TBD | Not started | - |
 | 6. Commerce (Shopify + Razorpay + Shiprocket) | 0/TBD | Gated | - |

@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
+status: executing
 stopped_at: Phase 3.1 Plan 02 complete (USP comparison section + e2e spec)
-last_updated: "2026-10-10T15:17:35.572Z"
+last_updated: "2026-10-10T19:12:15.447Z"
 last_activity: 2026-10-10
 progress:
   total_phases: 6
@@ -26,8 +26,8 @@ See: .planning/PROJECT.md (updated 2026-10-09)
 ## Current Position
 
 Phase: 03.1 (content-conversion-usp-bundles-trust) — EXECUTING
-Plan: 4 of 4
-Status: Phase complete — ready for verification
+Plan: 2 of 7
+Status: Ready to execute
 Last activity: 2026-10-10
 
 Progress: [██████████] 100%
@@ -66,6 +66,7 @@ Progress: [██████████] 100%
 | Phase 03.1 P02 | 6 | 2 tasks | 3 files |
 | Phase 03.1 P03 | 6 | 3 tasks | 4 files |
 | Phase 03.1 P04 | 8 | 3 tasks | 3 files |
+| Phase 03.1 P05 | 10 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -135,6 +136,8 @@ Recent decisions affecting current work:
 - [Phase 03.1]: [Phase 03.1 P04]: Trust strip layout uses flex flex-wrap items-center justify-center (NOT grid-cols-4 or hard breakpoints) — 4-badge row wraps to 2x2 on narrow mobile <375px per D3.1-10 purely from flex-wrap; no media queries, no JS, works down to Galaxy Fold external screens 280px
 - [Phase 03.1]: [Phase 03.1 P04]: TB-RM-1 reduced-motion Playwright assertion scopes to the TrustBadges wrapper via .filter({ hasText: 'FSSAI Licensed' }) — the homepage now carries 5 motion-wrapped sections (UspComparison + CatalogBundles heading band + Bundles + FlavorTeaser + TrustBadges); unscoped .first() could pass on an adjacent wrapper's opacity; text filter is the stable scoping handle
 - [Phase 03.1]: [Phase 03.1 P04]: Plan acceptance criterion grep count for the human-check XML tag on PLAN.md expected 1 but actual count is 9 — plan prose self-references its own tag name 8 times across objective/action/verification/success-criteria/output. The single actual XML block at line 289 is the harvest source; contract intact. Verifier harvests block content, not tag-name count
+- [Phase ?]: [Phase 03.1 P05 GAP-01]: TrustBadges section heading 'Why trust us.' + flip to <Section background=surface> closed UAT GAP-01 without touching badge content, variant discipline, or motion/reduced-motion contracts; 94/94 e2e PASS with +2 new (TB7 heading-above-list positional + TB8 surface-token-class regex)
+- [Phase ?]: [Phase 03.1 P05]: GAP-01 fix lives entirely in TrustBadges.tsx + trust-badges.spec.ts — no changes to TrustBadge primitive, Section primitive, HomePage composition, or sibling sections. Phase 5 handoff shape (visual-only → linked arm migration per badge) unchanged
 
 ### Pending Todos
 
@@ -164,6 +167,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-10T15:17:19.631Z
+Last session: 2026-10-10T19:12:06.722Z
 Stopped at: Phase 3.1 Plan 02 complete (USP comparison section + e2e spec)
 Resume file: None
