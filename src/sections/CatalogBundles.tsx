@@ -1,8 +1,15 @@
-// H2 copy choice: "Pick your CAPSHOT." — short imperative, English (not
-// Hinglish) because this is the shared heading over a two-step narrative
-// (flavors → packs); Hinglish is reserved for the per-step eyebrows below.
-// If a visual review wants a Hinglish variant, swap to "Apna CAPSHOT chuno."
-// as a one-line change.
+// H2 copy choice: short English imperative paired with the brand name —
+// a one-line directive heading over the two-step narrative (flavors →
+// packs); Hinglish is reserved for the per-step eyebrows below. If a
+// visual review wants a Hinglish variant, swap to "Apna CAPSHOT chuno."
+// as a one-line change at the H2 literal below.
+//
+// GAP-02 (2026-10-11 UAT, approach (a)): explicit numbered step markers
+// ("01" above the flavor scroller and "02" above the bundles tri-card lane)
+// scaffold the two-step narrative so the sub-sections no longer read as
+// three independent headings. FlavorTeaser remains byte-identical per
+// D3.1-05a; Bundles' internal eyebrow+H3 band is removed in Plan 06 Task 2
+// so the parent step marker is the sole step-2 scaffolding.
 import { m } from '@/lib/motion';
 import Container from '@/components/primitives/Container';
 import { FlavorTeaser } from '@/sections/FlavorTeaser';
@@ -10,12 +17,12 @@ import { Bundles } from '@/sections/Bundles';
 
 /**
  * Phase 3.1 Plan 03 Task 2 — Section 4 wrapper (CATALOG-01 / D3.1-05 /
- * D3.1-05a).
+ * D3.1-05a). Phase 3.1 Plan 06 — adds GAP-02 step markers.
  *
- * Combines the Phase 2 FlavorTeaser (Step 1 — "Pick your flavor.") and
- * the new Phase 3.1 Bundles tri-card lane (Step 2 — "Pick your pack.")
- * under one shared H2 heading band so the visitor reads a single two-step
- * narrative: pick a flavor, then pick a pack.
+ * Combines the Phase 2 FlavorTeaser (the flavor-choice step) and the new
+ * Phase 3.1 Bundles tri-card lane (the pack-choice step) under one shared
+ * H2 heading band so the visitor reads a single two-step narrative: pick
+ * a flavor, then pick a pack.
  *
  * CRITICAL — Pitfall 5 (RESEARCH §Pitfall 5 + PATTERNS §CatalogBundles
  * Gotchas): the root MUST be a plain `<section aria-labelledby>`, NOT the
@@ -33,6 +40,12 @@ import { Bundles } from '@/sections/Bundles';
  * Section-level motion entrance applies ONLY to the heading band
  * (D3.1-11 — section-level entrance only, no stagger). FlavorTeaser
  * carries its own motion wrapper; Bundles carries its own.
+ *
+ * Step markers (GAP-02): the two numbered step scaffolds (01 above the
+ * flavor scroller, 02 above the bundles lane) are plain <div>s (NOT
+ * wrapped in <m.div>) — section-level entrance only (D3.1-11); the
+ * parent heading band's motion wrapper already fades in the whole stack
+ * as the catalog section scrolls into view.
  */
 export function CatalogBundles() {
   return (
@@ -69,7 +82,51 @@ export function CatalogBundles() {
         </Container>
       </m.div>
 
+      {/*
+        GAP-02 Step 1 scaffold — sits above FlavorTeaser as its immediate
+        previous sibling so the two sub-sections read as explicit steps of
+        one flow instead of three stacked bold headings. The circled badge
+        is decorative (aria-hidden); the label text carries the semantic
+        "Step 1" signal for screen readers. No motion wrapper — D3.1-11
+        section-level-entrance-only; the heading band's <m.div> already
+        fades the whole stack in on scroll.
+      */}
+      <Container>
+        <div data-step="1" className="mt-10 flex items-center gap-3 sm:mt-12">
+          <span
+            aria-hidden="true"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[color:var(--color-brand-rose)] text-sm font-bold text-[color:var(--color-brand-cream)]"
+          >
+            01
+          </span>
+          <span className="text-sm font-bold tracking-wider text-[color:var(--color-brand-rose)] uppercase">
+            Step 1 — Pick your flavor
+          </span>
+        </div>
+      </Container>
+
       <FlavorTeaser />
+
+      {/*
+        GAP-02 Step 2 scaffold — sits above Bundles as its immediate previous
+        sibling. Pairs with the Step 1 scaffold above FlavorTeaser so the
+        catalog section reads as a two-step flow (01 → 02) under the shared
+        H2. Plan 06 Task 2 removes Bundles' internal eyebrow+H3 band so this
+        is the sole "Step 2" scaffolding.
+      */}
+      <Container>
+        <div data-step="2" className="mt-10 flex items-center gap-3 sm:mt-12">
+          <span
+            aria-hidden="true"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[color:var(--color-brand-rose)] text-sm font-bold text-[color:var(--color-brand-cream)]"
+          >
+            02
+          </span>
+          <span className="text-sm font-bold tracking-wider text-[color:var(--color-brand-rose)] uppercase">
+            Step 2 — Pick your pack
+          </span>
+        </div>
+      </Container>
 
       <Bundles />
     </section>
