@@ -110,7 +110,7 @@ Plans:
   3. Visitor sees a near-footer Trust Badges strip rendered via `<TrustBadge>` components (declared in Phase 1 Plan 02; evidenceUrl requirement in PROD). Four badges: **FSSAI Licensed** (placeholder evidenceUrl + 14-digit number marker until GATE-FSSAI resolves; `import.meta.env.PROD` render-gate from Phase 1 enforced), **Plant-based ingredients** (regulator-safe swap for the blueprint's "Vegan & Non-GMO" per `capshot-brand` — avoids FSSAI vegan-logo approval requirement), **Made in India**, **Secure Checkout** (shown with a "Coming soon with Phase 6 commerce" context note OR rendered hidden until Phase 6 — decision captured in discuss-phase).
   4. All three sections render on 360×640 mobile with no horizontal overflow, honor light/dark + prefers-reduced-motion contracts, and the full Phase 1-3 e2e suite stays GREEN with ≥3 new e2e specs (one per section). The Phase 2 FT1–FT6 + Phase 3 FT-P3-1/FT-P3-2 flavor-teaser specs remain GREEN (relocated DOM still satisfies the heading + 8-handle enumeration + "See all" + scroll-snap + motion-reduce assertions).
 
-**Plans:** 2/4 plans executed
+**Plans:** 3/4 plans executed
 Plans:
 **Wave 1** *(Plans 01 and 02 parallelizable; Plan 01 ships shared primitives, Plan 02 ships Section 3 USP)*
 
@@ -119,7 +119,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 03.1-03-PLAN.md — Section 4 Catalog + Bundles: new src/sections/CatalogBundles.tsx wrapper (plain <section aria-labelledby> NOT <Section> to avoid double-pad) + new src/sections/Bundles.tsx tri-card lane (reads bundles.ts, routes CTAs through getCta('bundles.*')) + catalog-bundles.spec.ts (CB1-CB6 + CB-RM-1) + HomePage swap (removes standalone FlavorTeaser, adds CatalogBundles). FlavorTeaser.tsx source file BYTE-IDENTICAL per D3.1-05a contract.
+- [x] 03.1-03-PLAN.md — Section 4 Catalog + Bundles: new src/sections/CatalogBundles.tsx wrapper (plain <section aria-labelledby> NOT <Section> to avoid double-pad) + new src/sections/Bundles.tsx tri-card lane (reads bundles.ts, routes CTAs through getCta('bundles.*')) + catalog-bundles.spec.ts (CB1-CB6 + CB-RM-1) + HomePage swap (removes standalone FlavorTeaser, adds CatalogBundles). FlavorTeaser.tsx source file BYTE-IDENTICAL per D3.1-05a contract.
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
@@ -213,7 +213,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Foundation + Hero + Conversion Infrastructure | 3/3 | Awaiting human-verify checkpoint | - |
 | 2. How It Works + Flavor Catalog | 3/3 | Complete   | 2026-10-09 |
 | 3. Scroll Storytelling Polish | 3/3 | Complete   | 2026-10-10 |
-| 3.1 (INSERTED 2026-10-10). Content & Conversion — USP + Catalog+Bundles + Trust | 1/4 | In Progress|  |
+| 3.1 (INSERTED 2026-10-10). Content & Conversion — USP + Catalog+Bundles + Trust | 3/4 | In Progress|  |
 | 4. Variants + Premium Sports + Lighthouse Perf Pass | 0/TBD | Not started | - |
 | 5. FAQ + About + Contact + SEO + Accessibility | 0/TBD | Not started | - |
 | 6. Commerce (Shopify + Razorpay + Shiprocket) | 0/TBD | Gated | - |
