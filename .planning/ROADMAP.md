@@ -110,12 +110,12 @@ Plans:
   3. Visitor sees a near-footer Trust Badges strip rendered via `<TrustBadge>` components (declared in Phase 1 Plan 02; evidenceUrl requirement in PROD). Four badges: **FSSAI Licensed** (placeholder evidenceUrl + 14-digit number marker until GATE-FSSAI resolves; `import.meta.env.PROD` render-gate from Phase 1 enforced), **Plant-based ingredients** (regulator-safe swap for the blueprint's "Vegan & Non-GMO" per `capshot-brand` — avoids FSSAI vegan-logo approval requirement), **Made in India**, **Secure Checkout** (shown with a "Coming soon with Phase 6 commerce" context note OR rendered hidden until Phase 6 — decision captured in discuss-phase).
   4. All three sections render on 360×640 mobile with no horizontal overflow, honor light/dark + prefers-reduced-motion contracts, and the full Phase 1-3 e2e suite stays GREEN with ≥3 new e2e specs (one per section). The Phase 2 FT1–FT6 + Phase 3 FT-P3-1/FT-P3-2 flavor-teaser specs remain GREEN (relocated DOM still satisfies the heading + 8-handle enumeration + "See all" + scroll-snap + motion-reduce assertions).
 
-**Plans:** 1/4 plans executed
+**Plans:** 2/4 plans executed
 Plans:
 **Wave 1** *(Plans 01 and 02 parallelizable; Plan 01 ships shared primitives, Plan 02 ships Section 3 USP)*
 
 - [x] 03.1-01-PLAN.md — Shared infrastructure: TrustBadge discriminated-union variant extension (visual-only arm) + cta.ts bundle slots populated with &tier= attribution + getCta signature extension + src/data/types.ts BundleTier + src/data/bundles.ts (3-item Shopify-aligned tuple, locked prices ₹120/₹349/₹600) + BundleCountBadge SVG primitive + unit test extensions
-- [ ] 03.1-02-PLAN.md — Section 3 USP Comparison: new src/sections/UspComparison.tsx (semantic 3-row x 3-col table with lucide Clock/Leaf/Package icons, "Store-bought bottled drinks" vs "CAPSHOT (SHI-28)") + usp-comparison.spec.ts (UC1-UC6 + UC-RM-1) + HomePage insert
+- [x] 03.1-02-PLAN.md — Section 3 USP Comparison: new src/sections/UspComparison.tsx (semantic 3-row x 2-col table with lucide Clock/Leaf/Package icons, "Store-bought bottled drinks" vs "CAPSHOT (SHI-28)") + usp-comparison.spec.ts (UC1-UC6 + UC-RM-1) + HomePage insert
 
 **Wave 2** *(blocked on Wave 1 completion)*
 

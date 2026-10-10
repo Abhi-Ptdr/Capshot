@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 3.1 context gathered
-last_updated: "2026-10-10T14:42:55.998Z"
+stopped_at: Phase 3.1 Plan 02 complete (USP comparison section + e2e spec)
+last_updated: "2026-10-10T14:51:07Z"
 last_activity: 2026-10-10
 progress:
   total_phases: 6
   completed_phases: 3
   total_plans: 9
-  completed_plans: 9
+  completed_plans: 10
   percent: 50
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-10-09)
 ## Current Position
 
 Phase: 03.1 (content-conversion-usp-bundles-trust) — EXECUTING
-Plan: 2 of 4
+Plan: 3 of 4
 Status: Ready to execute
 Last activity: 2026-10-10
 
@@ -49,6 +49,7 @@ Progress: [██████████] 100%
 
 **Recent Trend:**
 
+- 2026-10-10 — Phase 03.1 Plan 02 Wave 1 (USP Comparison section + e2e spec) complete (~6 min, 2 commits + metadata, 2 files new + 1 modified; +7 Playwright GREEN; USP-01 locked)
 - 2026-10-10 — Phase 02 Plan 03 Wave 2 (/flavors catalog + range filter with URL state sync) complete (~18 min, 2 commits + metadata, 5 files new + 2 modified; +3 Vitest + 11 Playwright GREEN; FLAV-01 + FLAV-02 locked)
 - 2026-10-09 — Phase 02 Plan 01 Wave 1 (FlavorCard + FlavorCapGraphic + lightenHex + HamburgerMenu + Nav upgrade) complete (~8 min, 2 feat commits + metadata, 8 files new + 6 modified; +15 Vitest + 7 Playwright GREEN)
 - 2026-10-09 — Phase 01 Plan 03 Pixel+CAPI dedup + in-app banner + CI grep gates complete (~30 min, 6 commits, 12 files new + 9 modified, 36 Vitest + 32 Playwright GREEN; 20 new unit specs + 10 new e2e specs)
@@ -62,6 +63,7 @@ Progress: [██████████] 100%
 | Phase 03 P02 | 10 | 1 tasks | 2 files |
 | Phase 03 P03 | 90 | 3 tasks | 13 files |
 | Phase 03.1 P01 | 6 | 2 tasks | 8 files |
+| Phase 03.1 P02 | 6 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -120,6 +122,9 @@ Recent decisions affecting current work:
 - [Phase 03.1]: BundleCountBadge SVG uses mandatory hex-fallback var() pattern (fill='var(--cap-base, #9E7676)') — bare var() can resolve to fill=none in some browsers if the custom property hasn't computed by paint time; fallback hex is defense per PATTERNS §Gotchas
 - [Phase 03.1]: TrustBadge iconFor() exhaustive switch intentionally omits default branch — tsc fails loud if TrustBadgeLabel widens without updating iconFor() (adding 'default: ShieldCheck' would silently mask the gap); same pattern as RANGE_LABEL at FlavorCard.tsx:27
 - [Phase 03.1]: TS 7 places JSX-prop errors on the specific prop line (not opening-tag line as TS 5.x did) — @ts-expect-error visual-only+evidenceUrl test collapsed to a single-line JSX call with // prettier-ignore so the directive covers the exact prop
+- [Phase 03.1 P02]: UspComparison h2 copy chose English ("Why CAPSHOT, not a bottled drink.") over Hinglish — capshot-brand SKILL reserves Hinglish for punchy marketing hooks and allows English for longer explanatory headlines; a 3-row comparison intro falls in the explanatory bucket
+- [Phase 03.1 P02]: Playwright test names for UC3/UC4 use descriptive labels ("reads the D3.1-01 locked competitor label") instead of embedding the literal locked strings — keeps `grep -c "<literal>" = 1` strict (per Plan 01 precedent treating literal-value grep counts as code-value counts, not test-name counts). The assertion still carries the literal.
+- [Phase 03.1 P02]: UspComparison uses semantic `<table>` with `<thead>`/`<tbody>`/`<th scope="col">`/`<th scope="row">` (D3.1-02 lock) — the dimension name sits in `<th scope="row">` so screen readers announce "Freshness, Store-bought bottled drinks: ...", not a flat 3-column row. Row-prefix is structural, not a data column.
 
 ### Pending Todos
 
@@ -149,6 +154,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-10T14:40:55.388Z
-Stopped at: Phase 3.1 context gathered
+Last session: 2026-10-10T14:51:07Z
+Stopped at: Phase 3.1 Plan 02 complete (USP comparison section + e2e spec)
 Resume file: None
