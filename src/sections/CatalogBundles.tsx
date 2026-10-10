@@ -43,9 +43,12 @@ import { Bundles } from '@/sections/Bundles';
  *
  * Step markers (GAP-02): the two numbered step scaffolds (01 above the
  * flavor scroller, 02 above the bundles lane) are plain <div>s (NOT
- * wrapped in <m.div>) — section-level entrance only (D3.1-11); the
- * parent heading band's motion wrapper already fades in the whole stack
- * as the catalog section scrolls into view.
+ * wrapped in <m.div>) — section-level entrance only (D3.1-11). The
+ * heading-band <m.div> only wraps the <Container> that holds the H2 +
+ * intro paragraph; the step-marker <div>s are sibling elements OUTSIDE
+ * that wrapper, so they render at final position without an entrance.
+ * FlavorTeaser and Bundles below each carry their own <m.div> wrapper
+ * for the per-sub-section entrance.
  */
 export function CatalogBundles() {
   return (
@@ -88,8 +91,17 @@ export function CatalogBundles() {
         one flow instead of three stacked bold headings. The circled badge
         is decorative (aria-hidden); the label text carries the semantic
         "Step 1" signal for screen readers. No motion wrapper — D3.1-11
-        section-level-entrance-only; the heading band's <m.div> already
-        fades the whole stack in on scroll.
+        section-level-entrance-only. The step markers render at final
+        position without an entrance; FlavorTeaser's and Bundles' own
+        motion wrappers below cover the per-sub-section entrance.
+
+        WR-01 (iteration 3 fix): step-label text uses --color-fg (not
+        --color-brand-rose). In dark mode brand-rose (#9E7676) on bg
+        (#594545) is ~2.28:1, below the WCAG AA 3:1 large-text floor.
+        --color-fg resolves to brand-deep in light and brand-cream in
+        dark (see src/index.css lines 19 + 65), passing AA in both
+        modes. The brand-rose accent is still carried visually by the
+        pill next to the label.
       */}
       <Container>
         <div data-step="1" className="mt-10 flex items-center gap-3 sm:mt-12">
@@ -99,7 +111,7 @@ export function CatalogBundles() {
           >
             01
           </span>
-          <span className="text-sm font-bold tracking-wider text-[color:var(--color-brand-rose)] uppercase">
+          <span className="text-sm font-bold tracking-wider text-[color:var(--color-fg)] uppercase">
             Step 1 — Pick your flavor
           </span>
         </div>
@@ -113,6 +125,10 @@ export function CatalogBundles() {
         catalog section reads as a two-step flow (01 → 02) under the shared
         H2. Plan 06 Task 2 removes Bundles' internal eyebrow+H3 band so this
         is the sole "Step 2" scaffolding.
+
+        WR-01 (iteration 3 fix): step-label text uses --color-fg for AA
+        compliance in both light and dark modes. See the Step 1 scaffold
+        comment above for the full rationale.
       */}
       <Container>
         <div data-step="2" className="mt-10 flex items-center gap-3 sm:mt-12">
@@ -122,7 +138,7 @@ export function CatalogBundles() {
           >
             02
           </span>
-          <span className="text-sm font-bold tracking-wider text-[color:var(--color-brand-rose)] uppercase">
+          <span className="text-sm font-bold tracking-wider text-[color:var(--color-fg)] uppercase">
             Step 2 — Pick your pack
           </span>
         </div>
