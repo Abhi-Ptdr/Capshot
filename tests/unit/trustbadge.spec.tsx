@@ -27,7 +27,7 @@ afterEach(() => {
 describe('TrustBadge — evidenceUrl contract (Pitfall #2 / TRUST-02)', () => {
   it('renders a visible data-pending-fssai banner in dev when evidenceUrl is empty', () => {
     const { container } = render(
-      <TrustBadge label="FSSAI Licensed" evidenceUrl="" />,
+      <TrustBadge variant="linked" label="FSSAI Licensed" evidenceUrl="" />,
     );
     const banner = container.querySelector('[data-pending-fssai]');
     expect(banner).not.toBeNull();
@@ -37,7 +37,9 @@ describe('TrustBadge — evidenceUrl contract (Pitfall #2 / TRUST-02)', () => {
     vi.stubEnv('MODE', 'production');
     vi.stubEnv('PROD', true);
     expect(() =>
-      render(<TrustBadge label="FSSAI Licensed" evidenceUrl="" />),
+      render(
+        <TrustBadge variant="linked" label="FSSAI Licensed" evidenceUrl="" />,
+      ),
     ).toThrow(/evidenceUrl in production/);
   });
 
@@ -49,7 +51,15 @@ describe('TrustBadge — evidenceUrl contract (Pitfall #2 / TRUST-02)', () => {
     // ignored by `expect(true).toBe(true)` since the component path is never hit.
     const forbidden = () => (
       // @ts-expect-error "FSSAI Approved" is deprecated FSSAI nomenclature and must be a type error
-      <TrustBadge label="FSSAI Approved" evidenceUrl="https://example.com" />
+      <TrustBadge variant="linked" label="FSSAI Approved" evidenceUrl="https://example.com" />
+    );
+    expect(typeof forbidden).toBe('function');
+  });
+
+  it('rejects a call with no variant at compile time (WR-02 discriminator-required)', () => {
+    const forbidden = () => (
+      // @ts-expect-error variant is REQUIRED on both arms of TrustBadgeProps — WR-02
+      <TrustBadge label="FSSAI Licensed" evidenceUrl="https://example.com" />
     );
     expect(typeof forbidden).toBe('function');
   });

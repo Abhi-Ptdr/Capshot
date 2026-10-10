@@ -40,9 +40,15 @@ export type TrustBadgeLabel =
   | 'Made in India'
   | 'Secure Checkout';
 
+// WR-02: `variant` is REQUIRED on both arms of the discriminated union so
+// the discriminator is unambiguous and switch-exhaustiveness is trivial.
+// A caller omitting `variant` now gets a clear "variant is missing" TS
+// error instead of a confusing "evidenceUrl is missing on the linked arm"
+// cascade. Legacy call sites (`<TrustBadge label="..." evidenceUrl="..." />`
+// without `variant`) must add `variant="linked"` explicitly.
 export type TrustBadgeProps =
   | {
-      variant?: 'linked';
+      variant: 'linked';
       label: TrustBadgeLabel;
       value?: string;
       evidenceUrl: string;
