@@ -160,7 +160,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Foundation + Hero + Conversion Infrastructure | 3/3 | Awaiting human-verify checkpoint | - |
 | 2. How It Works + Flavor Catalog | 3/3 | Complete   | 2026-10-09 |
-| 3. Scroll Storytelling Polish | 1/3 | In Progress|  |
+| 3. Scroll Storytelling Polish | 2/3 | In Progress|  |
 | 4. USP + Variants + Premium Sports + Lighthouse Perf Pass | 0/TBD | Not started | - |
 | 5. Trust + FAQ + About + Contact + SEO + Accessibility | 0/TBD | Not started | - |
 | 6. Commerce (Shopify + Razorpay + Shiprocket) | 0/TBD | Gated | - |

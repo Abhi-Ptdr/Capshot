@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 3 planned (3 plans) — ready to execute
-last_updated: "2026-10-10T11:37:56.620Z"
+stopped_at: Phase 03 Plan 02 complete — ready for Plan 03-03 (Wave 3)
+last_updated: "2026-10-10T11:52:46.085Z"
 last_activity: 2026-10-10
 progress:
   total_phases: 6
   completed_phases: 2
   total_plans: 9
-  completed_plans: 7
+  completed_plans: 8
   percent: 33
 ---
 
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-10-09)
 ## Current Position
 
 Phase: 03 (scroll-storytelling-polish) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 Status: Ready to execute
 Last activity: 2026-10-10
 
-Progress: [▓▓▓▓░░░░░░] 33%
+Progress: [█████████░] 89%
 
 ## Performance Metrics
 
@@ -59,6 +59,7 @@ Progress: [▓▓▓▓░░░░░░] 33%
 | Phase 02 P03 | 18 min | - tasks | - files |
 | Phase 02 P02 | 20 | 2 tasks | 10 files |
 | Phase 03 P01 | 15 | 2 tasks | 5 files |
+| Phase 03 P02 | 10 | 1 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -107,6 +108,10 @@ Recent decisions affecting current work:
 - [Phase ?]: Phase 2 Plan 02 execution: FlavorTeaser scroller full-bleed OUTSIDE Container (mobile peek-of-next-card affordance requires bleeding past the 1200px lane); heading block stays inside Container to control paragraph measure
 - [Phase ?]: Phase 2 Plan 02 execution: TWIST/SHAKE/BOOM are inline React SVGs (NOT svgr, NOT <img>) — Phase 3 Motion needs addressable paths for cap-twist + path-morph choreography without an svg-to-img boundary
 - [Phase ?]: Phase 2 Plan 02 execution: Shake illustration's 4 shake-lines rendered OUTSIDE the rotated bottle <g transform='rotate(3 200 260)'> group — shake lines stay axis-aligned with viewBox rather than rotating with the bottle (visual-metaphor correctness)
+- [Phase ?]: Phase 03 Plan 02 execution: HowItWorks right-column m.div wrapper demoted to plain div; 3 <li> upgraded to <m.li> with inline delay (0/0.12/0.24s) + viewport once + motion-reduce fallback. Video card m.div wrapper byte-identical to Phase 2 (D3-09 locked).
+- [Phase ?]: Phase 03 Plan 02 execution: Playwright selector pattern for Motion-wrapper detection = direct-child 'ol > li[style]' (NOT 'section ol li[style]' which would over-match). Direct-child scoping fails loud if a future phase adds a secondary <li> list under the HowItWorks <section>.
+- [Phase ?]: Phase 03 Plan 02 execution: Reduced-motion HW-P3-3 e2e iterates all 3 steps (not just the first) via h3.closest('li') + getComputedStyle — strictly stronger than Phase 2 HW5 which only checked one wrapper. Correctness check justifying the right-column wrapper demotion.
+- [Phase ?]: Phase 03 Plan 02 execution: tests/e2e/banner.spec.ts B3 (Android Facebook intent://) flakes under full-suite execution with page.goto timeout. Verified pre-existing on main via git stash — NOT caused by Phase 3 changes. Deferred to future test-infra pass; this plan's scope boundary excludes it.
 
 ### Pending Todos
 
@@ -136,6 +141,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-10T10:14:19.967Z
-Stopped at: Phase 3 planned (3 plans) — ready to execute
-Resume file: .planning/phases/03-scroll-storytelling-polish/03-01-PLAN.md
+Last session: 2026-10-10T11:52:46.029Z
+Stopped at: Phase 03 Plan 02 complete — ready for Plan 03-03 (Wave 3)
+Resume file: .planning/phases/03-scroll-storytelling-polish/03-03-PLAN.md
