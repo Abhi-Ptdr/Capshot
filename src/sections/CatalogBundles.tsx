@@ -7,9 +7,10 @@
 // GAP-02 (2026-10-11 UAT, approach (a)): explicit numbered step markers
 // ("01" above the flavor scroller and "02" above the bundles tri-card lane)
 // scaffold the two-step narrative so the sub-sections no longer read as
-// three independent headings. FlavorTeaser remains byte-identical per
-// D3.1-05a; Bundles' internal eyebrow+H3 band is removed in Plan 06 Task 2
-// so the parent step marker is the sole step-2 scaffolding.
+// three independent headings. Second pass (same day, user direction):
+// FlavorTeaser's inline H2 + intro paragraph collapsed into the Step 1
+// scaffold here — supersedes D3.1-05a byte-identical lock. Bundles'
+// internal eyebrow+H3 band likewise removed in Plan 06 Task 2.
 import { m } from '@/lib/motion';
 import Container from '@/components/primitives/Container';
 import { FlavorTeaser } from '@/sections/FlavorTeaser';
@@ -32,10 +33,12 @@ import { Bundles } from '@/sections/Bundles';
  * in the `<Section>` primitive would double the `py-8 sm:py-12 md:py-16`
  * padding of EITHER child, breaking vertical rhythm.
  *
- * D3.1-05a locks FlavorTeaser as byte-identical — only its parent in
- * `src/pages/HomePage.tsx` changes. The existing
- * `tests/e2e/flavor-teaser.spec.ts` FT1–FT6 + FT-P3-1/FT-P3-2 contracts
- * MUST all pass unchanged after relocation.
+ * D3.1-05a (SUPERSEDED 2026-10-11): FlavorTeaser was byte-identical for
+ * Plan 03, then updated to collapse its inline H2 + intro paragraph into
+ * the Step 1 scaffold below per user direction. The behavioural contracts
+ * in `tests/e2e/flavor-teaser.spec.ts` (FT1–FT6 + FT-P3-1/FT-P3-2) still
+ * all pass — they target the scroll region, 8 curated cards, "See all"
+ * tile, scroll-snap CSS, and motion wrapper, not the inline heading.
  *
  * Section-level motion entrance applies ONLY to the heading band
  * (D3.1-11 — section-level entrance only, no stagger). FlavorTeaser
@@ -115,6 +118,9 @@ export function CatalogBundles() {
             Step 1 — Pick your flavor
           </span>
         </div>
+        <p className="mt-3 max-w-[48ch] text-base text-[color:var(--color-fg-muted)] sm:text-lg">
+          Sixteen caps, three ranges. Fruity, desi, caffeinated.
+        </p>
       </Container>
 
       <FlavorTeaser />

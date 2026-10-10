@@ -194,11 +194,12 @@ test.describe('CatalogBundles (CATALOG-01) @ 360×800', () => {
     page,
   }) => {
     await page.goto('/');
-    // Scope to the catalog section's <h3>s only — FlavorTeaser's own
-    // "Pick your flavor." uses <h2> and is intentionally preserved per
-    // D3.1-05a byte-identical lock. The regression this guards against is
-    // specifically Bundles.tsx reintroducing its internal <h3> (removed
-    // in Plan 06 Task 2 so the parent step-2 marker is sole scaffolding).
+    // Scope to the catalog section's <h3>s only. FlavorTeaser's inline
+    // H2 "Pick your flavor." was collapsed into the parent Step 1 scaffold
+    // on 2026-10-11 (user direction, supersedes D3.1-05a). The regression
+    // this guards against is specifically Bundles.tsx reintroducing its
+    // internal <h3> (removed in Plan 06 Task 2 so the parent step-2 marker
+    // is sole scaffolding).
     const h3s = await page
       .locator('section[aria-labelledby="catalog-heading"] h3')
       .allTextContents();

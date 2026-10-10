@@ -121,21 +121,16 @@ export function FlavorTeaser() {
         transition={{ duration: 0.6, ease: [0.2, 0, 0.2, 1] }}
         className="motion-reduce:!transform-none motion-reduce:!opacity-100"
       >
-        <Container>
-          <h2 className="text-[28px] font-bold tracking-tight sm:text-[36px]">
-            Pick your flavor.
-          </h2>
-          <p className="mt-3 max-w-[48ch] text-base text-[color:var(--color-fg-muted)] sm:text-lg">
-            Sixteen caps, three ranges. Fruity, desi, caffeinated.
-          </p>
-        </Container>
-
         {/*
-          Scroll region contained inside the SAME Container as the heading
-          so left/right gutters align exactly. Arrow buttons sit in the
-          padding gutter on desktop.
+          Scroll region sits directly inside the motion wrapper; the
+          "Pick your flavor" H2 + "Sixteen caps, three ranges..." intro
+          previously lived here but moved into CatalogBundles' Step 1
+          scaffold on 2026-10-11 per user direction (supersedes D3.1-05a
+          byte-identical lock — FlavorTeaser is now a sub-component of
+          CatalogBundles and no longer renders a standalone heading).
+          Left/right gutters match Hero via this Container's padding.
         */}
-        <Container className="relative mt-6">
+        <Container className="relative">
         <div
           ref={scrollerRef}
           role="region"
