@@ -122,3 +122,39 @@ test('FG5 — card title color !== card background color (visibility sanity)', a
     expect(same, `title/background color collision on ${handle}`).toBe(false);
   }
 });
+
+// Phase 3 Plan 03 Task 2 — Row-by-row m.li stagger (D3-12).
+// Each <li> is now a <m.li> that emits an inline style attribute at
+// rest (Motion sets style for `will-change`/transform tracking even
+// before animation runs). We count direct-child <li>[style] under the
+// grid <ul> — matches the pragmatic selector pattern established in
+// Plan 03-02's HowItWorks tests.
+test('FG-P3-1: each FlavorGrid <li> is wrapped in a motion element (16 of them)', async ({
+  page,
+}) => {
+  await page.goto('/flavors');
+  const liWithStyle = await page
+    .locator('ul[aria-label="Flavor grid"] > li[style]')
+    .count();
+  expect(liWithStyle).toBe(16);
+});
+
+test.describe('FlavorGrid reduced-motion (Phase 3)', () => {
+  test.use({ reducedMotion: 'reduce' });
+
+  test('FG-P3-2: grid renders at final-state opacity 1 when reducedMotion = reduce', async ({
+    page,
+  }) => {
+    await page.goto('/flavors');
+    const grid = page.locator('ul[aria-label="Flavor grid"]');
+    await expect(grid).toBeVisible();
+    // First card <li> should be at final-state opacity 1 under reduced
+    // motion — the Tailwind motion-reduce:!opacity-100 utility wins
+    // over the Motion-emitted inline opacity.
+    const firstCardOpacity = await page
+      .locator('ul[aria-label="Flavor grid"] > li')
+      .first()
+      .evaluate((el) => getComputedStyle(el).opacity);
+    expect(firstCardOpacity).toBe('1');
+  });
+});
