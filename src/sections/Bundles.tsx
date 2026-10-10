@@ -45,6 +45,11 @@ import { lightenHex } from '@/lib/color';
  * above this component, eliminating the three-stacked-headings problem
  * the UAT flagged. The tri-card <ul> + per-card content + CTAs are
  * byte-equivalent to pre-Plan-06.
+ *
+ * Phase 3.1 iteration 3 review-fix (IN-03): also removed the stale
+ * `mt-6` on the <ul> left over from when the stripped band sat above
+ * it inside this Container. Vertical rhythm is now carried entirely
+ * by the parent <Section>'s padding + the step-2 marker's top margin.
  */
 
 // All three bundles share the brand-rose cap per D3.1-04. Compute the
@@ -80,7 +85,16 @@ export function Bundles() {
         className="motion-reduce:!transform-none motion-reduce:!opacity-100"
       >
         <Container>
-          <ul className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
+          {/*
+            IN-03 (iteration 3): mt-6 removed. The <ul> is the sole
+            direct child of <Container> inside <Section> after Plan 06
+            Task 2 stripped the eyebrow+H3+intro band that the mt-6
+            used to space against. The parent <Section>'s existing
+            py-8 sm:py-12 md:py-16 is now the sole top rhythm —
+            stacked on top of the parent step-2 marker's
+            mt-10 sm:mt-12.
+          */}
+          <ul className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
             {bundles.map((bundle) => {
               const cta = getCta(TIER_SLOT[bundle.tier]);
               const isFitness = bundle.badge !== null;
