@@ -13,6 +13,10 @@ import { TrustBadge } from '@/components/ui/TrustBadge';
  * The TS union-literal label is enforced via the type system — attempting
  * `label="FSSAI Approved"` must be a compile error (verified by the
  * `@ts-expect-error` line in the production test below).
+ *
+ * Phase 3.1 Plan 01 extension (D3.1-08): A second describe block below
+ * exercises the new `variant: 'visual-only'` arm. The Phase 1 contract
+ * stays byte-identical on the default (linked) arm.
  */
 
 afterEach(() => {
@@ -48,5 +52,59 @@ describe('TrustBadge — evidenceUrl contract (Pitfall #2 / TRUST-02)', () => {
       <TrustBadge label="FSSAI Approved" evidenceUrl="https://example.com" />
     );
     expect(typeof forbidden).toBe('function');
+  });
+});
+
+describe('TrustBadge — variant: "visual-only" (Phase 3.1 D3.1-08)', () => {
+  it('renders a <span> and NO <a> element when variant="visual-only"', () => {
+    const { container } = render(
+      <TrustBadge variant="visual-only" label="FSSAI Licensed" />,
+    );
+    const anchor = container.querySelector('a');
+    const span = container.querySelector('span[aria-label="FSSAI Licensed"]');
+    expect(anchor).toBeNull();
+    expect(span).not.toBeNull();
+  });
+
+  it('does NOT render a [data-pending-fssai] banner on the visual-only arm', () => {
+    const { container } = render(
+      <TrustBadge variant="visual-only" label="FSSAI Licensed" />,
+    );
+    const banner = container.querySelector('[data-pending-fssai]');
+    expect(banner).toBeNull();
+  });
+
+  it('does NOT throw in production when variant="visual-only" (no evidenceUrl required)', () => {
+    vi.stubEnv('MODE', 'production');
+    vi.stubEnv('PROD', true);
+    expect(() =>
+      render(<TrustBadge variant="visual-only" label="FSSAI Licensed" />),
+    ).not.toThrow();
+  });
+
+  it('rejects variant="visual-only" + evidenceUrl at compile time (discriminated union)', () => {
+    const forbidden = () => (
+      // prettier-ignore
+      // @ts-expect-error visual-only arm must NOT accept evidenceUrl — discriminated union compile gate
+      <TrustBadge variant="visual-only" label="FSSAI Licensed" evidenceUrl="https://example.com" />
+    );
+    expect(typeof forbidden).toBe('function');
+  });
+
+  it('renders all 4 locked labels under variant="visual-only" without widening the union', () => {
+    const labels = [
+      'FSSAI Licensed',
+      'Plant-based ingredients',
+      'Made in India',
+      'Secure Checkout',
+    ] as const;
+    for (const label of labels) {
+      const { container } = render(
+        <TrustBadge variant="visual-only" label={label} />,
+      );
+      const span = container.querySelector(`span[aria-label="${label}"]`);
+      expect(span).not.toBeNull();
+      cleanup();
+    }
   });
 });
