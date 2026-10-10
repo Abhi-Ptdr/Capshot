@@ -23,6 +23,20 @@
  * Supersedes any older label / message / number in
  * `.claude/skills/capshot-brand/SKILL.md` (that skill shows
  * "Join the Waitlist" / "Notify Me on WhatsApp" — not used in Phase 1).
+ *
+ * Phase 3.1 Plan 01 extension (D3.1-06):
+ *  - `ctaConfig.bundles.{trial,fitness,bulk}` populated with WhatsApp URLs
+ *    that ride-along the SAME pre-fill message as `primary` but add a
+ *    `&tier=` attribution query so the WhatsApp Business inbox can bucket
+ *    inbound leads by bundle tier.
+ *  - CRITICAL: the `&tier=` prefix uses `&`, NOT a second `?`. The URL
+ *    already has `?text=...`; a second `?` would make the URL malformed.
+ *  - `getCta` signature extended to accept dotted-string slots
+ *    (`'bundles.trial' | 'bundles.fitness' | 'bundles.bulk'`). On bundle
+ *    slots it SYNTHESIZES a `CtaDestination` object with the phase-invariant
+ *    label `'Join waitlist for early access'` (D3.1-06).
+ *  - Phase 6 flips each bundle href to a Shopify checkout URL. No shape
+ *    change in `CtaSlot` or `getCta`; the component surface is sealed.
  */
 
 export type CtaKind = 'whatsapp' | 'shopify' | 'external';
@@ -34,6 +48,14 @@ export type CtaDestination = {
   ariaLabel?: string;
   trackingId?: string;
 };
+
+export type CtaSlot =
+  | 'primary'
+  | 'secondary'
+  | 'nav'
+  | 'bundles.trial'
+  | 'bundles.fitness'
+  | 'bundles.bulk';
 
 export const ctaConfig = {
   primary: {
@@ -56,9 +78,12 @@ export const ctaConfig = {
     trackingId: 'cta_nav_notify',
   },
   bundles: {
-    trial: '',
-    fitness: '',
-    bulk: '',
+    trial:
+      'https://wa.me/919203975762?text=Hi%21%20Add%20me%20to%20the%20CAPSHOT%20waitlist.&tier=trial',
+    fitness:
+      'https://wa.me/919203975762?text=Hi%21%20Add%20me%20to%20the%20CAPSHOT%20waitlist.&tier=fitness',
+    bulk:
+      'https://wa.me/919203975762?text=Hi%21%20Add%20me%20to%20the%20CAPSHOT%20waitlist.&tier=bulk',
   },
 } satisfies {
   primary: CtaDestination;
@@ -67,5 +92,16 @@ export const ctaConfig = {
   bundles: Record<'trial' | 'fitness' | 'bulk', string>;
 };
 
-export const getCta = (slot: 'primary' | 'secondary' | 'nav'): CtaDestination =>
-  ctaConfig[slot];
+export function getCta(slot: CtaSlot): CtaDestination {
+  if (slot.startsWith('bundles.')) {
+    const key = slot.split('.')[1] as 'trial' | 'fitness' | 'bulk';
+    return {
+      label: 'Join waitlist for early access',
+      href: ctaConfig.bundles[key],
+      kind: 'whatsapp' as const,
+      ariaLabel: `Join the CAPSHOT ${key} pack waitlist on WhatsApp`,
+      trackingId: `cta_bundle_${key}_whatsapp`,
+    };
+  }
+  return ctaConfig[slot as 'primary' | 'secondary' | 'nav'];
+}

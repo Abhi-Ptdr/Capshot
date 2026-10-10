@@ -10,6 +10,16 @@
 
 export type FlavorRange = 'fruity-blast' | 'desi-cool' | 'premium-sports';
 
+/**
+ * Phase 3.1 Plan 01 — Bundle tier handle union (D3.1-03 locks).
+ *
+ * Mirrors the FlavorRange string-literal union convention. Single source of
+ * truth for the three bundle handles. `bulk-energy-pack` is intentionally
+ * NOT a stimulant-beverage phrase (CI grep regex is `/energy\s+drink/i`,
+ * not `/energy/i` — "energy pack" is permitted per RESEARCH §Pitfall 1).
+ */
+export type BundleTier = 'trial-pack' | 'fitness-pack' | 'bulk-energy-pack';
+
 export type Flavor = {
   // Shopify-aligned fields
   handle: string; // kebab-case, URL slug, matches Shopify product handle
