@@ -89,10 +89,9 @@ export function TrustBadge(props: TrustBadgeProps) {
         className="flex flex-col items-center gap-3 text-center text-[color:var(--color-fg)]"
       >
         <Icon
-          size={40}
           strokeWidth={1.75}
           aria-hidden="true"
-          className="text-[color:var(--color-brand-rose)]"
+          className="h-10 w-10 text-[color:var(--color-brand-rose)] sm:h-14 sm:w-14"
         />
         <span className="text-sm font-medium leading-snug">{props.label}</span>
         {props.value ? (
