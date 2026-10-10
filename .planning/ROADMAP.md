@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation + Hero + Conversion Infrastructure** — Deployable Hero + waitlist CTA on top of the full conversion scaffold (CTA config, LazyMotion, dvh, FOUC, Pixel+CAPI, in-app browser nudge, Shopify-shaped flavor stub)
 - [x] **Phase 2: How It Works + Flavor Catalog** — 3-step product explainer plus 16-flavor browsing with range filters live on `/` and `/flavors` (completed 2026-10-09)
 - [x] **Phase 3: Scroll Storytelling Polish** — Cinematic Motion choreography layered across every shipped section, with `prefers-reduced-motion` honored throughout (completed 2026-10-10)
-- [ ] **Phase 3.1 (INSERTED 2026-10-10): Content & Conversion — USP + Bundles + Trust** — Three conversion-critical marketing sections pulled forward from Phase 4/5/6: USP comparison grid (Regular Energy Drinks vs CAPSHOT), pricing bundle preview cards (Trial 5 / Fitness 15 + shaker / Bulk 30 — waitlist CTAs; actual purchase stays Phase 6), and trust badge strip (FSSAI/Plant-based/Made in India/Secure Checkout)
+- [x] **Phase 3.1 (INSERTED 2026-10-10): Content & Conversion — USP + Bundles + Trust** — Three conversion-critical marketing sections pulled forward from Phase 4/5/6: USP comparison grid (Regular Energy Drinks vs CAPSHOT), pricing bundle preview cards (Trial 5 / Fitness 15 + shaker / Bulk 30 — waitlist CTAs; actual purchase stays Phase 6), and trust badge strip (FSSAI/Plant-based/Made in India/Secure Checkout) (completed 2026-10-10)
 - [ ] **Phase 4: Variants + Premium Sports + Lighthouse Perf Pass** — Dosage variants (3–4 g / 7–8 g per bottle size), Premium Sports range showcase, Lighthouse mobile ≥90 verification (USP moved to Phase 3.1)
 - [ ] **Phase 5: FAQ + About + Contact + SEO + Accessibility** — FAQ accordion, founder story, contact routes, per-route SEO + OG, WCAG AA audit (Trust Badges moved to Phase 3.1)
 - [ ] **Phase 6: Commerce (Shopify + Razorpay + Shiprocket)** — Live D2C store at `shop.capshot.co`, CTAs flipped from WhatsApp to Shopify checkout; Bundles section already shipped in 3.1 — Phase 6 just wires Shopify product handles + un-hides "Buy now" CTAs
@@ -110,7 +110,7 @@ Plans:
   3. Visitor sees a near-footer Trust Badges strip rendered via `<TrustBadge>` components (declared in Phase 1 Plan 02; evidenceUrl requirement in PROD). Four badges: **FSSAI Licensed** (placeholder evidenceUrl + 14-digit number marker until GATE-FSSAI resolves; `import.meta.env.PROD` render-gate from Phase 1 enforced), **Plant-based ingredients** (regulator-safe swap for the blueprint's "Vegan & Non-GMO" per `capshot-brand` — avoids FSSAI vegan-logo approval requirement), **Made in India**, **Secure Checkout** (shown with a "Coming soon with Phase 6 commerce" context note OR rendered hidden until Phase 6 — decision captured in discuss-phase).
   4. All three sections render on 360×640 mobile with no horizontal overflow, honor light/dark + prefers-reduced-motion contracts, and the full Phase 1-3 e2e suite stays GREEN with ≥3 new e2e specs (one per section). The Phase 2 FT1–FT6 + Phase 3 FT-P3-1/FT-P3-2 flavor-teaser specs remain GREEN (relocated DOM still satisfies the heading + 8-handle enumeration + "See all" + scroll-snap + motion-reduce assertions).
 
-**Plans:** 3/4 plans executed
+**Plans:** 4/4 plans complete
 Plans:
 **Wave 1** *(Plans 01 and 02 parallelizable; Plan 01 ships shared primitives, Plan 02 ships Section 3 USP)*
 
@@ -123,7 +123,7 @@ Plans:
 
 **Wave 3** *(blocked on Wave 2 completion)*
 
-- [ ] 03.1-04-PLAN.md — Section 5 Trust Badges + end-of-phase human-verify: new src/sections/TrustBadges.tsx (4 visual-only badges in locked order: FSSAI Licensed, Plant-based ingredients, Made in India, Secure Checkout, flex-wrap 2x2 on <375px) + trust-badges.spec.ts (TB1-TB6 + TB-RM-1) + HomePage insert + closing checkpoint:human-verify for real-device mobile approval
+- [x] 03.1-04-PLAN.md — Section 5 Trust Badges + end-of-phase human-verify: new src/sections/TrustBadges.tsx (4 visual-only badges in locked order: FSSAI Licensed, Plant-based ingredients, Made in India, Secure Checkout, flex-wrap 2x2 on <375px) + trust-badges.spec.ts (TB1-TB6 + TB-RM-1) + HomePage insert + closing checkpoint:human-verify for real-device mobile approval
 **UI hint**: yes
 
 **Locked homepage section order (per developer direction 2026-10-10):**
@@ -213,7 +213,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Foundation + Hero + Conversion Infrastructure | 3/3 | Awaiting human-verify checkpoint | - |
 | 2. How It Works + Flavor Catalog | 3/3 | Complete   | 2026-10-09 |
 | 3. Scroll Storytelling Polish | 3/3 | Complete   | 2026-10-10 |
-| 3.1 (INSERTED 2026-10-10). Content & Conversion — USP + Catalog+Bundles + Trust | 3/4 | In Progress|  |
+| 3.1 (INSERTED 2026-10-10). Content & Conversion — USP + Catalog+Bundles + Trust | 4/4 | Complete   | 2026-10-10 |
 | 4. Variants + Premium Sports + Lighthouse Perf Pass | 0/TBD | Not started | - |
 | 5. FAQ + About + Contact + SEO + Accessibility | 0/TBD | Not started | - |
 | 6. Commerce (Shopify + Razorpay + Shiprocket) | 0/TBD | Gated | - |
