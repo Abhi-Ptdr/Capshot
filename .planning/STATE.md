@@ -4,7 +4,7 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Phase 3.1 Plan 02 complete (USP comparison section + e2e spec)
-last_updated: "2026-10-10T19:26:43.319Z"
+last_updated: "2026-10-10T19:38:21.819Z"
 last_activity: 2026-10-10
 progress:
   total_phases: 6
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-10-09)
 ## Current Position
 
 Phase: 03.1 (content-conversion-usp-bundles-trust) — EXECUTING
-Plan: 3 of 7
+Plan: 4 of 7
 Status: Ready to execute
 Last activity: 2026-10-10
 
@@ -68,6 +68,7 @@ Progress: [██████████] 100%
 | Phase 03.1 P04 | 8 | 3 tasks | 3 files |
 | Phase 03.1 P05 | 10 | 2 tasks | 2 files |
 | Phase 03.1 P06 | 8 | 3 tasks | 3 files |
+| Phase 03.1 P07 | 10 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -144,6 +145,10 @@ Recent decisions affecting current work:
 - [Phase ?]: [Phase 03.1 P06]: Step markers rendered as plain <div> (NOT wrapped in <m.div>) — D3.1-11 locks section-level motion entrance only; parent heading band's <m.div> already fades in the whole stack. CB6 motion-wrapper count stays at exactly 3 (step markers add 0 wrappers)
 - [Phase ?]: [Phase 03.1 P06]: CB9 regression guard scopes to <h3> ONLY — FlavorTeaser's intentional <h2> 'Pick your flavor.' at src/sections/FlavorTeaser.tsx:125 is NOT false-positive-matched. The regression target is specifically Bundles.tsx reintroducing its removed internal <h3>
 - [Phase ?]: [Phase 03.1 P06]: B3 banner.spec Android Facebook UA e2e failure under full-suite execution is pre-existing (STATE.md Phase 03 P02 decisions log) — verified non-regression by reverting all 3 Plan-06-modified files to HEAD~3 and re-running; same flake behavior. Scope boundary: this plan touches catalog composition only; banner.spec is Phase 1 scope
+- [Phase ?]: Phase 03.1 Plan 07 execution: USP GAP-03 Feature header rendered as single-line inline <th> with // prettier-ignore so grep -c '>Feature<' = 1 holds. Multiline JSX (prettier default) would fail the acceptance gate.
+- [Phase ?]: Phase 03.1 Plan 07 execution: Optional pricingPending discriminator on ROWS tuple uses 'as const' + 'pricingPending in row' narrowing + conditional attribute-spread via { 'data-pricing-pending': 'true' as const } — guarantees DOM attribute is present as 'true' or absent, not emitted as empty string. tbody tr[data-pricing-pending='true'] Playwright selector depends on this.
+- [Phase ?]: Phase 03.1 Plan 07 execution: Asterisk footnote lives OUTSIDE <table> as sibling <p>, NOT inside <caption> or <tfoot> — <caption> would be announced as the table's title before headers (wrong for a pricing-pending disclaimer); <tfoot> is for data footers. Sibling <p> keeps a11y tree clean.
+- [Phase ?]: Phase 03.1 Plan 07 execution: full npm run test:e2e --workers=1 result 100/101 PASS; the 1 failure is tests/e2e/banner.spec.ts B3 Android Facebook UA intent:// — pre-existing Phase 1 flake under full-suite load, documented in 03.1-REVIEW-FIX.md line 28-29 and STATE.md Phase 03 P02 decisions. Scope-boundary excluded from Plan 07.
 
 ### Pending Todos
 
@@ -173,6 +178,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-10T19:25:20.571Z
+Last session: 2026-10-10T19:38:09.021Z
 Stopped at: Phase 3.1 Plan 02 complete (USP comparison section + e2e spec)
 Resume file: None
