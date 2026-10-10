@@ -69,21 +69,21 @@ export function TrustBadges() {
           </h2>
           <ul
             aria-label="Trust indicators"
-            className="mt-6 flex flex-wrap items-center justify-center gap-3 sm:gap-4"
+            className="mt-8 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4 sm:gap-x-4"
           >
-            <li>
+            <li className="flex justify-center">
               <TrustBadge variant="visual-only" label="FSSAI Licensed" />
             </li>
-            <li>
+            <li className="flex justify-center">
               <TrustBadge
                 variant="visual-only"
                 label="Plant-based ingredients"
               />
             </li>
-            <li>
+            <li className="flex justify-center">
               <TrustBadge variant="visual-only" label="Made in India" />
             </li>
-            <li>
+            <li className="flex justify-center">
               <TrustBadge variant="visual-only" label="Secure Checkout" />
             </li>
           </ul>

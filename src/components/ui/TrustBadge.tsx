@@ -66,6 +66,7 @@ function iconFor(label: TrustBadgeLabel): ComponentType<{
   size?: number;
   strokeWidth?: number;
   'aria-hidden'?: boolean | 'true' | 'false';
+  className?: string;
 }> {
   switch (label) {
     case 'FSSAI Licensed':
@@ -85,13 +86,18 @@ export function TrustBadge(props: TrustBadgeProps) {
     return (
       <span
         aria-label={props.label}
-        className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-3 py-2 text-sm text-[color:var(--color-fg)]"
+        className="flex flex-col items-center gap-3 text-center text-[color:var(--color-fg)]"
       >
-        <Icon size={16} strokeWidth={2} aria-hidden="true" />
-        <span>{props.label}</span>
+        <Icon
+          size={40}
+          strokeWidth={1.75}
+          aria-hidden="true"
+          className="text-[color:var(--color-brand-rose)]"
+        />
+        <span className="text-sm font-medium leading-snug">{props.label}</span>
         {props.value ? (
-          <span className="text-[color:var(--color-fg-muted)]">
-            · {props.value}
+          <span className="text-xs text-[color:var(--color-fg-muted)]">
+            {props.value}
           </span>
         ) : null}
       </span>
