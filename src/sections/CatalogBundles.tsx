@@ -55,7 +55,33 @@ import { Bundles } from '@/sections/Bundles';
  */
 export function CatalogBundles() {
   return (
-    <section aria-labelledby="catalog-heading">
+    <section
+      aria-labelledby="catalog-heading"
+      className={[
+        // Inverted theme vs the rest of the page (mirrors HowItWorks):
+        // light mode -> brand-deep bg + cream fg; dark mode -> cream bg
+        // + brand-deep fg. Override the three semantic CSS vars so inner
+        // Sections (FlavorTeaser + Bundles) and all descendants
+        // reading --color-bg / --color-fg pick up the flipped values.
+        '[--color-bg:var(--color-brand-deep)]',
+        '[--color-fg:var(--color-brand-cream)]',
+        '[--color-fg-muted:rgb(255_248_234_/_0.72)]',
+        'dark:[--color-bg:var(--color-brand-cream)]',
+        'dark:[--color-fg:var(--color-brand-deep)]',
+        'dark:[--color-fg-muted:rgb(89_69_69_/_0.68)]',
+        // Paint the outer section's own bg too so the heading band + step
+        // markers (which have no bg utility of their own) match the inner
+        // Sections' painted bg — one cohesive inverted band.
+        'bg-[color:var(--color-bg)]',
+        // Explicit text color on the outer wrapper so descendants that
+        // inherit `color: inherit` (H2, Step markers, etc.) pick up the
+        // overridden --color-fg. CSS custom props cascade, but `color:
+        // inherit` resolves to the parent's COMPUTED color (set at body
+        // from the ROOT :root --color-fg), so without this class the H2
+        // would stay brand-deep on brand-deep and go invisible.
+        'text-[color:var(--color-fg)]',
+      ].join(' ')}
+    >
       {/*
         WR-07: motion wrapper is a <m.div>, NOT <m.section>, so it doesn't
         pollute the a11y landmark tree. The outer <section
@@ -145,7 +171,26 @@ export function CatalogBundles() {
         </div>
       </Container>
 
-      <Bundles />
+      {/*
+        Bundle cards paint their own cream/white `--color-surface` card bg,
+        which is NOT part of the parent section inversion. Reset the two
+        text-color vars back to their default-theme values inside the
+        Bundles subtree so the card text (title, price, feature-list,
+        pending-approval qualifier) reads correctly on the card surface
+        in BOTH modes — otherwise the parent's cream-on-cream text goes
+        invisible on the white cards.
+      */}
+      <div
+        className={[
+          '[--color-fg:var(--color-brand-deep)]',
+          '[--color-fg-muted:var(--color-brand-mid)]',
+          'dark:[--color-fg:var(--color-brand-cream)]',
+          'dark:[--color-fg-muted:rgba(255,248,234,0.70)]',
+          'text-[color:var(--color-fg)]',
+        ].join(' ')}
+      >
+        <Bundles />
+      </div>
     </section>
   );
 }
