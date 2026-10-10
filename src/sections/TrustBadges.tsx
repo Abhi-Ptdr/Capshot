@@ -37,7 +37,7 @@ import { TrustBadge } from '@/components/ui/TrustBadge';
  */
 export function TrustBadges() {
   return (
-    <Section className="pt-8 sm:pt-12 md:pt-16" background="bg">
+    <Section background="bg">
       <m.section
         initial={{ opacity: 0, y: 32 }}
         whileInView={{ opacity: 1, y: 0 }}
