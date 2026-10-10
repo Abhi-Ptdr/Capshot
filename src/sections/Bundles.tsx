@@ -38,6 +38,13 @@ import { lightenHex } from '@/lib/color';
  * The `handle: 'bulk-energy-pack'` + `title: 'Bulk Energy Pack'` are SAFE
  * for the CI grep gate (`/energy\s+drink/i`, whitespace-separated; "energy
  * pack" is permitted — see RESEARCH §Pitfall 1).
+ *
+ * Phase 3.1 Plan 06 Task 2 (2026-10-11 UAT, GAP-02): removed the inline
+ * step-2 eyebrow + sub-heading band + intro paragraph. The parent
+ * CatalogBundles.tsx now owns the step-2 scaffolding as sibling content
+ * above this component, eliminating the three-stacked-headings problem
+ * the UAT flagged. The tri-card <ul> + per-card content + CTAs are
+ * byte-equivalent to pre-Plan-06.
  */
 
 // All three bundles share the brand-rose cap per D3.1-04. Compute the
@@ -73,18 +80,7 @@ export function Bundles() {
         className="motion-reduce:!transform-none motion-reduce:!opacity-100"
       >
         <Container>
-          <p className="text-sm font-bold tracking-wider text-[color:var(--color-brand-rose)] uppercase">
-            Step 2 — Pack chuno.
-          </p>
-          <h3 className="mt-2 text-[24px] font-bold tracking-tight sm:text-[32px]">
-            Pick your pack.
-          </h3>
-          <p className="mt-3 max-w-[52ch] text-base text-[color:var(--color-fg-muted)] sm:text-lg">
-            Three sizes, locked launch pricing. Join the waitlist and we'll
-            ping you the moment pre-orders open.
-          </p>
-
-          <ul className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
+          <ul className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
             {bundles.map((bundle) => {
               const cta = getCta(TIER_SLOT[bundle.tier]);
               const isFitness = bundle.badge !== null;
