@@ -2,21 +2,28 @@ import { test, expect, devices } from '@playwright/test';
 
 /**
  * Phase 3.1 Plan 04 Task 2 — Trust Badges section E2E (TRUST-01 + TRUST-02).
+ * Phase 3.1 Plan 05 (GAP-01) extension: added TB7 (section heading above
+ * the strip) + TB8 (surface tone on the outer <section>) in-place; the
+ * original 7 tests (TB1-TB6 + reduced-motion) remain unchanged.
  *
  * Asserts the D3.1-07a locked contract for the final section of the
  * Phase 3.1 homepage composition:
  *   - TB1: all four locked labels are visible on `/`
- *   - TB2: each label renders as a <span> (NOT <a>) — the visual-only
+ *   - TB2: each label renders as a span (NOT anchor) — the visual-only
  *     arm of the Plan 01 discriminated union omits the href wrapper
  *     (D3.1-07/08)
  *   - TB3: no FSSAI dev-warning banner is present on `/` (visual-only
  *     arm skips the Phase 1 pending-evidence dev warning)
- *   - TB4: the <ul aria-label="Trust indicators"> is present exactly
- *     once and visible on `/`
- *   - TB5: the strip wraps to 2x2 on <375 px (D3.1-10) — the 3rd <li>
- *     sits on a different row than the 1st <li>
+ *   - TB4: the ul landmark is present exactly once and visible on `/`
+ *   - TB5: the strip wraps to multiple rows on <375 px (D3.1-10 + WR-05) —
+ *     at least 2 distinct row-y values; last row sits meaningfully below
+ *     the first
  *   - TB6: the TrustBadges motion wrapper carries the Tailwind
  *     motion-reduce fallback utility (D3.1-11)
+ *   - TB7 (GAP-01): section heading "Why trust us." renders above the
+ *     trust-indicator list on `/`
+ *   - TB8 (GAP-01): the outer section carries the surface-token
+ *     background class emitted by `<Section background="surface">`
  *   - Reduced-motion describe: the TrustBadges motion wrapper renders
  *     at computed opacity 1 under reducedMotion:'reduce'
  *
@@ -25,6 +32,10 @@ import { test, expect, devices } from '@playwright/test';
  * nested describe. Phase 1 FSSAI PROD-throw + dev-warning contract is
  * covered by tests/unit/trustbadge.spec.tsx (linked arm); this spec
  * covers only the visual-only arm's DOM contract on the homepage.
+ *
+ * Note on grep-safe prose: literal runtime values are paraphrased in this
+ * docstring (e.g., "anchor"/"span"/"dev-warning banner data attribute")
+ * so the TB3 single-occurrence source literal gate stays strict.
  */
 
 test.use({ ...devices['Pixel 7'] });
@@ -145,6 +156,41 @@ test.describe('TrustBadges (TRUST-01, TRUST-02) @ 360×800', () => {
     );
     await expect(motionWrapper).toHaveCount(1);
     await expect(motionWrapper).toBeVisible();
+  });
+
+  test('TB7: section heading "Why trust us." is visible above the trust-indicator list (GAP-01)', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const heading = page.getByRole('heading', { name: 'Why trust us.' });
+    await heading.scrollIntoViewIfNeeded();
+    await expect(heading).toBeVisible();
+    // Positional ordering: heading sits ABOVE the ul landmark so the strip
+    // reads as a named section, not orphaned chrome.
+    const list = page.locator('ul[aria-label="Trust indicators"]');
+    const [headingBox, listBox] = await Promise.all([
+      heading.boundingBox(),
+      list.boundingBox(),
+    ]);
+    expect(headingBox).toBeTruthy();
+    expect(listBox).toBeTruthy();
+    expect(headingBox!.y).toBeLessThan(listBox!.y);
+  });
+
+  test('TB8: TrustBadges Section carries background="surface" token class (GAP-01)', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    // Scope to the TrustBadges <section> via its unique trust-indicator
+    // descendant (same pattern TB6 uses). Section primitive emits the
+    // literal class `bg-[color:var(--color-surface)]` when the
+    // background prop is "surface" (see src/components/primitives/Section.tsx).
+    const trustSection = page
+      .locator('section')
+      .filter({ has: page.locator('ul[aria-label="Trust indicators"]') });
+    await expect(trustSection).toHaveClass(
+      /bg-\[color:var\(--color-surface\)\]/,
+    );
   });
 });
 
