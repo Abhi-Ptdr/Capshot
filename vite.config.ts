@@ -1,6 +1,7 @@
 import { defineConfig, type PluginOption } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
+import { visualizer } from 'rollup-plugin-visualizer';
 import { fileURLToPath, URL } from 'node:url';
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve, extname } from 'node:path';
@@ -48,8 +49,32 @@ function spaFallbackWith404(): PluginOption {
 
 // Vite 8 defaults to `baseline-widely-available` which covers Chrome 111+ / Safari 16.4+ —
 // matches the 95% Indian mobile baseline this marketing site targets.
-export default defineConfig({
-  plugins: [react(), tailwindcss(), spaFallbackWith404()],
+//
+// Phase 3 Plan 01 (D3-17) — rollup-plugin-visualizer is wired as a build-only
+// plugin (mode === 'production') so `npm run build` emits `dist/stats.html`
+// (gzip-aware treemap). Dev builds stay fast; manual pre-ship inspection
+// verifies the Motion-related entry chunk gzip stays ≤ 10 KB per CONV-05.
+// No hard CI gate — chunk names can shift between Vite minor versions and
+// would false-flag regressions.
+export default defineConfig(({ mode }) => ({
+  plugins: [
+    react(),
+    tailwindcss(),
+    spaFallbackWith404(),
+    mode === 'production' &&
+      (visualizer({
+        // Path is relative to project root (NOT rollup `output.dir`) when
+        // `emitFile` is omitted; this writes to `./dist/stats.html` directly.
+        // Setting `emitFile: true` would place the file under rollup's
+        // output dir and produce `dist/dist/stats.html` which breaks the
+        // documented `dist/stats.html` contract.
+        filename: 'dist/stats.html',
+        gzipSize: true,
+        brotliSize: false,
+        open: false,
+        template: 'treemap',
+      }) as PluginOption),
+  ].filter(Boolean) as PluginOption[],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -58,4 +83,4 @@ export default defineConfig({
   server: {
     port: 5173,
   },
-});
+}));
