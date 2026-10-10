@@ -138,10 +138,26 @@ export function UspComparison() {
                 // the data-pricing-pending discriminator so Phase 6
                 // can grep-locate the row for final-price updates
                 // without re-reading surrounding JSX.
-                const pricingProps =
-                  'pricingPending' in row
-                    ? { 'data-pricing-pending': 'true' as const }
-                    : {};
+                //
+                // IN-01 (iteration 3): check `row.pricingPending === true`
+                // rather than `'pricingPending' in row` so a future row
+                // adding `pricingPending: false` would NOT inherit the
+                // pending-state attribute via key-presence alone. The
+                // `as const` on the ROWS tuple keeps discriminated-union
+                // narrowing precise here.
+                //
+                // WR-02 (iteration 3): the price-pending row also wires
+                // the capshot <td> to aria-describedby="price-pending-note"
+                // so screen readers reach the asterisk footnote (defined
+                // below the <table>) when the price cell receives focus.
+                const isPricingPending =
+                  'pricingPending' in row && row.pricingPending === true;
+                const pricingProps = isPricingPending
+                  ? { 'data-pricing-pending': 'true' as const }
+                  : {};
+                const capshotCellProps = isPricingPending
+                  ? { 'aria-describedby': 'price-pending-note' }
+                  : {};
                 return (
                   <tr
                     key={dim}
@@ -157,7 +173,10 @@ export function UspComparison() {
                     <td className="py-4 text-sm text-[color:var(--color-fg-muted)] sm:text-base">
                       {other}
                     </td>
-                    <td className="py-4 text-sm font-bold text-[color:var(--color-brand-rose)] sm:text-base">
+                    <td
+                      className="py-4 text-sm font-bold text-[color:var(--color-brand-rose)] sm:text-base"
+                      {...capshotCellProps}
+                    >
                       {capshot}
                     </td>
                   </tr>
@@ -170,8 +189,18 @@ export function UspComparison() {
             <table> as a sibling <p> (not a <caption> or <tfoot>) —
             simpler DOM, same visual effect, no screen-reader
             table-structure disruption.
+
+            WR-02 (iteration 3): id="price-pending-note" wires the
+            footnote to the capshot <td> on the pending-price row via
+            aria-describedby. Screen readers announce the disclaimer
+            when the cell receives focus / is read linearly, so the
+            provisional-price caveat is actually reachable for AT
+            users (not just a sighted-user visual asterisk).
           */}
-          <p className="mt-3 text-xs text-[color:var(--color-fg-muted)]">
+          <p
+            id="price-pending-note"
+            className="mt-3 text-xs text-[color:var(--color-fg-muted)]"
+          >
             * CAPSHOT per-cap price range pending client final approval before Phase 6.
           </p>
         </Container>

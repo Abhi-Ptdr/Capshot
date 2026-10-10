@@ -10,6 +10,11 @@ import { test, expect, devices } from '@playwright/test';
  *     attribute (GAP-04).
  *   - UC9 asserts the asterisk footnote visibility (GAP-04).
  *   - UC1 / UC3 / UC4 / UC5 / UC6 / UC-RM-1 unchanged in body.
+ * Phase 3.1 iteration 3 review-fix:
+ *   - UC10 asserts the WR-02 a11y wiring: capshot <td> on the pending
+ *     price row carries aria-describedby="price-pending-note" and the
+ *     footnote <p> carries the matching id so screen readers reach the
+ *     disclaimer when the cell is read.
  *
  * Semantic 5-row × 2-col comparison table rendered on `/` between
  * HowItWorks and the Catalog + Bundles stack. Row-prefix
@@ -180,6 +185,33 @@ test.describe('UspComparison (USP-01) @ 360×800', () => {
       /CAPSHOT per-cap price range pending client final approval before Phase 6/,
     );
     await expect(footnote).toBeVisible();
+  });
+
+  test('UC10: pending-price capshot <td> is programmatically associated with the footnote via aria-describedby (WR-02)', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    await page.getByRole('table').first().scrollIntoViewIfNeeded();
+
+    // The pending-price row's capshot cell carries aria-describedby
+    // pointing at the footnote's id — this is what makes the disclaimer
+    // reachable to assistive technology (screen readers announce the
+    // described-by element after the cell's own content).
+    const capshotCell = page.locator(
+      'tr[data-pricing-pending="true"] td[aria-describedby="price-pending-note"]',
+    );
+    await expect(capshotCell).toHaveCount(1);
+    await expect(capshotCell).toContainText('₹24-₹30 per cap');
+
+    // The footnote <p> must carry the matching id so the aria pointer
+    // resolves (unresolved aria-describedby pointers are silently
+    // dropped by AT engines — the a11y wiring is only effective when
+    // both halves exist in the DOM).
+    const footnote = page.locator('p#price-pending-note');
+    await expect(footnote).toHaveCount(1);
+    await expect(footnote).toContainText(
+      'CAPSHOT per-cap price range pending client final approval before Phase 6',
+    );
   });
 });
 
