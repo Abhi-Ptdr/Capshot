@@ -39,17 +39,20 @@ describe('cta config — primary destination (CONTEXT D-07/D-08/D-09)', () => {
 });
 
 describe('cta config — bundle slots (D3.1-06 Phase 3.1 wiring)', () => {
-  it('getCta("bundles.trial").href carries &tier=trial and matches wa.me pattern', () => {
+  // WR-01: tier attribution rides on the `text` body (the only wa.me param
+  // forwarded to the WhatsApp client); dropped `&tier=` query assertions
+  // have been replaced with body-text assertions below.
+  it('getCta("bundles.trial").href encodes "Interested in: trial" in the text body', () => {
     expect(getCta('bundles.trial').href).toMatch(/^https:\/\/wa\.me\/919203975762\?text=/);
-    expect(getCta('bundles.trial').href).toContain('&tier=trial');
+    expect(getCta('bundles.trial').href).toContain('Interested%20in%3A%20trial');
   });
 
-  it('getCta("bundles.fitness").href carries &tier=fitness query', () => {
-    expect(getCta('bundles.fitness').href).toContain('&tier=fitness');
+  it('getCta("bundles.fitness").href encodes "Interested in: fitness" in the text body', () => {
+    expect(getCta('bundles.fitness').href).toContain('Interested%20in%3A%20fitness');
   });
 
-  it('getCta("bundles.bulk").href carries &tier=bulk query', () => {
-    expect(getCta('bundles.bulk').href).toContain('&tier=bulk');
+  it('getCta("bundles.bulk").href encodes "Interested in: bulk" in the text body', () => {
+    expect(getCta('bundles.bulk').href).toContain('Interested%20in%3A%20bulk');
   });
 
   it('every bundle CTA uses the phase-invariant label "Join waitlist for early access" (D3.1-06)', () => {

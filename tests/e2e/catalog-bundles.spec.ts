@@ -55,21 +55,22 @@ test.describe('CatalogBundles (CATALOG-01) @ 360×800', () => {
     await expect(page.locator('[data-bundle="bulk"]')).toHaveCount(1);
   });
 
-  test('CB4: each bundle CTA href carries &tier={tier} + Hi%21 (Pitfall 4 regression)', async ({
+  test('CB4: each bundle CTA href encodes tier in the text body + Hi%21 (WR-01 regression)', async ({
     page,
   }) => {
     await page.goto('/');
     await page.locator('[data-bundle="trial"]').scrollIntoViewIfNeeded();
 
-    // Explicit per-tier assertions (not a loop) so each literal `&tier=…`
-    // appears in-source for the acceptance-criterion grep gate. The
-    // ampersand prefix (NOT `?tier=`) is the Pitfall 4 regression guard —
-    // RESEARCH §Pitfall 4 explains the double-`?` footgun.
+    // WR-01: tier attribution is now encoded INSIDE the `text` body so the
+    // WhatsApp Business inbox actually receives it (wa.me strips every
+    // non-`text` query param client-side). Each per-tier literal
+    // `Interested%20in%3A%20{tier}` appears in-source so grep gates still
+    // see every tier string.
     const trialHref = await page
       .locator('[data-bundle="trial"] a')
       .getAttribute('href');
     expect(trialHref).not.toBeNull();
-    expect(trialHref!).toContain('&tier=trial');
+    expect(trialHref!).toContain('Interested%20in%3A%20trial');
     expect(trialHref!).toContain('Hi%21');
     expect(trialHref!).toMatch(/^https:\/\/wa\.me\/919203975762\?text=/);
 
@@ -77,7 +78,7 @@ test.describe('CatalogBundles (CATALOG-01) @ 360×800', () => {
       .locator('[data-bundle="fitness"] a')
       .getAttribute('href');
     expect(fitnessHref).not.toBeNull();
-    expect(fitnessHref!).toContain('&tier=fitness');
+    expect(fitnessHref!).toContain('Interested%20in%3A%20fitness');
     expect(fitnessHref!).toContain('Hi%21');
     expect(fitnessHref!).toMatch(/^https:\/\/wa\.me\/919203975762\?text=/);
 
@@ -85,7 +86,7 @@ test.describe('CatalogBundles (CATALOG-01) @ 360×800', () => {
       .locator('[data-bundle="bulk"] a')
       .getAttribute('href');
     expect(bulkHref).not.toBeNull();
-    expect(bulkHref!).toContain('&tier=bulk');
+    expect(bulkHref!).toContain('Interested%20in%3A%20bulk');
     expect(bulkHref!).toContain('Hi%21');
     expect(bulkHref!).toMatch(/^https:\/\/wa\.me\/919203975762\?text=/);
   });

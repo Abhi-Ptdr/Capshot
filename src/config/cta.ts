@@ -24,13 +24,14 @@
  * `.claude/skills/capshot-brand/SKILL.md` (that skill shows
  * "Join the Waitlist" / "Notify Me on WhatsApp" — not used in Phase 1).
  *
- * Phase 3.1 Plan 01 extension (D3.1-06):
+ * Phase 3.1 Plan 01 extension (D3.1-06), updated by Phase 3.1 code review WR-01:
  *  - `ctaConfig.bundles.{trial,fitness,bulk}` populated with WhatsApp URLs
- *    that ride-along the SAME pre-fill message as `primary` but add a
- *    `&tier=` attribution query so the WhatsApp Business inbox can bucket
- *    inbound leads by bundle tier.
- *  - CRITICAL: the `&tier=` prefix uses `&`, NOT a second `?`. The URL
- *    already has `?text=...`; a second `?` would make the URL malformed.
+ *    that ride-along a per-tier message body so the WhatsApp Business
+ *    inbox can bucket inbound leads by bundle tier via the inbound
+ *    conversation text (the ONLY wa.me parameter actually propagated into
+ *    the WhatsApp client is `text` — all other query params are stripped
+ *    before the message is composed). Tier attribution ALSO happens via
+ *    the click-side `data-cta={cta.trackingId}` instrumentation.
  *  - `getCta` signature extended to accept dotted-string slots
  *    (`'bundles.trial' | 'bundles.fitness' | 'bundles.bulk'`). On bundle
  *    slots it SYNTHESIZES a `CtaDestination` object with the phase-invariant
@@ -78,12 +79,16 @@ export const ctaConfig = {
     trackingId: 'cta_nav_notify',
   },
   bundles: {
+    // WR-01: tier attribution is encoded in the `text` body (the only wa.me
+    // param propagated to the WhatsApp client), NOT a dropped `&tier=` query.
+    // The literal `Interested in: trial|fitness|bulk` appears in the inbound
+    // message so the Business inbox can bucket leads.
     trial:
-      'https://wa.me/919203975762?text=Hi%21%20Add%20me%20to%20the%20CAPSHOT%20waitlist.&tier=trial',
+      'https://wa.me/919203975762?text=Hi%21%20Add%20me%20to%20the%20CAPSHOT%20waitlist.%20Interested%20in%3A%20trial',
     fitness:
-      'https://wa.me/919203975762?text=Hi%21%20Add%20me%20to%20the%20CAPSHOT%20waitlist.&tier=fitness',
+      'https://wa.me/919203975762?text=Hi%21%20Add%20me%20to%20the%20CAPSHOT%20waitlist.%20Interested%20in%3A%20fitness',
     bulk:
-      'https://wa.me/919203975762?text=Hi%21%20Add%20me%20to%20the%20CAPSHOT%20waitlist.&tier=bulk',
+      'https://wa.me/919203975762?text=Hi%21%20Add%20me%20to%20the%20CAPSHOT%20waitlist.%20Interested%20in%3A%20bulk',
   },
 } satisfies {
   primary: CtaDestination;
