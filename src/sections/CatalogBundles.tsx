@@ -71,17 +71,14 @@ export function CatalogBundles() {
         transition={{ duration: 0.6, ease: [0.2, 0, 0.2, 1] }}
         className="motion-reduce:!transform-none motion-reduce:!opacity-100"
       >
-        <Container className="pt-8 sm:pt-12 md:pt-16">
-          <p className="text-sm font-bold tracking-wider text-[color:var(--color-brand-rose)] uppercase">
-            Flavor + pack
-          </p>
+        <Container className="pt-8 text-center sm:pt-12 md:pt-16">
           <h2
             id="catalog-heading"
-            className="mt-2 text-[28px] font-bold tracking-tight sm:text-[36px]"
+            className="text-[28px] font-bold tracking-tight sm:text-[36px]"
           >
             Pick your CAPSHOT.
           </h2>
-          <p className="mt-3 max-w-[52ch] text-base text-[color:var(--color-fg-muted)] sm:text-lg">
+          <p className="mx-auto mt-3 max-w-[52ch] text-base text-[color:var(--color-fg-muted)] sm:text-lg">
             Two steps. Pick a flavor you'll actually drink, then pick a pack
             that matches how often you'll use it.
           </p>
