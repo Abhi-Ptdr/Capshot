@@ -43,7 +43,7 @@
 ### Product Education
 
 - [ ] **VAR-01**: Visitor can read the variant/dosage guidance (200–250 ml = 3–4 g "Light & Refreshing", 350–500 ml = 7–8 g "Strong & Punchy") on `/`
-- [ ] **USP-01**: Visitor can compare CAPSHOT against regular bottled drinks across freshness, nutrient value, and portability in a scannable grid on `/` *(scope moved from Phase 4 to Phase 3.1 on 2026-10-10)*
+- [x] **USP-01**: Visitor can compare CAPSHOT against regular bottled drinks across freshness, nutrient value, and portability in a scannable grid on `/` *(scope moved from Phase 4 to Phase 3.1 on 2026-10-10)*
 - [ ] **SPORTS-01**: Visitor can view a dedicated Premium Sports range showcase (Matcha / Black Pump / Java Pump / Coffee) using the phrase "caffeinated beverages" (NEVER "energy drinks") with a mandatory caffeine advisory
 
 ### Product Catalog & Bundles
@@ -151,7 +151,7 @@
 | FLAV-01 | Phase 2 | Complete |
 | FLAV-02 | Phase 2 | Complete |
 | FLAV-03 | Phase 2 | Complete |
-| USP-01 | Phase 3.1 (moved from Phase 4 on 2026-10-10) | Pending |
+| USP-01 | Phase 3.1 (moved from Phase 4 on 2026-10-10) | Complete |
 | CATALOG-01 | Phase 3.1 (new 2026-10-10) | Complete |
 | TRUST-01 | Phase 3.1 (moved from Phase 5 on 2026-10-10) | Complete |
 | TRUST-02 | Phase 3.1 (moved from Phase 5 on 2026-10-10) | Complete |
