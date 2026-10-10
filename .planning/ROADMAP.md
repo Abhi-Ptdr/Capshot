@@ -86,10 +86,10 @@ Plans:
 **Requirements**: (none — cross-cutting polish layered over Phase 1–2 output; motion fidelity is observable but no v1 REQ-ID directly owns it)
 **Success Criteria** (what must be TRUE):
 
-  1. Hero cap-twist, section entrances, and the flavor-card stagger all animate on scroll using Motion's `useScroll` / `whileInView`; animations are limited to `transform` and `opacity` so first paint and scroll remain smooth on a mid-tier Android on 4G.
+  1. Section entrances and the flavor-card stagger animate on scroll using Motion's `whileInView`; animations are limited to `transform` and `opacity` so first paint and scroll remain smooth on a mid-tier Android on 4G. (Hero cap-twist dropped mid-Phase per the brand-fit review on 2026-10-10 — Hero stays on the Phase 2 single-image composition.)
   2. All motion routes through `LazyMotion` + `m.*` primitives (no `motion.div`); the entry bundle Motion footprint stays under 10 KB gzip (verified via build report).
-  3. Visitors with `prefers-reduced-motion: reduce` see static fallbacks across every section — including Hero cap-twist and flavor-card stagger — with no layout shift relative to the animated path.
-  4. A manual pass across Hero, How It Works, Flavor Teaser, and `/flavors` on an iPhone and an Android device shows no jank, no CLS, and no bundle regression vs. the Phase 2 baseline.
+  3. Visitors with `prefers-reduced-motion: reduce` see static fallbacks across every animated section — HowItWorks, FlavorTeaser, and the `/flavors` grid + filter crossfade — with no layout shift relative to the animated path.
+  4. A manual pass across How It Works, Flavor Teaser, and `/flavors` on an iPhone and an Android device shows no jank, no CLS, and no bundle regression vs. the Phase 2 baseline.
 
 **Plans**: TBD
 **UI hint**: yes
@@ -160,7 +160,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Foundation + Hero + Conversion Infrastructure | 3/3 | Awaiting human-verify checkpoint | - |
 | 2. How It Works + Flavor Catalog | 3/3 | Complete   | 2026-10-09 |
-| 3. Scroll Storytelling Polish | 0/TBD | Not started | - |
+| 3. Scroll Storytelling Polish | 0/3 | Planned    |  |
 | 4. USP + Variants + Premium Sports + Lighthouse Perf Pass | 0/TBD | Not started | - |
 | 5. Trust + FAQ + About + Contact + SEO + Accessibility | 0/TBD | Not started | - |
 | 6. Commerce (Shopify + Razorpay + Shiprocket) | 0/TBD | Gated | - |
