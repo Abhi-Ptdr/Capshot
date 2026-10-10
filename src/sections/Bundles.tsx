@@ -60,8 +60,12 @@ const TIER_SLOT: Record<'trial' | 'fitness' | 'bulk', CtaSlot> = {
 
 export function Bundles() {
   return (
-    <Section background="bg">
-      <m.section
+    // WR-07: `as="div"` so Bundles does NOT emit a second <section> inside
+    // the outer <section aria-labelledby="catalog-heading"> wrapper from
+    // CatalogBundles. The semantic landmark for the two-step narrative is
+    // the CatalogBundles <section>; Bundles is a content block within it.
+    <Section as="div" background="bg">
+      <m.div
         initial={{ opacity: 0, y: 32 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-10% 0px' }}
@@ -157,7 +161,7 @@ export function Bundles() {
             })}
           </ul>
         </Container>
-      </m.section>
+      </m.div>
     </Section>
   );
 }

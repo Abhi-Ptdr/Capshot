@@ -92,14 +92,17 @@ test.describe('UspComparison (USP-01) @ 360×800', () => {
   }) => {
     await page.goto('/');
     await page.getByRole('table').first().scrollIntoViewIfNeeded();
-    // Tailwind escapes `motion-reduce:!transform-none` to
-    // `motion-reduce:\!transform-none` in the generated CSS selector; the
-    // JS string needs doubled backslashes before each special char so the
-    // final selector is `section.motion-reduce\:\!transform-none`.
-    const motionWrapperCount = await page
-      .locator('section.motion-reduce\\:\\!transform-none')
-      .count();
-    expect(motionWrapperCount).toBeGreaterThanOrEqual(1);
+    // WR-07: motion wrapper is now <m.div> (was <m.section>), so the
+    // selector is tag-agnostic. Scope to the UspComparison section
+    // (identified by the comparison table being inside it) to avoid
+    // picking up other sections' wrappers.
+    const uspSection = page
+      .locator('section')
+      .filter({ has: page.getByRole('table') });
+    const motionWrapper = uspSection.locator(
+      '.motion-reduce\\:\\!transform-none',
+    );
+    await expect(motionWrapper).toHaveCount(1);
   });
 });
 
@@ -114,10 +117,11 @@ test.describe('UspComparison reduced-motion (Phase 3.1)', () => {
   }) => {
     await page.goto('/');
     await page.getByRole('table').first().scrollIntoViewIfNeeded();
-    // Tailwind `motion-reduce:!opacity-100` overrides the Motion-emitted
-    // inline opacity, so the computed opacity should be '1' (final state).
+    // WR-07: tag-agnostic selector; scope by hasText so we pick the
+    // UspComparison <m.div> and not another section's wrapper.
     const wrapperOpacity = await page
-      .locator('section.motion-reduce\\:\\!transform-none')
+      .locator('.motion-reduce\\:\\!transform-none')
+      .filter({ hasText: 'Why CAPSHOT, not a bottled drink.' })
       .first()
       .evaluate((el) => getComputedStyle(el).opacity);
     expect(wrapperOpacity).toBe('1');

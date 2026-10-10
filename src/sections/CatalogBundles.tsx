@@ -37,7 +37,15 @@ import { Bundles } from '@/sections/Bundles';
 export function CatalogBundles() {
   return (
     <section aria-labelledby="catalog-heading">
-      <m.section
+      {/*
+        WR-07: motion wrapper is a <m.div>, NOT <m.section>, so it doesn't
+        pollute the a11y landmark tree. The outer <section
+        aria-labelledby="catalog-heading"> is the sole semantic landmark
+        for the two-step narrative; FlavorTeaser + Bundles render inside
+        it as plain <div> siblings (see their internal `<Section as="div">`
+        wrappers).
+      */}
+      <m.div
         initial={{ opacity: 0, y: 32 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-10% 0px' }}
@@ -59,7 +67,7 @@ export function CatalogBundles() {
             that matches how often you'll use it.
           </p>
         </Container>
-      </m.section>
+      </m.div>
 
       <FlavorTeaser />
 

@@ -101,17 +101,22 @@ test.describe('CatalogBundles (CATALOG-01) @ 360×800', () => {
     await expect(fitness).toContainText('Best Value / Most Popular');
   });
 
-  test('CB6: section-level motion wrapper(s) with motion-reduce fallback present', async ({
+  test('CB6: motion wrappers inside the catalog section exact count = 3 (WR-06)', async ({
     page,
   }) => {
     await page.goto('/');
-    // CatalogBundles' heading band is a <m.section> carrying the escape
-    // utilities; Bundles' tri-card lane is a second <m.section>. UspComparison
-    // + FlavorTeaser also carry them. Assert ≥2 (CatalogBundles heading band
-    // AND Bundles tri-card lane are both reachable under the catalog section).
-    const wrappers = page.locator('section.motion-reduce\\:\\!transform-none');
-    const count = await wrappers.count();
-    expect(count).toBeGreaterThanOrEqual(2);
+    // WR-06: scope the selector to descendants of the outer
+    // <section aria-labelledby="catalog-heading"> and assert EXACT count
+    // rather than `>= 2`. Three motion wrappers live there:
+    //   1. CatalogBundles' heading-band <m.div>
+    //   2. FlavorTeaser's existing <m.section> (Phase 2, D3.1-05a locked)
+    //   3. Bundles' tri-card <m.div>
+    // WR-07 converted the Phase 3.1 inner <m.section>s to <m.div>s so the
+    // selector is tag-agnostic (just the Tailwind motion-reduce class).
+    const motionWrappers = page.locator(
+      'section[aria-labelledby="catalog-heading"] .motion-reduce\\:\\!transform-none',
+    );
+    await expect(motionWrappers).toHaveCount(3);
   });
 });
 
@@ -127,12 +132,14 @@ test.describe('CatalogBundles reduced-motion (Phase 3.1)', () => {
     await page.goto('/');
     const h2 = page.locator('#catalog-heading');
     await h2.scrollIntoViewIfNeeded();
-    // The CatalogBundles heading band's <m.section> is the first motion
-    // wrapper the user encounters inside the catalog section. Under
-    // reducedMotion:'reduce', Tailwind's motion-reduce:!opacity-100 utility
-    // forces computed opacity to 1 regardless of Motion's inline style.
+    // The CatalogBundles heading band's <m.div> is the first motion wrapper
+    // inside the catalog section (WR-07: motion wrappers are now <div>s).
+    // Scope to the catalog section's descendants to avoid picking up
+    // UspComparison's wrapper that appears earlier on the page.
     const opacity = await page
-      .locator('section.motion-reduce\\:\\!transform-none')
+      .locator(
+        'section[aria-labelledby="catalog-heading"] .motion-reduce\\:\\!transform-none',
+      )
       .first()
       .evaluate((el) => getComputedStyle(el).opacity);
     expect(opacity).toBe('1');

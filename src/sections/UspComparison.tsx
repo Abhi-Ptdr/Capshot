@@ -67,7 +67,12 @@ const ROWS = [
 export function UspComparison() {
   return (
     <Section background="bg">
-      <m.section
+      {/*
+        WR-07: motion wrapper is <m.div>, NOT <m.section>, so the a11y
+        landmark tree sees only the outer <Section>'s single <section>
+        for this content region.
+      */}
+      <m.div
         initial={{ opacity: 0, y: 32 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-10% 0px' }}
@@ -124,7 +129,7 @@ export function UspComparison() {
             </tbody>
           </table>
         </Container>
-      </m.section>
+      </m.div>
     </Section>
   );
 }

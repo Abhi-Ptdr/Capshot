@@ -112,16 +112,19 @@ test.describe('TrustBadges (TRUST-01, TRUST-02) @ 360×800', () => {
     page,
   }) => {
     await page.goto('/');
-    // Phase 3.1 has UspComparison, CatalogBundles heading band, Bundles
-    // tri-card lane, FlavorTeaser, and TrustBadges all carrying the same
-    // Tailwind motion-reduce utility. Assert >= 1 to stay future-proof;
-    // the stronger per-section selector check is implicit via TB4 and the
-    // reduced-motion test (which scopes by hasText to the TrustBadges
-    // wrapper).
-    const wrappers = page.locator('section.motion-reduce\\:\\!transform-none');
-    await expect(wrappers.first()).toBeVisible();
-    const count = await wrappers.count();
-    expect(count).toBeGreaterThanOrEqual(1);
+    // WR-06 + WR-07: scope the selector to the TrustBadges section's
+    // descendants and assert exactly 1 motion wrapper (the <m.div> that
+    // wraps the trust-strip <ul>). Scoping prevents the earlier assertion
+    // from being trivially satisfied by UspComparison / FlavorTeaser /
+    // CatalogBundles wrappers.
+    const trustSection = page
+      .locator('section')
+      .filter({ has: page.locator('ul[aria-label="Trust indicators"]') });
+    const motionWrapper = trustSection.locator(
+      '.motion-reduce\\:\\!transform-none',
+    );
+    await expect(motionWrapper).toHaveCount(1);
+    await expect(motionWrapper).toBeVisible();
   });
 });
 
@@ -136,11 +139,11 @@ test.describe('TrustBadges reduced-motion (Phase 3.1)', () => {
     page,
   }) => {
     await page.goto('/');
-    // Scope the selector to the TrustBadges wrapper specifically by
-    // filtering on text content. The TrustBadges section is the only
-    // motion-wrapped <section> that renders the literal "FSSAI Licensed".
+    // WR-07: the motion wrapper is now <m.div>, scoped to the TrustBadges
+    // section (the only one containing "FSSAI Licensed"). Tag-agnostic
+    // selector + hasText filter picks it out unambiguously.
     const wrapper = page
-      .locator('section.motion-reduce\\:\\!transform-none')
+      .locator('.motion-reduce\\:\\!transform-none')
       .filter({ hasText: 'FSSAI Licensed' });
     await wrapper.first().scrollIntoViewIfNeeded();
     const opacity = await wrapper
