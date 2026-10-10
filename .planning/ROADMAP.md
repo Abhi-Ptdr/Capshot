@@ -16,9 +16,10 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation + Hero + Conversion Infrastructure** — Deployable Hero + waitlist CTA on top of the full conversion scaffold (CTA config, LazyMotion, dvh, FOUC, Pixel+CAPI, in-app browser nudge, Shopify-shaped flavor stub)
 - [x] **Phase 2: How It Works + Flavor Catalog** — 3-step product explainer plus 16-flavor browsing with range filters live on `/` and `/flavors` (completed 2026-10-09)
 - [x] **Phase 3: Scroll Storytelling Polish** — Cinematic Motion choreography layered across every shipped section, with `prefers-reduced-motion` honored throughout (completed 2026-10-10)
-- [ ] **Phase 4: USP + Variants + Premium Sports + Lighthouse Perf Pass** — Full homepage commercial argument plus verified Lighthouse mobile ≥90 before paid-ad scale
-- [ ] **Phase 5: Trust + FAQ + About + Contact + SEO + Accessibility** — All trust/legal/SEO/a11y content complete and audited before Phase 6 KYC
-- [ ] **Phase 6: Commerce (Shopify + Razorpay + Shiprocket)** — Live D2C store at `shop.capshot.co`, CTAs flipped from WhatsApp to Shopify checkout
+- [ ] **Phase 3.1 (INSERTED 2026-10-10): Content & Conversion — USP + Bundles + Trust** — Three conversion-critical marketing sections pulled forward from Phase 4/5/6: USP comparison grid (Regular Energy Drinks vs CAPSHOT), pricing bundle preview cards (Trial 5 / Fitness 15 + shaker / Bulk 30 — waitlist CTAs; actual purchase stays Phase 6), and trust badge strip (FSSAI/Plant-based/Made in India/Secure Checkout)
+- [ ] **Phase 4: Variants + Premium Sports + Lighthouse Perf Pass** — Dosage variants (3–4 g / 7–8 g per bottle size), Premium Sports range showcase, Lighthouse mobile ≥90 verification (USP moved to Phase 3.1)
+- [ ] **Phase 5: FAQ + About + Contact + SEO + Accessibility** — FAQ accordion, founder story, contact routes, per-route SEO + OG, WCAG AA audit (Trust Badges moved to Phase 3.1)
+- [ ] **Phase 6: Commerce (Shopify + Razorpay + Shiprocket)** — Live D2C store at `shop.capshot.co`, CTAs flipped from WhatsApp to Shopify checkout; Bundles section already shipped in 3.1 — Phase 6 just wires Shopify product handles + un-hides "Buy now" CTAs
 
 ## Phase Details
 
@@ -94,35 +95,73 @@ Plans:
 **Plans**: TBD
 **UI hint**: yes
 
-### Phase 4: USP + Variants + Premium Sports + Lighthouse Perf Pass
+### Phase 3.1 (INSERTED 2026-10-10): Content & Conversion — USP + Bundles + Trust
 
 **Mode:** mvp
-**Goal**: The homepage carries a complete commercial argument — why CAPSHOT beats regular bottled drinks, how to dose per bottle size, and a dedicated Premium Sports showcase framed as "caffeinated beverages" — and the whole site clears Lighthouse mobile ≥90 before any paid campaign scales.
+**Inserted:** 2026-10-10 after Phase 3 close. Developer flagged that the three next-up conversion-critical marketing sections (USP comparison, pricing bundles, trust badges) were spread across Phase 4 (USP), Phase 5 (Trust), and Phase 6 (Bundles un-gate), buried alongside unrelated work (Variants, Premium Sports, Lighthouse perf, FAQ, About, commerce wiring). This phase pulls those three sections forward and sequences them together so the homepage carries a complete conversion-content story BEFORE the perf-pass and legal-content phases run.
+
+**Goal**: Visitor on `/` reads a scannable USP comparison between CAPSHOT (SHI-28) and regular energy drinks across Freshness / Nutrient Value / Portability; scrolls into a combined **Product Catalog & Pricing Bundles** section that first lets them pick their flavor (relocated FlavorTeaser from its current position) and then scans three pricing-bundle preview cards (Trial 5 / Fitness 15 + Smart Shaker / Bulk 30) with "Join waitlist for early access" CTAs; and sees a near-footer trust-badge strip (FSSAI / Plant-based / Made in India / Secure Checkout) — all sections mobile-first, light/dark compliant, prefers-reduced-motion safe, and Hinglish per `capshot-brand`.
 **Depends on**: Phase 3
-**Requirements**: VAR-01, USP-01, SPORTS-01, PERF-01, PERF-02
+**Requirements**: USP-01 (pulled from Phase 4), TRUST-01, TRUST-02 (pulled from Phase 5), CATALOG-01 (new — Product Catalog + Pricing Bundles combined section; actual purchase stays Phase 6)
 **Success Criteria** (what must be TRUE):
 
-  1. Visitor on `/` sees a scannable USP comparison between CAPSHOT and regular bottled drinks across freshness, nutrient value, and portability (grid or table), and reads variant/dosage guidance for 200–250 ml (3–4 g, "Light & Refreshing") and 350–500 ml (7–8 g, "Strong & Punchy").
+  1. Visitor on `/` sees a USP & Comparison section containing a scannable table (or card-based equivalent) with 3 rows (Freshness / Nutrient Value / Portability) × 2 columns (Regular Energy Drinks / CAPSHOT SHI-28). Content uses regulator-safe phrasing — do NOT call CAPSHOT itself an energy drink (CI grep gate from Phase 1 still enforced). Semantic HTML; light/dark compliant; prefers-reduced-motion static fallback.
+  2. Visitor on `/` sees a combined **Product Catalog & Pricing Bundles** section. The existing "Pick your flavour" FlavorTeaser (currently `src/sections/FlavorTeaser.tsx` with its horizontal scroll-snap of 8 curated flavors + "See all 16 flavors →" terminal tile + 02-02 FlavorTeaser SUMMARY contract) relocates INTO this section as its top half ("Step 1 — Pick your flavour"); directly below sits the Pricing Bundles tri-card lane ("Step 2 — Pick your pack") with: **Trial Pack** (5 caps — "Ideal for first-time buyers"); **Fitness Pack** (15 caps + 1 Free Smart Shaker Bottle — "Best Value / Most Popular" badge visually prominent); **Bulk Energy Pack** (30 caps — "For heavy gym-goers and athletes"). Each bundle card has a primary CTA labeled "Join waitlist for early access" that opens the WhatsApp waitlist flow with a `?tier=trial|fitness|bulk` query so pre-launch attribution works. CTAs route exclusively through `src/config/cta.ts` for Phase 6 commerce swap compliance. Prices either shown as "Pre-launch pricing" placeholder OR hidden pending client input — client-input decision captured in discuss-phase. **FlavorTeaser's existing scroll-snap + chevron + routing-to-/flavors behavior is preserved byte-identically** when relocated; only its parent-section wrapper changes.
+  3. Visitor sees a near-footer Trust Badges strip rendered via `<TrustBadge>` components (declared in Phase 1 Plan 02; evidenceUrl requirement in PROD). Four badges: **FSSAI Licensed** (placeholder evidenceUrl + 14-digit number marker until GATE-FSSAI resolves; `import.meta.env.PROD` render-gate from Phase 1 enforced), **Plant-based ingredients** (regulator-safe swap for the blueprint's "Vegan & Non-GMO" per `capshot-brand` — avoids FSSAI vegan-logo approval requirement), **Made in India**, **Secure Checkout** (shown with a "Coming soon with Phase 6 commerce" context note OR rendered hidden until Phase 6 — decision captured in discuss-phase).
+  4. All three sections render on 360×640 mobile with no horizontal overflow, honor light/dark + prefers-reduced-motion contracts, and the full Phase 1-3 e2e suite stays GREEN with ≥3 new e2e specs (one per section). The Phase 2 FT1–FT6 + Phase 3 FT-P3-1/FT-P3-2 flavor-teaser specs remain GREEN (relocated DOM still satisfies the heading + 8-handle enumeration + "See all" + scroll-snap + motion-reduce assertions).
+
+**Plans**: TBD (likely 3 — Section 3 USP / Section 4 Catalog + Bundles / Section 5 Trust Badges — parallelizable where files are disjoint)
+**UI hint**: yes
+
+**Locked homepage section order (per developer direction 2026-10-10):**
+
+| # | Section | Source | Phase shipped |
+|---|---------|--------|---------------|
+| 1 | Hero | `src/sections/Hero.tsx` | Phase 1 |
+| 2 | How It Works | `src/sections/HowItWorks/HowItWorks.tsx` | Phase 2 (+ Phase 3 per-step stagger) |
+| **3** | **USP & Comparison Grid** | **NEW — `src/sections/UspComparison.tsx`** | **Phase 3.1 (this phase)** |
+| **4** | **Product Catalog & Pricing Bundles** | **NEW wrapper + relocated `FlavorTeaser.tsx` + NEW `src/sections/Bundles.tsx`** | **Phase 3.1 (this phase)** |
+| **5** | **Trust Badges strip** | **NEW — `src/sections/TrustBadges.tsx` (uses existing Phase 1 `<TrustBadge>` primitive)** | **Phase 3.1 (this phase)** |
+| 6 | Footer | existing | — |
+
+The three NEW Phase 3.1 sections insert in the exact order above. FlavorTeaser moves from its current standalone slot (position 3) into position 4's wrapper.
+
+**Downstream impact:**
+- Phase 4 scope reduces (USP SC1 moved here)
+- Phase 5 scope reduces (Trust SC1 moved here)
+- Phase 6 scope reduces (Bundles section + `<TrustBadge>` surfaces already shipped; Phase 6 is just Shopify handle wiring + un-hiding "Buy now" CTAs + flipping cta.ts destination)
+- HomePage composition (`src/pages/HomePage.tsx`) changes: FlavorTeaser moves out of its current standalone slot and INTO the new combined Catalog+Bundles section wrapper
+
+### Phase 4: Variants + Premium Sports + Lighthouse Perf Pass
+
+**Mode:** mvp
+**Goal**: The homepage carries variant/dosage guidance per bottle size, a dedicated Premium Sports showcase framed as "caffeinated beverages" (NEVER "energy drinks"), and the whole site clears Lighthouse mobile ≥90 before any paid campaign scales. Phase 4 ALSO folds in the real-device manual pass deferred from Phase 3 (iPhone + Android screencast evidence for all animated surfaces) since real-device perf testing is already in scope here.
+**Depends on**: Phase 3.1
+**Requirements**: VAR-01, SPORTS-01, PERF-01, PERF-02 (USP-01 moved to Phase 3.1)
+**Success Criteria** (what must be TRUE):
+
+  1. Visitor on `/` reads variant/dosage guidance for 200–250 ml (3–4 g, "Light & Refreshing") and 350–500 ml (7–8 g, "Strong & Punchy"). (USP comparison already shipped in Phase 3.1; cross-reference only.)
   2. Visitor sees a dedicated Premium Sports range showcase featuring Matcha / Black Pump / Java Pump / Coffee, labeled "caffeinated beverages" (never "energy drinks") and carrying a visible mandatory caffeine advisory.
   3. Hero and above-the-fold images are served as responsive `<picture>` with AVIF/WebP/JPG srcsets generated at build time via `vite-imagetools`.
-  4. Lighthouse mobile audit on a mid-tier device + 4G throttle reports ≥90 for Performance, Accessibility, Best Practices, and SEO on `/` and `/flavors`; the report is committed to `.planning/evidence/`.
+  4. Lighthouse mobile audit on a mid-tier device + 4G throttle reports ≥90 for Performance, Accessibility, Best Practices, and SEO on `/` and `/flavors`; the report is committed to `.planning/evidence/`. Phase 3 deferred real-device manual pass (iPhone + Android screencast of HowItWorks / FlavorTeaser / /flavors animated surfaces) folds into this evidence capture.
+  5. **CONV-05 chunk-splitting continuation (deferred from Phase 3 Plan 03):** investigate dynamic-mount of `AnimatePresence` + per-section motion wrappers to drop the entry Motion footprint from ~16 KB gzip (Phase 3 revised budget) back toward the original ≤10 KB target; document feasibility + size impact in the Lighthouse evidence doc.
 
 **Plans**: TBD
 **UI hint**: yes
 
-### Phase 5: Trust + FAQ + About + Contact + SEO + Accessibility
+### Phase 5: FAQ + About + Contact + SEO + Accessibility
 
 **Mode:** mvp
-**Goal**: The site carries every trust signal, legal page, SEO artifact, and accessibility contract required before paid-ad spend scales and before Phase 6 KYC begins — including a full Hinglish + regulator-correct copy audit.
+**Goal**: The site carries every FAQ answer, founder story, contact route, SEO artifact, and accessibility contract required before paid-ad spend scales and before Phase 6 KYC begins — including a full Hinglish + regulator-correct copy audit.
 **Depends on**: Phase 4
-**Requirements**: TRUST-01, TRUST-02, FAQ-01, ABOUT-01, CONTACT-01, UI-01, UI-02, UI-03, SEO-01, SEO-02
+**Requirements**: FAQ-01, ABOUT-01, CONTACT-01, UI-01, UI-02, UI-03, SEO-01, SEO-02 (TRUST-01 + TRUST-02 moved to Phase 3.1)
 **Success Criteria** (what must be TRUE):
 
-  1. Visitor sees a trust badge strip near the footer rendered only via `<TrustBadge>` components that require an `evidenceUrl` prop (component refuses to render in `import.meta.env.PROD` without it); badge text uses regulator-correct phrasing — "FSSAI Licensed – [14-digit number]" (never "Approved"), "Plant-based ingredients" (never "Vegan" without official FSSAI vegan-logo approval), "Made in India", "Secure Checkout".
-  2. Visitor can expand and collapse 6–8 FAQs built on Radix UI accordion primitives (top 1–2 questions open by default), read the founder story on `/about` (placeholder photo acceptable), and reach the brand on `/contact` via WhatsApp Business, Instagram (@capshot_twist), and email (shi28.capshot@gmail.com).
-  3. Visitor can toggle between light and dark mode; both modes pass WCAG AA contrast (≥4.5:1 body text) across the full palette (`#594545` / `#815B5B` / `#9E7676` / `#FFF8EA`), every interactive element exposes a visible focus state and is reachable via keyboard-only navigation, and all headlines/micro-copy use Hinglish while body copy remains English per the `capshot-brand` skill.
-  4. Each of `/`, `/flavors`, `/about`, `/contact` exposes a unique `<title>`, `<meta description>`, and Open Graph tag set (image 1200×630, title, description, URL) via `@unhead/react`; hero OG tags are additionally hard-coded in `index.html` for non-JS crawlers.
-  5. The build emits a valid `sitemap.xml` via `vite-plugin-sitemap` listing all four routes; `robots.txt` references the sitemap.
+  1. Visitor can expand and collapse 6–8 FAQs built on Radix UI accordion primitives (top 1–2 questions open by default), read the founder story on `/about` (placeholder photo acceptable), and reach the brand on `/contact` via WhatsApp Business, Instagram (@capshot_twist), and email (shi28.capshot@gmail.com).
+  2. Visitor can toggle between light and dark mode; both modes pass WCAG AA contrast (≥4.5:1 body text) across the full palette (`#594545` / `#815B5B` / `#9E7676` / `#FFF8EA`), every interactive element exposes a visible focus state and is reachable via keyboard-only navigation, and all headlines/micro-copy use Hinglish while body copy remains English per the `capshot-brand` skill.
+  3. Each of `/`, `/flavors`, `/about`, `/contact` exposes a unique `<title>`, `<meta description>`, and Open Graph tag set (image 1200×630, title, description, URL) via `@unhead/react`; hero OG tags are additionally hard-coded in `index.html` for non-JS crawlers.
+  4. The build emits a valid `sitemap.xml` via `vite-plugin-sitemap` listing all four routes; `robots.txt` references the sitemap.
+  5. **Trust badge audit (post-FSSAI number arrival):** when GATE-FSSAI resolves, revisit Phase 3.1's `<TrustBadge>` placeholder evidenceUrl values + swap in the real 14-digit FSSAI number + production evidence links. If GATE-FSSAI has not resolved by Phase 5 close, the audit rolls to Phase 6.
 
 **Plans**: TBD
 **UI hint**: yes
@@ -137,7 +176,7 @@ Plans:
   - **GATE-BUDGET**: Client approves ~₹2,000/mo Shopify Basic recurring budget
   - **GATE-NUTRITION**: Client delivers nutrition facts + caffeine content per flavor (required for PDP labeling + caffeine advisory on Premium Sports flavors; also unblocks the Phase 5 Trust section's permanent production state)
 
-**Goal**: Visitor who taps "Shop Now" on the marketing site reaches a live Shopify-hosted checkout at `shop.capshot.co`, pays via UPI Intent / cards / net-banking (international cards + COD disabled at launch), and the order flows automatically into Shiprocket for courier assignment and tracking — all delivered as a near-zero-refactor swap of the Phase 1 architecture (3 files edited, 2 added, 1 section un-gated).
+**Goal**: Visitor who taps "Shop Now" on the marketing site reaches a live Shopify-hosted checkout at `shop.capshot.co`, pays via UPI Intent / cards / net-banking (international cards + COD disabled at launch), and the order flows automatically into Shiprocket for courier assignment and tracking — all delivered as a near-zero-refactor swap of the Phase 1 architecture (3 files edited, 2 added, 1 section un-gated). **Scope reduced 2026-10-10:** the `Bundles.tsx` section and `<TrustBadge>` surfaces already ship in Phase 3.1; Phase 6 just wires Shopify product handles into `src/data/bundles.ts` + flips `ENABLE_SHOPIFY_CTAS` + swaps `src/config/cta.ts` destinations + un-hides the Phase 3.1 "Buy now" CTAs that were rendered hidden/disabled behind feature flags.
 **Depends on**: Phase 5 + all four entry gates
 **Requirements**: COM-01, COM-02, COM-03, COM-04 (plus GATE-FSSAI, GATE-INVENTORY, GATE-BUDGET, GATE-NUTRITION as external gates)
 **Success Criteria** (what must be TRUE):
@@ -161,6 +200,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 1. Foundation + Hero + Conversion Infrastructure | 3/3 | Awaiting human-verify checkpoint | - |
 | 2. How It Works + Flavor Catalog | 3/3 | Complete   | 2026-10-09 |
 | 3. Scroll Storytelling Polish | 3/3 | Complete   | 2026-10-10 |
-| 4. USP + Variants + Premium Sports + Lighthouse Perf Pass | 0/TBD | Not started | - |
-| 5. Trust + FAQ + About + Contact + SEO + Accessibility | 0/TBD | Not started | - |
+| 3.1 (INSERTED 2026-10-10). Content & Conversion — USP + Catalog+Bundles + Trust | 0/TBD | Not started | - |
+| 4. Variants + Premium Sports + Lighthouse Perf Pass | 0/TBD | Not started | - |
+| 5. FAQ + About + Contact + SEO + Accessibility | 0/TBD | Not started | - |
 | 6. Commerce (Shopify + Razorpay + Shiprocket) | 0/TBD | Gated | - |
