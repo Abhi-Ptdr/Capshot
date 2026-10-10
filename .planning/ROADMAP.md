@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation + Hero + Conversion Infrastructure** — Deployable Hero + waitlist CTA on top of the full conversion scaffold (CTA config, LazyMotion, dvh, FOUC, Pixel+CAPI, in-app browser nudge, Shopify-shaped flavor stub)
 - [x] **Phase 2: How It Works + Flavor Catalog** — 3-step product explainer plus 16-flavor browsing with range filters live on `/` and `/flavors` (completed 2026-10-09)
-- [ ] **Phase 3: Scroll Storytelling Polish** — Cinematic Motion choreography layered across every shipped section, with `prefers-reduced-motion` honored throughout
+- [x] **Phase 3: Scroll Storytelling Polish** — Cinematic Motion choreography layered across every shipped section, with `prefers-reduced-motion` honored throughout (completed 2026-10-10)
 - [ ] **Phase 4: USP + Variants + Premium Sports + Lighthouse Perf Pass** — Full homepage commercial argument plus verified Lighthouse mobile ≥90 before paid-ad scale
 - [ ] **Phase 5: Trust + FAQ + About + Contact + SEO + Accessibility** — All trust/legal/SEO/a11y content complete and audited before Phase 6 KYC
 - [ ] **Phase 6: Commerce (Shopify + Razorpay + Shiprocket)** — Live D2C store at `shop.capshot.co`, CTAs flipped from WhatsApp to Shopify checkout
@@ -160,7 +160,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 |-------|----------------|--------|-----------|
 | 1. Foundation + Hero + Conversion Infrastructure | 3/3 | Awaiting human-verify checkpoint | - |
 | 2. How It Works + Flavor Catalog | 3/3 | Complete   | 2026-10-09 |
-| 3. Scroll Storytelling Polish | 2/3 | In Progress|  |
+| 3. Scroll Storytelling Polish | 3/3 | Complete   | 2026-10-10 |
 | 4. USP + Variants + Premium Sports + Lighthouse Perf Pass | 0/TBD | Not started | - |
 | 5. Trust + FAQ + About + Contact + SEO + Accessibility | 0/TBD | Not started | - |
 | 6. Commerce (Shopify + Razorpay + Shiprocket) | 0/TBD | Gated | - |
