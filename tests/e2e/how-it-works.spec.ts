@@ -124,3 +124,153 @@ test.describe('HowItWorks reduced motion', () => {
     ).toBe(true);
   });
 });
+
+/**
+ * Phase 3 Plan 02 — Per-step `<m.li>` stagger (D3-06..D3-10).
+ *
+ * The Phase 2 single right-column `m.div whileInView` is replaced with
+ * per-`<li>` `m.li whileInView` entrances. The right-column wrapper is
+ * demoted to a plain `<div>`; the LEFT-column video card `m.div`
+ * wrapper is UNCHANGED (D3-09).
+ *
+ * The following four tests extend the Phase 2 how-it-works spec:
+ *   - HW-P3-1: each of the 3 steps renders as an animated element with
+ *     a Motion-emitted inline `style` attribute (one motion wrapper
+ *     per step, not a block wrapper around the whole <ol>).
+ *   - HW-P3-2: the DOM order of the three step headings is 01-02-03
+ *     (Twist above Shake above Boom) after the staggered entrances
+ *     complete.
+ *   - HW-P3-3 (reduced-motion sub-describe): per-step `m.li` falls
+ *     back to final state immediately — opacity 1, transform identity,
+ *     via Tailwind `motion-reduce:!transform-none motion-reduce:!opacity-100`.
+ *   - HW-P3-4: the LEFT-column video card wrapper remains a Motion
+ *     element (`<div style>` wrapping the <video>) AND the right-column
+ *     parent of the <ol> is NO LONGER a Motion element (demotion check).
+ */
+test.describe('HowItWorks per-step stagger (Phase 3) @ 360×800', () => {
+  test('HW-P3-1: each of the 3 steps is its own motion-managed <li> (not a single block wrapper)', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    const heading = page.getByRole('heading', {
+      level: 2,
+      name: /^How CAPSHOT works$/,
+    });
+    await heading.scrollIntoViewIfNeeded();
+
+    // Each m.li emits an inline `style` attribute at rest (Motion sets
+    // transform/opacity properties, even when it collapses to identity).
+    // There is exactly ONE <ol> on the home page (the HowItWorks steps),
+    // and it contains exactly 3 <li> children — each should carry an
+    // inline style.
+    const liWithStyle = await page.locator('ol > li[style]').count();
+    expect(liWithStyle).toBe(3);
+  });
+
+  test('HW-P3-2: steps enter viewport in order (01 Twist → 02 Shake → 03 Boom)', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    await page
+      .getByRole('heading', { level: 2, name: /^How CAPSHOT works$/ })
+      .scrollIntoViewIfNeeded();
+
+    // Wait for the staggered entrances (last delay = 240ms + 500ms
+    // duration = 740ms total). Add buffer for IntersectionObserver.
+    await page.waitForTimeout(1200);
+
+    const twist = page.getByRole('heading', { level: 3, name: /^Twist$/i });
+    const shake = page.getByRole('heading', { level: 3, name: /^Shake$/i });
+    const boom = page.getByRole('heading', { level: 3, name: /^Boom$/i });
+    await expect(twist).toBeVisible();
+    await expect(shake).toBeVisible();
+    await expect(boom).toBeVisible();
+
+    const twistBox = await twist.boundingBox();
+    const shakeBox = await shake.boundingBox();
+    const boomBox = await boom.boundingBox();
+    expect(twistBox).not.toBeNull();
+    expect(shakeBox).not.toBeNull();
+    expect(boomBox).not.toBeNull();
+    expect(twistBox!.y).toBeLessThan(shakeBox!.y);
+    expect(shakeBox!.y).toBeLessThan(boomBox!.y);
+  });
+
+  test('HW-P3-4: video card wrapper preserved as Motion element; right-column parent-of-<ol> demoted to plain div', async ({
+    page,
+  }) => {
+    await page.goto('/');
+
+    // The LEFT-column video card wrapper is a m.div: it emits an
+    // inline style attribute even at rest, and it directly contains
+    // (eventually) the <video> element. We find it by scoping to
+    // elements that both carry [style] AND have a <video> descendant.
+    const videoWrapperCount = await page
+      .locator('div[style]')
+      .filter({ has: page.locator('video') })
+      .count();
+    expect(videoWrapperCount).toBeGreaterThanOrEqual(1);
+
+    // After Phase 3, the right-column parent of the <ol> is a PLAIN
+    // <div> (no m.div, no inline style). We assert no <div> that is
+    // itself a direct parent of an <ol> has an inline style. Scoped
+    // via :has() to the exact DOM shape.
+    const olParentWithStyle = await page
+      .locator('div[style]:has(> ol)')
+      .count();
+    expect(olParentWithStyle).toBe(0);
+  });
+});
+
+test.describe('HowItWorks per-step stagger — reduced motion @ 360×800', () => {
+  test.use({ reducedMotion: 'reduce' });
+
+  test('HW-P3-3: each step <li> is at final state immediately under prefers-reduced-motion', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    await page
+      .getByRole('heading', { level: 2, name: /^How CAPSHOT works$/ })
+      .scrollIntoViewIfNeeded();
+    // No wait — reduced motion must collapse entrances to final state.
+
+    const twist = page.getByRole('heading', { level: 3, name: /^Twist$/i });
+    await expect(twist).toBeVisible();
+
+    const computed = await page.evaluate(() => {
+      const results: Array<{
+        label: string;
+        opacity: string;
+        transform: string;
+      }> = [];
+      const labels = ['Twist', 'Shake', 'Boom'];
+      for (const label of labels) {
+        const h3 = Array.from(document.querySelectorAll('h3')).find(
+          (el) => new RegExp(`^${label}$`, 'i').test(el.textContent ?? ''),
+        );
+        if (!h3) continue;
+        const li = h3.closest('li');
+        if (!li) continue;
+        const style = getComputedStyle(li);
+        results.push({
+          label,
+          opacity: style.opacity,
+          transform: style.transform,
+        });
+      }
+      return results;
+    });
+
+    expect(computed.length).toBe(3);
+    for (const row of computed) {
+      // Tailwind motion-reduce:!opacity-100 locks opacity to 1
+      expect(row.opacity).toBe('1');
+      // Tailwind motion-reduce:!transform-none locks transform to none
+      // (some browsers normalize to the identity matrix)
+      expect(
+        row.transform === 'none' ||
+          row.transform === 'matrix(1, 0, 0, 1, 0, 0)',
+      ).toBe(true);
+    }
+  });
+});

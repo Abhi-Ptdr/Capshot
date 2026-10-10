@@ -5,6 +5,22 @@ import Section from '@/components/primitives/Section';
 /**
  * Phase 2 Plan 02 — How It Works section (HOW-01).
  *
+ * Phase 3 Plan 02 — Per-step `<m.li>` stagger (D3-06, D3-07):
+ *   - Right-column wrapper demoted from `m.div` to plain `<div>` (D3-08).
+ *     The heading + eyebrow kicker inherit the surrounding viewport entry
+ *     passively; only the 3 step list items animate on their own.
+ *   - Each `<li>` becomes an `<m.li>` with `initial { opacity: 0, y: 16 }`
+ *     → `whileInView { opacity: 1, y: 0 }`, duration 0.5s, ease
+ *     [0.2, 0, 0.2, 1]. Per-item delays 0ms / 120ms / 240ms carry the
+ *     01 → 02 → 03 beat progression (D3-10 Claude's-discretion default;
+ *     Plan 03-03 manual-pass may tune to 0 / 150 / 300 ms).
+ *   - Video card entrance (left column) is UNCHANGED — D3-09 locks the
+ *     Phase 2 block `m.div whileInView` config to protect the Phase 2
+ *     video UAT.
+ *   - Tailwind `motion-reduce:!transform-none motion-reduce:!opacity-100`
+ *     fallback carries forward from the block `m.div` to each `m.li`
+ *     verbatim (and stays on the video card wrapper).
+ *
  * Layout: 2-column at lg+ (video left, copy right); stacked on mobile
  * (video on top, copy below). Video is a short muted autoplay-loop MP4
  * showing the full twist → shake → BOOM action in 2.5 seconds. Copy
@@ -23,8 +39,10 @@ import Section from '@/components/primitives/Section';
  * weight small — only the first keyframe is fetched until the section
  * enters the viewport.
  *
- * Entrance animation: Motion `whileInView` fade+slide (opacity 0→1,
- * y 24→0, 0.5s). Fires once per element. Reduced-motion skips entrance.
+ * Entrance animation: Motion `whileInView` fade+slide. Video card uses
+ * (opacity 0→1, y 24→0, 0.5s) wrapper block; right-column steps each
+ * use (opacity 0→1, y 16→0, 0.5s, per-step delay). Fires once per
+ * element. Reduced-motion skips entrances via Tailwind utilities.
  */
 
 const STEPS = [
@@ -32,16 +50,19 @@ const STEPS = [
     num: '01',
     label: 'Twist',
     body: 'Secure the cap onto any 28 mm bottle.',
+    delay: 0,
   },
   {
     num: '02',
     label: 'Shake',
     body: 'Powder dissolves in 5 seconds.',
+    delay: 0.12,
   },
   {
     num: '03',
     label: 'Boom',
     body: 'Flavor-forward drink, ready.',
+    delay: 0.24,
   },
 ] as const;
 
@@ -105,18 +126,13 @@ export function HowItWorks() {
             </div>
           </m.div>
 
-          {/* RIGHT (desktop) / ABOVE (mobile) — heading + 3-step bullet list */}
-          <m.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-10% 0px' }}
-            transition={{
-              duration: 0.5,
-              delay: 0.1,
-              ease: [0.2, 0, 0.2, 1],
-            }}
-            className="order-1 flex flex-col items-center text-center motion-reduce:!transform-none motion-reduce:!opacity-100 lg:order-2 lg:items-start lg:text-left"
-          >
+          {/*
+            RIGHT (desktop) / ABOVE (mobile) — heading + 3-step bullet
+            list. Wrapper is a plain `<div>` (D3-08). Each step inside
+            the <ol> is its own `<m.li>` with per-item delay to produce
+            the 01 → 02 → 03 beat progression.
+          */}
+          <div className="order-1 flex flex-col items-center text-center lg:order-2 lg:items-start lg:text-left">
             {/*
               Eyebrow kicker — uses --color-fg so it inherits the
               section's inverted theme (cream text on brand-deep section
@@ -137,10 +153,18 @@ export function HowItWorks() {
 
             {/* 3-step list — numbered big step, label, body */}
             <ol className="mt-8 flex w-full flex-col gap-6 sm:gap-7">
-              {STEPS.map(({ num, label, body }) => (
-                <li
+              {STEPS.map(({ num, label, body, delay }) => (
+                <m.li
                   key={num}
-                  className="flex items-start gap-4 text-left sm:gap-5"
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-10% 0px' }}
+                  transition={{
+                    duration: 0.5,
+                    delay,
+                    ease: [0.2, 0, 0.2, 1],
+                  }}
+                  className="flex items-start gap-4 text-left motion-reduce:!transform-none motion-reduce:!opacity-100 sm:gap-5"
                 >
                   <span
                     aria-hidden="true"
@@ -156,10 +180,10 @@ export function HowItWorks() {
                       {body}
                     </p>
                   </div>
-                </li>
+                </m.li>
               ))}
             </ol>
-          </m.div>
+          </div>
         </div>
       </Container>
     </Section>
