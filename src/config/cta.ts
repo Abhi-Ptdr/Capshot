@@ -40,7 +40,12 @@
  *    change in `CtaSlot` or `getCta`; the component surface is sealed.
  */
 
-export type CtaKind = 'whatsapp' | 'shopify' | 'external';
+// WR-03: added `'route'` for internal React Router SPA destinations.
+// `'external'` is reserved for third-party URLs that should open in a
+// new tab (`target="_blank"`); mixing an internal `/flavors` route under
+// `'external'` would break SPA navigation the moment a consumer branches
+// on `kind` to decide tab behavior.
+export type CtaKind = 'whatsapp' | 'shopify' | 'external' | 'route';
 
 export type CtaDestination = {
   label: string;
@@ -69,7 +74,10 @@ export const ctaConfig = {
   secondary: {
     label: 'SEE FLAVORS',
     href: '/flavors',
-    kind: 'external' as const,
+    // WR-03: `/flavors` is an internal React Router route — `kind: 'route'`
+    // marks it for SPA navigation. Was mislabeled `'external'` which would
+    // have broken client-side routing if any consumer branched on kind.
+    kind: 'route' as const,
     trackingId: 'cta_secondary_flavors',
   },
   nav: {
