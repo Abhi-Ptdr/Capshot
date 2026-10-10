@@ -93,15 +93,38 @@ export const ctaConfig = {
 };
 
 export function getCta(slot: CtaSlot): CtaDestination {
-  if (slot.startsWith('bundles.')) {
-    const key = slot.split('.')[1] as 'trial' | 'fitness' | 'bulk';
-    return {
-      label: 'Join waitlist for early access',
-      href: ctaConfig.bundles[key],
-      kind: 'whatsapp' as const,
-      ariaLabel: `Join the CAPSHOT ${key} pack waitlist on WhatsApp`,
-      trackingId: `cta_bundle_${key}_whatsapp`,
-    };
+  // Explicit equality branching on each literal keeps TypeScript narrowing
+  // honest — no `as` cast, no silent `undefined` fallthrough. If a future
+  // CtaSlot literal is added, the `never`-typed exhaustiveness check at
+  // the bottom becomes a compile error until this switch is updated
+  // (CR-01 / Phase 3.1 code-review hardening).
+  switch (slot) {
+    case 'primary':
+      return ctaConfig.primary;
+    case 'secondary':
+      return ctaConfig.secondary;
+    case 'nav':
+      return ctaConfig.nav;
+    case 'bundles.trial':
+    case 'bundles.fitness':
+    case 'bundles.bulk': {
+      const key = slot.slice('bundles.'.length) as 'trial' | 'fitness' | 'bulk';
+      return {
+        label: 'Join waitlist for early access',
+        href: ctaConfig.bundles[key],
+        kind: 'whatsapp' as const,
+        ariaLabel: `Join the CAPSHOT ${key} pack waitlist on WhatsApp`,
+        trackingId: `cta_bundle_${key}_whatsapp`,
+      };
+    }
+    default: {
+      // Exhaustiveness check — if a new CtaSlot literal is added without a
+      // case branch above, TypeScript will error here because `slot` is no
+      // longer `never`. The runtime throw is a defense-in-depth signal in
+      // case a stray `string` reaches this function at the type boundary
+      // (e.g., CMS data in a future phase).
+      const _exhaustive: never = slot;
+      throw new Error(`getCta: unknown slot "${_exhaustive as string}"`);
+    }
   }
-  return ctaConfig[slot as 'primary' | 'secondary' | 'nav'];
 }
