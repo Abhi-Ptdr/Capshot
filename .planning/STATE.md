@@ -4,8 +4,8 @@ milestone: v1.0
 milestone_name: milestone
 status: executing
 stopped_at: Phase 3.1 context gathered
-last_updated: "2026-10-10T13:30:39.130Z"
-last_activity: 2026-10-10 -- Phase 03.1 planning complete
+last_updated: "2026-10-10T14:42:55.998Z"
+last_activity: 2026-10-10
 progress:
   total_phases: 6
   completed_phases: 3
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-10-09)
 
 **Core value:** Convert a mobile ad-driven visitor into an engaged pre-launch waitlist signup — and later, a buyer — through premium, scroll-driven brand storytelling that makes the "twist, shake, boom" moment feel inevitable to try.
-**Current focus:** Phase 03 — scroll-storytelling-polish
+**Current focus:** Phase 03.1 — content-conversion-usp-bundles-trust
 
 ## Current Position
 
-Phase: 03 — COMPLETE
-Plan: 3 of 3
+Phase: 03.1 (content-conversion-usp-bundles-trust) — EXECUTING
+Plan: 2 of 4
 Status: Ready to execute
-Last activity: 2026-10-10 -- Phase 03.1 planning complete
+Last activity: 2026-10-10
 
-Progress: [█████████░] 89%
+Progress: [██████████] 100%
 
 ## Performance Metrics
 
@@ -61,6 +61,7 @@ Progress: [█████████░] 89%
 | Phase 03 P01 | 15 | 2 tasks | 5 files |
 | Phase 03 P02 | 10 | 1 tasks | 2 files |
 | Phase 03 P03 | 90 | 3 tasks | 13 files |
+| Phase 03.1 P01 | 6 | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -113,6 +114,12 @@ Recent decisions affecting current work:
 - [Phase ?]: Phase 03 Plan 02 execution: Playwright selector pattern for Motion-wrapper detection = direct-child 'ol > li[style]' (NOT 'section ol li[style]' which would over-match). Direct-child scoping fails loud if a future phase adds a secondary <li> list under the HowItWorks <section>.
 - [Phase ?]: Phase 03 Plan 02 execution: Reduced-motion HW-P3-3 e2e iterates all 3 steps (not just the first) via h3.closest('li') + getComputedStyle — strictly stronger than Phase 2 HW5 which only checked one wrapper. Correctness check justifying the right-column wrapper demotion.
 - [Phase ?]: Phase 03 Plan 02 execution: tests/e2e/banner.spec.ts B3 (Android Facebook intent://) flakes under full-suite execution with page.goto timeout. Verified pre-existing on main via git stash — NOT caused by Phase 3 changes. Deferred to future test-infra pass; this plan's scope boundary excludes it.
+- [Phase 03.1]: TrustBadge discriminated-union keyed on `variant` prop — compile-time narrowing replaces runtime variant checks; visual-only arm className BYTE-IDENTICAL to linked arm so Phase 5 FSSAI-evidence migration is a zero-visual-change swap
+- [Phase 03.1]: Chose MapPin over Flag for Made-in-India TrustBadge icon — vertical teardrop silhouette balances the strip row rhythm against ShieldCheck/Leaf/Lock geometric glyphs; iconFor() swap to Flag is a 1-line change if visual review requests
+- [Phase 03.1]: getCta() kept single-signature with CtaSlot union (dotted-string bundle slots), NOT function overloads — overloads would force every PrimaryCTA.slot prop widening in Phase 6 Shopify-slot addition; single-signature preserves Phase 6 swap-point sealing
+- [Phase 03.1]: BundleCountBadge SVG uses mandatory hex-fallback var() pattern (fill='var(--cap-base, #9E7676)') — bare var() can resolve to fill=none in some browsers if the custom property hasn't computed by paint time; fallback hex is defense per PATTERNS §Gotchas
+- [Phase 03.1]: TrustBadge iconFor() exhaustive switch intentionally omits default branch — tsc fails loud if TrustBadgeLabel widens without updating iconFor() (adding 'default: ShieldCheck' would silently mask the gap); same pattern as RANGE_LABEL at FlavorCard.tsx:27
+- [Phase 03.1]: TS 7 places JSX-prop errors on the specific prop line (not opening-tag line as TS 5.x did) — @ts-expect-error visual-only+evidenceUrl test collapsed to a single-line JSX call with // prettier-ignore so the directive covers the exact prop
 
 ### Pending Todos
 
@@ -142,6 +149,6 @@ Items acknowledged and carried forward from previous milestone close:
 
 ## Session Continuity
 
-Last session: 2026-10-10T13:30:39.098Z
+Last session: 2026-10-10T14:40:55.388Z
 Stopped at: Phase 3.1 context gathered
-Resume file: .planning/phases/03.1-content-conversion-usp-bundles-trust/03.1-CONTEXT.md
+Resume file: None

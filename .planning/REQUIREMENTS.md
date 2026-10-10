@@ -48,12 +48,12 @@
 
 ### Product Catalog & Bundles
 
-- [ ] **CATALOG-01** *(new 2026-10-10)*: Visitor on `/` sees a combined **Product Catalog & Pricing Bundles** section with the existing "Pick your flavour" FlavorTeaser (relocated from its current standalone homepage slot) as "Step 1" above three pricing bundle cards as "Step 2" — Trial Pack (5 caps), Fitness Pack (15 caps + 1 Free Smart Shaker, "Best Value / Most Popular" badge), Bulk Energy Pack (30 caps). Each bundle card has a "Join waitlist for early access" primary CTA that opens WhatsApp with a `?tier=trial|fitness|bulk` query. CTAs route exclusively through `src/config/cta.ts` (Phase 6 commerce swap compliance). FlavorTeaser's existing scroll-snap + chevron + routing-to-/flavors behavior preserved byte-identically; only its parent-section wrapper changes.
+- [x] **CATALOG-01** *(new 2026-10-10)*: Visitor on `/` sees a combined **Product Catalog & Pricing Bundles** section with the existing "Pick your flavour" FlavorTeaser (relocated from its current standalone homepage slot) as "Step 1" above three pricing bundle cards as "Step 2" — Trial Pack (5 caps), Fitness Pack (15 caps + 1 Free Smart Shaker, "Best Value / Most Popular" badge), Bulk Energy Pack (30 caps). Each bundle card has a "Join waitlist for early access" primary CTA that opens WhatsApp with a `?tier=trial|fitness|bulk` query. CTAs route exclusively through `src/config/cta.ts` (Phase 6 commerce swap compliance). FlavorTeaser's existing scroll-snap + chevron + routing-to-/flavors behavior preserved byte-identically; only its parent-section wrapper changes.
 
 ### Trust & Safety
 
-- [ ] **TRUST-01** *(scope moved from Phase 5 to Phase 3.1 on 2026-10-10)*: Visitor can see a trust badge strip near the footer with badges rendered only via a `<TrustBadge>` component that requires an `evidenceUrl` prop and refuses to render in production without it
-- [ ] **TRUST-02** *(scope moved from Phase 5 to Phase 3.1 on 2026-10-10)*: Trust badges use regulator-correct phrasing: "FSSAI Licensed – [14-digit number]" (not "Approved"), "Plant-based ingredients" (not "Vegan") until FSSAI vegan logo approval arrives, "Made in India", "Secure Checkout"
+- [x] **TRUST-01** *(scope moved from Phase 5 to Phase 3.1 on 2026-10-10)*: Visitor can see a trust badge strip near the footer with badges rendered only via a `<TrustBadge>` component that requires an `evidenceUrl` prop and refuses to render in production without it
+- [x] **TRUST-02** *(scope moved from Phase 5 to Phase 3.1 on 2026-10-10)*: Trust badges use regulator-correct phrasing: "FSSAI Licensed – [14-digit number]" (not "Approved"), "Plant-based ingredients" (not "Vegan") until FSSAI vegan logo approval arrives, "Made in India", "Secure Checkout"
 
 ### Content Pages
 
@@ -152,9 +152,9 @@
 | FLAV-02 | Phase 2 | Complete |
 | FLAV-03 | Phase 2 | Complete |
 | USP-01 | Phase 3.1 (moved from Phase 4 on 2026-10-10) | Pending |
-| CATALOG-01 | Phase 3.1 (new 2026-10-10) | Pending |
-| TRUST-01 | Phase 3.1 (moved from Phase 5 on 2026-10-10) | Pending |
-| TRUST-02 | Phase 3.1 (moved from Phase 5 on 2026-10-10) | Pending |
+| CATALOG-01 | Phase 3.1 (new 2026-10-10) | Complete |
+| TRUST-01 | Phase 3.1 (moved from Phase 5 on 2026-10-10) | Complete |
+| TRUST-02 | Phase 3.1 (moved from Phase 5 on 2026-10-10) | Complete |
 | VAR-01 | Phase 4 | Pending |
 | SPORTS-01 | Phase 4 | Pending |
 | PERF-01 | Phase 4 | Pending |
