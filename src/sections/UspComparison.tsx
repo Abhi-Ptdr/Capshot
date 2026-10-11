@@ -95,7 +95,11 @@ const ROWS = [
 
 export function UspComparison() {
   return (
-    <Section background="bg">
+    <Section
+      background="bg"
+      id="why-capshot"
+      className="scroll-mt-20 sm:scroll-mt-24"
+    >
       {/*
         WR-07: motion wrapper is <m.div>, NOT <m.section>, so the a11y
         landmark tree sees only the outer <Section>'s single <section>

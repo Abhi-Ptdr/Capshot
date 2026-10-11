@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router';
+import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router';
 import { ThemeProvider } from '@/theme/ThemeProvider';
 import { LazyMotion } from '@/lib/motion';
 import { InAppBrowserBanner } from '@/components/ui/InAppBrowserBanner';
@@ -42,6 +43,38 @@ import NotFoundPage from '@/pages/NotFoundPage';
  * SPA-navigation test (Test 7) still has clickable in-DOM `<Link>` targets
  * without changing the visible navigation (CONTEXT D-16 kept logo-only).
  */
+/**
+ * ScrollManager — fixes two React Router v8 SPA-navigation UX gaps:
+ *
+ *   1. Route change WITHOUT hash: default SPA nav preserves scrollY.
+ *      Visitors on `/#why-capshot` clicking "Flavors" should land at
+ *      the top of `/flavors`, not at the scroll offset they left.
+ *   2. Route change WITH hash: default SPA nav doesn't trigger the
+ *      browser's native anchor scroll either. Clicking "Why Capshot"
+ *      from `/about` navigates to `/` but doesn't scroll into the
+ *      section unless we scroll manually.
+ *
+ * Honors prefers-reduced-motion by falling back to instant scroll.
+ */
+function ScrollManager() {
+  const { pathname, hash } = useLocation();
+  useEffect(() => {
+    const prefersReduced = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches;
+    const behavior = prefersReduced ? 'auto' : 'smooth';
+    if (hash) {
+      const el = document.querySelector(hash);
+      if (el) {
+        el.scrollIntoView({ behavior, block: 'start' });
+        return;
+      }
+    }
+    window.scrollTo({ top: 0, behavior });
+  }, [pathname, hash]);
+  return null;
+}
+
 export default function App() {
   return (
     <ThemeProvider>
@@ -62,6 +95,7 @@ export default function App() {
           >
             Skip to main content
           </a>
+          <ScrollManager />
           <Nav />
           <Routes>
             <Route path="/" element={<HomePage />} />
