@@ -1,0 +1,21 @@
+{
+  "name": "CAPSHOT",
+  "short_name": "CAPSHOT",
+  "description": "Pre-filled flavor caps that twist onto any 28 mm bottle. Twist. Shake. BOOM.",
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#594545",
+  "background_color": "#FFF8EA",
+  "display": "standalone",
+  "start_url": "/"
+}
