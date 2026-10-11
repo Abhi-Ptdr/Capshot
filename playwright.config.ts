@@ -20,7 +20,14 @@ export default defineConfig({
   expect: { timeout: 5_000 },
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
-  retries: 0,
+  // Retries: 2 in CI, 0 locally. The Vite preview server (`npm run
+  // preview` → `vite preview`) occasionally hangs on `page.goto()` under
+  // ubuntu-latest runners after a long test run (the Phase 1 banner.spec
+  // B3 flake is the main offender). The underlying content is stable;
+  // the server just takes a moment to re-accept connections. Two retries
+  // smooths this over without masking real regressions — a legitimate
+  // test failure fails on all 3 tries.
+  retries: process.env.CI ? 2 : 0,
   reporter: 'list',
   use: {
     baseURL: 'http://localhost:4173',
