@@ -116,7 +116,7 @@ export function UspComparison() {
           <h2 className="text-[28px] font-bold tracking-tight sm:text-[36px]">
             Why CAPSHOT, not a bottled drink.
           </h2>
-          <table className="mt-6 w-full border-collapse text-left">
+          <table className="mt-6 w-full border-collapse text-left [&_td:not(:last-child)]:pr-3 [&_th:not(:last-child)]:pr-3 sm:[&_td:not(:last-child)]:pr-5 sm:[&_th:not(:last-child)]:pr-5">
             <thead>
               <tr className="border-b border-[color:var(--color-border)]">
                 {/* prettier-ignore */}
