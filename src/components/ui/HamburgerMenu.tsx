@@ -1,9 +1,25 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { Menu, X, Camera, Mail } from 'lucide-react';
-import { Link } from 'react-router';
+import { Menu, X, Mail } from 'lucide-react';
+import { Link, useLocation } from 'react-router';
 import { m, AnimatePresence } from '@/lib/motion';
 import { getCta } from '@/config/cta';
+import {
+  InstagramGlyph,
+  FacebookGlyph,
+  WhatsAppGlyph,
+} from '@/components/ui/SocialGlyphs';
+
+const INSTAGRAM_URL = 'https://instagram.com/capshot_twist';
+const FACEBOOK_URL = 'https://www.facebook.com/1433442473180564/';
+const EMAIL = 'shi28.capshot@gmail.com';
+
+const NAV_LINKS: Array<{ to: string; label: string }> = [
+  { to: '/', label: 'Home' },
+  { to: '/flavors', label: 'Flavors' },
+  { to: '/about', label: 'About' },
+  { to: '/contact', label: 'Contact' },
+];
 
 /**
  * Phase 2 Plan 01 — HamburgerMenu (D2-11 / D2-12 / RESEARCH §4).
@@ -29,6 +45,28 @@ import { getCta } from '@/config/cta';
 export function HamburgerMenu() {
   const [open, setOpen] = useState(false);
   const whatsapp = getCta('nav');
+  const location = useLocation();
+
+  /**
+   * On a same-route click (e.g., tapping "Home" while already on `/`),
+   * React Router's <Link> is a no-op, so we close the hamburger and
+   * smooth-scroll to the top ourselves. Mirrors the Nav behavior.
+   */
+  const handleRouteClick = useCallback(
+    (to: string) => () => {
+      setOpen(false);
+      if (location.pathname === to && !to.includes('#')) {
+        const prefersReduced = window.matchMedia(
+          '(prefers-reduced-motion: reduce)',
+        ).matches;
+        window.scrollTo({
+          top: 0,
+          behavior: prefersReduced ? 'auto' : 'smooth',
+        });
+      }
+    },
+    [location.pathname],
+  );
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
@@ -90,33 +128,14 @@ export function HamburgerMenu() {
                 </div>
 
                 <nav className="mt-6 flex flex-col gap-5 text-2xl font-bold tracking-tight text-[color:var(--color-fg)]">
-                  <Link to="/flavors" onClick={() => setOpen(false)}>
-                    Flavors
-                  </Link>
-                  <Link to="/about" onClick={() => setOpen(false)}>
-                    About
-                  </Link>
-                  <Link to="/contact" onClick={() => setOpen(false)}>
-                    Contact
-                  </Link>
+                  {NAV_LINKS.map(({ to, label }) => (
+                    <Link key={to} to={to} onClick={handleRouteClick(to)}>
+                      {label}
+                    </Link>
+                  ))}
                 </nav>
 
                 <div className="mt-auto flex flex-col gap-3 border-t border-[color:var(--color-border)] pt-6 text-[color:var(--color-fg)]">
-                  <a
-                    href="https://instagram.com/capshot_twist"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-base"
-                  >
-                    {/*
-                      Lucide 1.53.0 does not ship an Instagram glyph; the
-                      Camera icon is the brand-neutral stand-in that matches
-                      the Lucide geometric aesthetic. The handle text carries
-                      the social identity.
-                    */}
-                    <Camera size={18} aria-hidden="true" />
-                    @capshot_twist
-                  </a>
                   <a
                     href={whatsapp.href}
                     target="_blank"
@@ -124,21 +143,33 @@ export function HamburgerMenu() {
                     data-cta={whatsapp.trackingId}
                     className="inline-flex items-center gap-2 text-base"
                   >
-                    {/*
-                      Lucide does not ship a stable WhatsApp glyph; using the
-                      Mail-adjacent neutral marker (Send) would be misleading,
-                      and the brand voice preference is a text-only label here
-                      (RESEARCH §4 pattern). The href is sourced from the
-                      centralized CTA config — never a literal URL in this file.
-                    */}
+                    <WhatsAppGlyph />
                     WhatsApp
                   </a>
                   <a
-                    href="mailto:shi28.capshot@gmail.com"
+                    href={INSTAGRAM_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-base"
+                  >
+                    <InstagramGlyph />
+                    @capshot_twist
+                  </a>
+                  <a
+                    href={FACEBOOK_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-base"
+                  >
+                    <FacebookGlyph />
+                    /capshot_twist
+                  </a>
+                  <a
+                    href={`mailto:${EMAIL}`}
                     className="inline-flex items-center gap-2 text-base"
                   >
                     <Mail size={18} aria-hidden="true" />
-                    shi28.capshot@gmail.com
+                    {EMAIL}
                   </a>
                 </div>
               </m.aside>

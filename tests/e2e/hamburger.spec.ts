@@ -29,7 +29,7 @@ test.describe('HamburgerMenu (D2-11 / D2-12)', () => {
     await expect(page.getByRole('dialog')).toHaveCount(0);
   });
 
-  test('HM2: opening shows aria-modal dialog with 3 route links + 3 socials', async ({
+  test('HM2: opening shows aria-modal dialog with 4 route links + 4 socials', async ({
     page,
   }) => {
     await page.goto('/');
@@ -38,7 +38,11 @@ test.describe('HamburgerMenu (D2-11 / D2-12)', () => {
     await expect(dialog).toBeVisible();
     await expect(dialog).toHaveAttribute('aria-modal', 'true');
 
-    // Three internal-route links
+    // Four internal-route links (Home added 2026-10-11)
+    await expect(dialog.getByRole('link', { name: 'Home' })).toHaveAttribute(
+      'href',
+      '/',
+    );
     await expect(dialog.getByRole('link', { name: 'Flavors' })).toHaveAttribute(
       'href',
       '/flavors',
@@ -52,14 +56,26 @@ test.describe('HamburgerMenu (D2-11 / D2-12)', () => {
       '/contact',
     );
 
-    // Three socials
-    const insta = dialog.getByRole('link', { name: /capshot_twist/i });
-    await expect(insta).toBeVisible();
-    expect(await insta.getAttribute('href')).toMatch(/^https:\/\/instagram\.com\//);
-
+    // Four socials (Facebook added 2026-10-11; WhatsApp + IG both carry
+    // brand-SVG icons from SocialGlyphs.tsx).
     const whats = dialog.getByRole('link', { name: /WhatsApp/i });
     await expect(whats).toBeVisible();
     expect(await whats.getAttribute('href')).toMatch(/^https:\/\/wa\.me\//);
+
+    // IG name is "@capshot_twist" (leading @); FB name is "/capshot_twist"
+    // (leading /). The anchor delimits them even though both contain
+    // "capshot_twist".
+    const insta = dialog.getByRole('link', { name: /^@capshot_twist$/i });
+    await expect(insta).toBeVisible();
+    expect(await insta.getAttribute('href')).toMatch(
+      /^https:\/\/instagram\.com\//,
+    );
+
+    const facebook = dialog.getByRole('link', { name: /^\/capshot_twist$/i });
+    await expect(facebook).toBeVisible();
+    expect(await facebook.getAttribute('href')).toMatch(
+      /^https:\/\/www\.facebook\.com\//,
+    );
 
     const mail = dialog.getByRole('link', { name: /@gmail\.com/i });
     await expect(mail).toBeVisible();
