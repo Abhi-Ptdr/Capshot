@@ -87,10 +87,15 @@ test.describe('HowItWorks (HOW-01) @ 360×800', () => {
     const stepNums = nums.filter((n) => /^0\d$/.test(n.trim()));
     expect(stepNums).toEqual(['01', '02', '03']);
 
-    // Bodies include the key phrases
-    await expect(page.getByText(/28\s*mm bottle/i)).toBeVisible();
-    await expect(page.getByText(/5 seconds/i)).toBeVisible();
-    await expect(page.getByText(/Flavor-forward drink/i)).toBeVisible();
+    // Bodies include the key phrases. Scope to the HowItWorks <ol> so the
+    // "28 mm bottle" assertion doesn't collide with the site-wide Footer
+    // tagline added 2026-10-11 ("Twist. Shake. BOOM. Pre-filled flavor
+    // caps that twist onto any standard 28 mm bottle.") which also matches
+    // the pattern.
+    const steps = page.locator('ol');
+    await expect(steps.getByText(/28\s*mm bottle/i)).toBeVisible();
+    await expect(steps.getByText(/5 seconds/i)).toBeVisible();
+    await expect(steps.getByText(/Flavor-forward drink/i)).toBeVisible();
   });
 });
 

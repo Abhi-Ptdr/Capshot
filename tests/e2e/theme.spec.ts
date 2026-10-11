@@ -1,12 +1,18 @@
 import { test, expect, devices } from '@playwright/test';
-import sharp from 'sharp';
 
 /**
  * Phase 1 Plan 02 — Theme + FOUC E2E (CONV-04 + ThemeToggle contract).
  *
  * T1 is the CONV-04 proof: with `colorScheme: 'dark'` on a cold cache,
- * the top-left pixel at domcontentloaded must already be brand-deep
- * (#594545) — zero cream-to-dark flash.
+ * the <html> element's computed background must already be brand-deep
+ * (#594545) at domcontentloaded — zero cream-to-dark flash. (Previously
+ * sampled a pixel on the rendered page, but the inverted-theme Nav
+ * added 2026-10-11 + Hero decorative overlays (brand-rose blur glow)
+ * made pixel-sampling non-deterministic. Checking the computed style
+ * of <html> directly tests the exact CONV-04 guarantee: the inline
+ * FOUC script set html.dark before CSS resolved, so <html>'s computed
+ * bg is brand-deep. No overlays, no Nav chrome, no Hero decorations
+ * can confound this assertion.)
  */
 
 test.use({ ...devices['Pixel 7'] });
@@ -29,23 +35,25 @@ test.describe('Theme + FOUC (CONV-04 + ThemeToggle)', () => {
       }
     });
     await page.goto('/', { waitUntil: 'domcontentloaded' });
-    const buf = await page.screenshot({
-      clip: { x: 0, y: 0, width: 10, height: 10 },
-      type: 'png',
-    });
-    const { data, info } = await sharp(buf)
-      .raw()
-      .toBuffer({ resolveWithObject: true });
-    // RGB of pixel (0,0)
-    const r = data[0];
-    const g = data[1];
-    const b = data[2];
+    // Assert the HTML element's computed background is brand-deep. This
+    // is what the CONV-04 FOUC-prevention script actually guarantees:
+    // the inline script in index.html runs synchronously before CSS
+    // paints and adds `.dark` to <html>, which (per index.html inline
+    // <style>) sets `html.dark { background: #594545 }`. Pixel-sampling
+    // the rendered page can be confounded by overlays/decorations
+    // (Hero's blur glow, inverted-Nav chrome) — reading the computed
+    // style of <html> directly tests the exact FOUC guarantee without
+    // those confounds.
+    const htmlBg = await page.evaluate(() =>
+      getComputedStyle(document.documentElement).backgroundColor,
+    );
+    const htmlHasDarkClass = await page.evaluate(() =>
+      document.documentElement.classList.contains('dark'),
+    );
     await context.close();
-    // #594545 = (89, 69, 69). Allow ±4 tolerance for antialias/JPEG round.
-    expect(Math.abs(r - 89)).toBeLessThanOrEqual(4);
-    expect(Math.abs(g - 69)).toBeLessThanOrEqual(4);
-    expect(Math.abs(b - 69)).toBeLessThanOrEqual(4);
-    expect(info.channels).toBeGreaterThanOrEqual(3);
+    // backgroundColor returns rgb() form. #594545 = rgb(89, 69, 69).
+    expect(htmlHasDarkClass).toBe(true);
+    expect(htmlBg).toMatch(/rgb\(\s*89\s*,\s*69\s*,\s*69\s*\)/);
   });
 
   test('T2: light colorScheme → no .dark class on <html> + meta theme-color = #FFF8EA', async ({
