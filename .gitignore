@@ -45,12 +45,27 @@ test-results/
 # TypeScript
 *.tsbuildinfo
 
-# Local Claude settings not meant to be shared
-.claude/settings.local.json
-
-# User-level / generic skills (not CAPSHOT-specific; belong in ~/.claude/skills/)
-.claude/skills/skill-creator/
-.claude/skills/react-perf-optimizer/
+# Path A — minimal public repo (solo dev; 2026-10-11):
+# planning, Claude Code guidance, and project-specific Claude skills stay
+# LOCAL only. Future `git add .` won't accidentally push them.
+CLAUDE.md
+.claude/
+.planning/
 
 # Local MCP config — contains plaintext credentials, never commit
 .mcp.json
+
+# Client-provided source docs + raw assets — not product code
+Media/
+D2C E-commerce Website Blueprint
+product_specs_short
+
+# Claude Code playwright MCP cache (screenshots from dev sessions)
+.playwright-mcp/
+
+# Local screenshots dropped by Claude Code dev sessions
+*.png.local
+after-*.png
+try-*.png
+trust-area.png
+usp-area.png
