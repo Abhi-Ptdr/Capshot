@@ -17,8 +17,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: How It Works + Flavor Catalog** — 3-step product explainer plus 16-flavor browsing with range filters live on `/` and `/flavors` (completed 2026-10-09)
 - [x] **Phase 3: Scroll Storytelling Polish** — Cinematic Motion choreography layered across every shipped section, with `prefers-reduced-motion` honored throughout (completed 2026-10-10)
 - [x] **Phase 3.1 (INSERTED 2026-10-10): Content & Conversion — USP + Bundles + Trust** — Three conversion-critical marketing sections pulled forward from Phase 4/5/6: USP comparison grid (Regular Energy Drinks vs CAPSHOT), pricing bundle preview cards (Trial 5 / Fitness 15 + shaker / Bulk 30 — waitlist CTAs; actual purchase stays Phase 6), and trust badge strip (FSSAI/Plant-based/Made in India/Secure Checkout) (completed 2026-10-10)
-- [ ] **Phase 4: Variants + Premium Sports + Lighthouse Perf Pass** — Dosage variants (3–4 g / 7–8 g per bottle size), Premium Sports range showcase, Lighthouse mobile ≥90 verification (USP moved to Phase 3.1)
-- [ ] **Phase 5: FAQ + About + Contact + SEO + Accessibility** — FAQ accordion, founder story, contact routes, per-route SEO + OG, WCAG AA audit (Trust Badges moved to Phase 3.1)
+- [ ] **Phase 5: FAQ + About + Contact + SEO + Accessibility** — FAQ accordion, founder story, contact routes, per-route SEO + OG, WCAG AA audit (Trust Badges moved to Phase 3.1) *(**runs next** — Phase 4 deferred, see below)*
+- [ ] **Phase 4 [DEFERRED 2026-10-11 — runs after Phase 5]: Lighthouse Perf Pass** — Scope reduced to the perf audit only. VAR-01 (variant/dosage guidance) and SPORTS-01 (Premium Sports showcase) descoped per client blueprint; CONV-05 chunk-splitting continuation + Phase 3 real-device UAT folded in. Runs as a pre-launch gate between Phase 5 and Phase 6.
 - [ ] **Phase 6: Commerce (Shopify + Razorpay + Shiprocket)** — Live D2C store at `shop.capshot.co`, CTAs flipped from WhatsApp to Shopify checkout; Bundles section already shipped in 3.1 — Phase 6 just wires Shopify product handles + un-hides "Buy now" CTAs
 
 ## Phase Details
@@ -152,28 +152,31 @@ The three NEW Phase 3.1 sections insert in the exact order above. FlavorTeaser m
 - Phase 6 scope reduces (Bundles section + `<TrustBadge>` surfaces already shipped; Phase 6 is just Shopify handle wiring + un-hiding "Buy now" CTAs + flipping cta.ts destination)
 - HomePage composition (`src/pages/HomePage.tsx`) changes: FlavorTeaser moves out of its current standalone slot and INTO the new combined Catalog+Bundles section wrapper
 
-### Phase 4: Variants + Premium Sports + Lighthouse Perf Pass
+### Phase 4 [DEFERRED 2026-10-11 — executes after Phase 5]: Lighthouse Perf Pass
 
 **Mode:** mvp
-**Goal**: The homepage carries variant/dosage guidance per bottle size, a dedicated Premium Sports showcase framed as "caffeinated beverages" (NEVER "energy drinks"), and the whole site clears Lighthouse mobile ≥90 before any paid campaign scales. Phase 4 ALSO folds in the real-device manual pass deferred from Phase 3 (iPhone + Android screencast evidence for all animated surfaces) since real-device perf testing is already in scope here.
-**Depends on**: Phase 3.1
-**Requirements**: VAR-01, SPORTS-01, PERF-01, PERF-02 (USP-01 moved to Phase 3.1)
+**Status:** DEFERRED. On 2026-10-11 the developer descoped VAR-01 (variant/dosage guidance) and SPORTS-01 (Premium Sports range showcase) per the client blueprint (both deemed unnecessary as separate sections — current catalog + flavor pages cover the user need). The remaining Phase 4 scope (perf audit + image srcsets + motion chunk continuation + real-device UAT) was deferred to execute AFTER Phase 5 as a pre-launch gate immediately before Phase 6 commerce go-live. Rationale: Phase 5 adds the final /about + /contact + FAQ surfaces + per-route SEO, so running a Lighthouse pass once over the FINAL site is cheaper and more accurate than optimizing a moving target mid-build. Phase 4's integer slot is preserved rather than renumbered so historical commit messages and planning artifacts stay stable.
+**Goal**: The whole site clears Lighthouse mobile ≥90 (Performance, Accessibility, Best Practices, SEO on `/` and `/flavors`) before any paid campaign scales — the CLAUDE.md locked-constraint perf gate. Phase 3's deferred real-device UAT (iPhone + Android screencast evidence for HowItWorks / FlavorTeaser / /flavors animated surfaces) folds in because real-device testing is already in scope.
+**Depends on**: Phase 5
+**Requirements**: PERF-01, PERF-02 (VAR-01 descoped, SPORTS-01 descoped, USP-01 moved to Phase 3.1)
 **Success Criteria** (what must be TRUE):
 
-  1. Visitor on `/` reads variant/dosage guidance for 200–250 ml (3–4 g, "Light & Refreshing") and 350–500 ml (7–8 g, "Strong & Punchy"). (USP comparison already shipped in Phase 3.1; cross-reference only.)
-  2. Visitor sees a dedicated Premium Sports range showcase featuring Matcha / Black Pump / Java Pump / Coffee, labeled "caffeinated beverages" (never "energy drinks") and carrying a visible mandatory caffeine advisory.
-  3. Hero and above-the-fold images are served as responsive `<picture>` with AVIF/WebP/JPG srcsets generated at build time via `vite-imagetools`.
-  4. Lighthouse mobile audit on a mid-tier device + 4G throttle reports ≥90 for Performance, Accessibility, Best Practices, and SEO on `/` and `/flavors`; the report is committed to `.planning/evidence/`. Phase 3 deferred real-device manual pass (iPhone + Android screencast of HowItWorks / FlavorTeaser / /flavors animated surfaces) folds into this evidence capture.
-  5. **CONV-05 chunk-splitting continuation (deferred from Phase 3 Plan 03):** investigate dynamic-mount of `AnimatePresence` + per-section motion wrappers to drop the entry Motion footprint from ~16 KB gzip (Phase 3 revised budget) back toward the original ≤10 KB target; document feasibility + size impact in the Lighthouse evidence doc.
+  1. Hero and above-the-fold images are served as responsive `<picture>` with AVIF/WebP/JPG srcsets generated at build time via `vite-imagetools`.
+  2. Lighthouse mobile audit on a mid-tier device + 4G throttle reports ≥90 for Performance, Accessibility, Best Practices, and SEO on `/` and `/flavors`; the report is committed to `.planning/evidence/`. Phase 3 deferred real-device manual pass (iPhone + Android screencast of HowItWorks / FlavorTeaser / /flavors animated surfaces) folds into this evidence capture.
+  3. **CONV-05 chunk-splitting continuation (deferred from Phase 3 Plan 03):** investigate dynamic-mount of `AnimatePresence` + per-section motion wrappers to drop the entry Motion footprint from ~16 KB gzip (Phase 3 revised budget) back toward the original ≤10 KB target; document feasibility + size impact in the Lighthouse evidence doc. **Only pursue if Lighthouse Performance is below 90 and the Motion bundle is the specific LCP/TBT culprit** — don't optimize prematurely.
+
+**Descoped on 2026-10-11:**
+- **VAR-01** (dosage guidance per bottle size — 3–4 g / 7–8 g). Reason: client blueprint doesn't call this out as a separate homepage section; the catalog + flavor detail pages (Phase 6) will carry per-flavor dosage.
+- **SPORTS-01** (dedicated Premium Sports showcase). Reason: client blueprint doesn't require a separate caffeinated-beverages section; the 4 Premium Sports flavors (Matcha / Black Pump / Java Pump / Coffee) already surface in the FlavorTeaser + /flavors grid alongside the other 12. The regulator-safe phrasing + caffeine advisory requirements migrate to Phase 6's flavor-detail / PDP work when nutrition data arrives (GATE-NUTRITION).
 
 **Plans**: TBD
-**UI hint**: yes
+**UI hint**: no (pure perf infra + descoped content sections)
 
 ### Phase 5: FAQ + About + Contact + SEO + Accessibility
 
 **Mode:** mvp
 **Goal**: The site carries every FAQ answer, founder story, contact route, SEO artifact, and accessibility contract required before paid-ad spend scales and before Phase 6 KYC begins — including a full Hinglish + regulator-correct copy audit.
-**Depends on**: Phase 4
+**Depends on**: Phase 3.1 (Phase 4 deferred to run AFTER Phase 5 — see Phase 4 header)
 **Requirements**: FAQ-01, ABOUT-01, CONTACT-01, UI-01, UI-02, UI-03, SEO-01, SEO-02 (TRUST-01 + TRUST-02 moved to Phase 3.1)
 **Success Criteria** (what must be TRUE):
 
@@ -197,7 +200,7 @@ The three NEW Phase 3.1 sections insert in the exact order above. FlavorTeaser m
   - **GATE-NUTRITION**: Client delivers nutrition facts + caffeine content per flavor (required for PDP labeling + caffeine advisory on Premium Sports flavors; also unblocks the Phase 5 Trust section's permanent production state)
 
 **Goal**: Visitor who taps "Shop Now" on the marketing site reaches a live Shopify-hosted checkout at `shop.capshot.co`, pays via UPI Intent / cards / net-banking (international cards + COD disabled at launch), and the order flows automatically into Shiprocket for courier assignment and tracking — all delivered as a near-zero-refactor swap of the Phase 1 architecture (3 files edited, 2 added, 1 section un-gated). **Scope reduced 2026-10-10:** the `Bundles.tsx` section and `<TrustBadge>` surfaces already ship in Phase 3.1; Phase 6 just wires Shopify product handles into `src/data/bundles.ts` + flips `ENABLE_SHOPIFY_CTAS` + swaps `src/config/cta.ts` destinations + un-hides the Phase 3.1 "Buy now" CTAs that were rendered hidden/disabled behind feature flags.
-**Depends on**: Phase 5 + all four entry gates
+**Depends on**: Phase 4 (deferred Lighthouse Perf Pass; runs AFTER Phase 5 as pre-launch gate) + all four entry gates
 **Requirements**: COM-01, COM-02, COM-03, COM-04 (plus GATE-FSSAI, GATE-INVENTORY, GATE-BUDGET, GATE-NUTRITION as external gates)
 **Success Criteria** (what must be TRUE):
 
@@ -213,7 +216,7 @@ The three NEW Phase 3.1 sections insert in the exact order above. FlavorTeaser m
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
+Phases execute: 1 → 2 → 3 → 3.1 → **5 → 4 (deferred)** → 6. On 2026-10-11 Phase 4's content scope (VAR-01, SPORTS-01) was descoped per client blueprint; the remaining perf-audit scope was deferred to execute AFTER Phase 5 as a pre-launch gate. Phase 4's integer label is preserved to keep historical commit messages and planning artifacts stable.
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -221,6 +224,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6
 | 2. How It Works + Flavor Catalog | 3/3 | Complete   | 2026-10-09 |
 | 3. Scroll Storytelling Polish | 3/3 | Complete   | 2026-10-10 |
 | 3.1 (INSERTED 2026-10-10). Content & Conversion — USP + Catalog+Bundles + Trust | 7/7 | Complete   | 2026-10-10 |
-| 4. Variants + Premium Sports + Lighthouse Perf Pass | 0/TBD | Not started | - |
-| 5. FAQ + About + Contact + SEO + Accessibility | 0/TBD | Not started | - |
+| 5. FAQ + About + Contact + SEO + Accessibility | 0/TBD | **Runs next** | - |
+| 4. Lighthouse Perf Pass **[DEFERRED → after Phase 5]** | 0/TBD | Deferred 2026-10-11 | - |
 | 6. Commerce (Shopify + Razorpay + Shiprocket) | 0/TBD | Gated | - |

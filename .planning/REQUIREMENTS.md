@@ -42,9 +42,9 @@
 
 ### Product Education
 
-- [ ] **VAR-01**: Visitor can read the variant/dosage guidance (200–250 ml = 3–4 g "Light & Refreshing", 350–500 ml = 7–8 g "Strong & Punchy") on `/`
+- [~] **VAR-01** *(DESCOPED 2026-10-11)*: Visitor can read the variant/dosage guidance (200–250 ml = 3–4 g "Light & Refreshing", 350–500 ml = 7–8 g "Strong & Punchy") on `/`. **Descope reason:** client blueprint does not call this out as a separate homepage section; per-flavor dosage will surface in the catalog + flavor detail pages (Phase 6 PDP work).
 - [x] **USP-01**: Visitor can compare CAPSHOT against regular bottled drinks across freshness, nutrient value, and portability in a scannable grid on `/` *(scope moved from Phase 4 to Phase 3.1 on 2026-10-10)*
-- [ ] **SPORTS-01**: Visitor can view a dedicated Premium Sports range showcase (Matcha / Black Pump / Java Pump / Coffee) using the phrase "caffeinated beverages" (NEVER "energy drinks") with a mandatory caffeine advisory
+- [~] **SPORTS-01** *(DESCOPED 2026-10-11)*: Visitor can view a dedicated Premium Sports range showcase (Matcha / Black Pump / Java Pump / Coffee) using the phrase "caffeinated beverages" (NEVER "energy drinks") with a mandatory caffeine advisory. **Descope reason:** client blueprint does not require a separate caffeinated-beverages section; the 4 Premium Sports flavors already surface in the FlavorTeaser + `/flavors` grid alongside the other 12. The regulator-safe phrasing + caffeine advisory requirements migrate to Phase 6's flavor-detail / PDP work when nutrition data arrives (GATE-NUTRITION). CI grep gate (blocks `/energy\s+drink/i` for CAPSHOT itself) remains in force from Phase 1.
 
 ### Product Catalog & Bundles
 
@@ -155,10 +155,10 @@
 | CATALOG-01 | Phase 3.1 (new 2026-10-10) | Complete |
 | TRUST-01 | Phase 3.1 (moved from Phase 5 on 2026-10-10) | Complete |
 | TRUST-02 | Phase 3.1 (moved from Phase 5 on 2026-10-10) | Complete |
-| VAR-01 | Phase 4 | Pending |
-| SPORTS-01 | Phase 4 | Pending |
-| PERF-01 | Phase 4 | Pending |
-| PERF-02 | Phase 4 | Pending |
+| VAR-01 | Phase 4 (DESCOPED 2026-10-11) | Descoped |
+| SPORTS-01 | Phase 4 (DESCOPED 2026-10-11) | Descoped |
+| PERF-01 | Phase 4 (DEFERRED 2026-10-11 — runs after Phase 5) | Pending |
+| PERF-02 | Phase 4 (DEFERRED 2026-10-11 — runs after Phase 5) | Pending |
 | FAQ-01 | Phase 5 | Pending |
 | ABOUT-01 | Phase 5 | Pending |
 | CONTACT-01 | Phase 5 | Pending |
