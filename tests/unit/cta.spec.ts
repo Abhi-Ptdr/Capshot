@@ -79,3 +79,46 @@ describe('cta config — bundle slots (D3.1-06 Phase 3.1 wiring)', () => {
     expect(ctaConfig.bundles.bulk.length).toBeGreaterThan(0);
   });
 });
+
+describe('cta config — about-waitlist slot (D3.2-14 Phase 3.2 wiring)', () => {
+  // WR-01 convention: tier attribution rides on the `text` body (the only
+  // wa.me param forwarded to the WhatsApp client). About-page leads carry
+  // the body-text ride-along "Interested in: about-waitlist" so the
+  // Business inbox buckets About-page leads separately from Hero/Bundles.
+  it('getCta("about-waitlist").kind is "whatsapp"', () => {
+    expect(getCta('about-waitlist').kind).toBe('whatsapp');
+  });
+
+  it('getCta("about-waitlist").href targets wa.me/919203975762 with text param', () => {
+    expect(getCta('about-waitlist').href).toMatch(
+      /^https:\/\/wa\.me\/919203975762\?text=/,
+    );
+  });
+
+  it('getCta("about-waitlist").href preserves %21 encoding (Phase 1 D-09)', () => {
+    expect(getCta('about-waitlist').href).toContain('Hi%21');
+  });
+
+  it('getCta("about-waitlist").href encodes "Interested in: about-waitlist" body-text ride-along (WR-01)', () => {
+    expect(getCta('about-waitlist').href).toContain(
+      'Interested%20in%3A%20about-waitlist',
+    );
+  });
+
+  it('getCta("about-waitlist").trackingId is "cta_about_waitlist_whatsapp"', () => {
+    expect(getCta('about-waitlist').trackingId).toBe(
+      'cta_about_waitlist_whatsapp',
+    );
+  });
+
+  it('getCta("about-waitlist").label is a non-empty string (planner picked "JOIN WAITLIST" per D3.2-14)', () => {
+    const label = getCta('about-waitlist').label;
+    expect(typeof label).toBe('string');
+    expect(label.length).toBeGreaterThan(0);
+  });
+
+  it('getCta("about-waitlist").ariaLabel mentions "waitlist" (case-insensitive)', () => {
+    const aria = getCta('about-waitlist').ariaLabel ?? '';
+    expect(aria.toLowerCase()).toContain('waitlist');
+  });
+});
