@@ -35,9 +35,13 @@ test('/flavors renders Phase 2 catalog H1', async ({ page }) => {
   await expect(page.locator('h1')).toHaveText('All 16 flavors.');
 });
 
-test('/about renders locked coming-soon H1', async ({ page }) => {
+test('/about renders Phase 3.2 Section 1 H1', async ({ page }) => {
+  // Phase 3.2 replaced the Phase 1 coming-soon shell with the 5-section
+  // scroll narrative. S1's H1 is locked by ROADMAP SC1.
   await page.goto('/about');
-  await expect(page.locator('h1')).toHaveText('Our story is on the way.');
+  await expect(page.locator('h1').first()).toHaveText(
+    'Same water. Bigger moments.',
+  );
 });
 
 test('/contact renders locked coming-soon H1', async ({ page }) => {
