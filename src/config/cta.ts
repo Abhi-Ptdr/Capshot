@@ -61,7 +61,8 @@ export type CtaSlot =
   | 'nav'
   | 'bundles.trial'
   | 'bundles.fitness'
-  | 'bundles.bulk';
+  | 'bundles.bulk'
+  | 'about-waitlist'; // Phase 3.2 D3.2-14
 
 export const ctaConfig = {
   primary: {
@@ -98,11 +99,23 @@ export const ctaConfig = {
     bulk:
       'https://wa.me/919203975762?text=Hi%21%20Add%20me%20to%20the%20CAPSHOT%20waitlist.%20Interested%20in%3A%20bulk',
   },
+  // D3.2-14: label "JOIN WAITLIST" chosen over "BE THE FIRST TO KNOW" —
+  // shorter string, matches S5 waitlist card design mock. Body-text
+  // ride-along "Interested in: about-waitlist" bucketizes About-page leads
+  // in the WhatsApp Business inbox (same WR-01 convention as bundles.*).
+  aboutWaitlist: {
+    label: 'JOIN WAITLIST',
+    href: 'https://wa.me/919203975762?text=Hi%21%20Add%20me%20to%20the%20CAPSHOT%20waitlist.%20Interested%20in%3A%20about-waitlist',
+    kind: 'whatsapp' as const,
+    ariaLabel: 'Join the CAPSHOT waitlist on WhatsApp',
+    trackingId: 'cta_about_waitlist_whatsapp',
+  },
 } satisfies {
   primary: CtaDestination;
   secondary: CtaDestination;
   nav: CtaDestination;
   bundles: Record<'trial' | 'fitness' | 'bulk', string>;
+  aboutWaitlist: CtaDestination;
 };
 
 export function getCta(slot: CtaSlot): CtaDestination {
@@ -130,6 +143,8 @@ export function getCta(slot: CtaSlot): CtaDestination {
         trackingId: `cta_bundle_${key}_whatsapp`,
       };
     }
+    case 'about-waitlist':
+      return ctaConfig.aboutWaitlist;
     default: {
       // Exhaustiveness check — if a new CtaSlot literal is added without a
       // case branch above, TypeScript will error here because `slot` is no
