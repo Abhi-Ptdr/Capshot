@@ -24,78 +24,77 @@ export default function AboutFounder() {
         className="motion-reduce:!transform-none motion-reduce:!opacity-100"
       >
         <Container>
-          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-10">
-            <figure>
-              <img
-                src={aboutFounder.photo}
-                alt={aboutFounder.alt}
-                width={442}
-                height={601}
-                loading="lazy"
-                className="w-full h-auto rounded-2xl shadow-[0_8px_32px_-8px_rgba(89,69,69,0.24)]"
-              />
-              <figcaption className="mt-3 text-sm text-[color:var(--color-fg-muted)]">
-                Meet Akhilesh, Founder of CAPSHOT
-              </figcaption>
-              {/* D3.2-02 option (b): inline SVG signature; zero new web-font loads per D3.2-11. */}
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 240 60"
-                width={160}
-                height={40}
-                className="mt-2 text-[color:var(--color-brand-rose)]"
-              >
-                <path
-                  d="M8 42 C 20 10, 36 10, 42 36 C 46 54, 60 44, 64 24 C 68 8, 82 10, 86 32 C 90 50, 104 42, 108 22 C 112 10, 124 12, 128 30 L 140 30 M 150 20 C 158 16, 170 20, 168 32 C 166 44, 150 44, 150 32 C 150 20, 164 18, 174 24 M 184 10 L 184 44 M 196 24 C 204 20, 216 24, 214 36 C 212 48, 196 48, 196 36 C 196 24, 212 22, 222 28"
-                  stroke="currentColor"
-                  strokeWidth={2.5}
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-[0.9fr_1.1fr] md:gap-12 lg:gap-16">
+            {/* Left — pill, portrait, caption, signature */}
+            <div>
+              <span className="inline-flex items-center rounded-full border border-[color:var(--color-border)] px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[color:var(--color-fg-muted)]">
+                The Founder's Story
+              </span>
+              <figure className="mt-5">
+                <img
+                  src={aboutFounder.photo}
+                  alt={aboutFounder.alt}
+                  width={442}
+                  height={601}
+                  loading="lazy"
+                  className="w-full h-auto rounded-2xl object-cover shadow-[0_8px_32px_-8px_rgba(89,69,69,0.24)]"
                 />
-              </svg>
-              <span className="sr-only">Akhilesh signature</span>
-            </figure>
+                <figcaption className="mt-4 flex items-center justify-between gap-3 text-sm text-[color:var(--color-fg-muted)]">
+                  <span>Meet Akhilesh, Founder of CAPSHOT</span>
+                  <span
+                    aria-hidden="true"
+                    className="text-2xl leading-none text-[color:var(--color-brand-rose)]"
+                    style={{ fontFamily: "'Whisper', cursive", fontWeight: 400 }}
+                  >
+                    Akhilesh
+                  </span>
+                  <span className="sr-only">Akhilesh signature</span>
+                </figcaption>
+              </figure>
+            </div>
 
-            <div className="mt-6 md:mt-0">
-              <p className="text-xs sm:text-sm font-bold tracking-wider uppercase text-[color:var(--color-brand-rose)]">
-                THE FOUNDER'S STORY
-              </p>
-              <p className="mt-3 text-sm uppercase tracking-wider text-[color:var(--color-fg-muted)]">
+            {/* Right — eyebrow, headline, body, personal note card */}
+            <div>
+              <p className="text-sm text-[color:var(--color-fg-muted)]">
                 The story behind SHI-28.
               </p>
-              <h2 className="mt-2 text-[24px] font-bold tracking-tight sm:text-[32px] md:text-[36px]">
-                From a simple 'what if' to SHI-28.
+              <h2 className="mt-2 text-[30px] font-bold leading-[1.1] tracking-tight sm:text-[40px] md:text-[48px]">
+                From a simple 'what if'
+                <br />
+                to SHI-28.
               </h2>
-              <p className="mt-4 text-base text-[color:var(--color-fg-muted)] sm:text-lg">
+              <p className="mt-5 text-base leading-relaxed text-[color:var(--color-fg-muted)] sm:text-lg">
                 It started with a question Akhilesh kept asking himself on long
                 train rides — why does plain water, the one thing we drink most,
                 feel like the one thing we skip? The sugary alternatives were
                 everywhere, but they weren't the answer. Something simpler had
                 to exist.
               </p>
-              <p className="mt-4 text-base text-[color:var(--color-fg-muted)] sm:text-lg">
+              <p className="mt-4 text-base leading-relaxed text-[color:var(--color-fg-muted)] sm:text-lg">
                 Years of engineering notebooks and prototype caps later, SHI-28
                 was the shape of the answer. A tiny, pre-filled cap that twists
                 onto any 28mm water bottle. One quick shake, and plain water
                 becomes a flavor moment — without the plastic, the mess, or
                 the compromise.
               </p>
-              <p className="mt-4 text-base text-[color:var(--color-fg-muted)] sm:text-lg">
+              <p className="mt-4 text-base leading-relaxed text-[color:var(--color-fg-muted)] sm:text-lg">
                 CAPSHOT isn't just a product. It's Akhilesh's belief that
                 hydration deserves to be exciting — that convenience and real
                 flavor don't have to be a trade-off, and that the smallest
                 ritual in your day can be the one you look forward to most.
               </p>
 
-              <aside className="mt-6 rounded-2xl bg-[color:var(--color-surface)] p-6 ring-1 ring-[color:var(--color-border)]">
-                <p className="text-xs font-bold tracking-wider uppercase text-[color:var(--color-brand-rose)]">
+              {/* Personal note — always a filled brown card. Elevates to mid brown in dark mode so it stays distinct from the page bg. */}
+              <aside className="mt-7 rounded-2xl bg-[color:var(--color-brand-deep)] p-6 dark:bg-[color:var(--color-brand-mid)]">
+                <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[rgba(255,248,234,0.7)]">
                   A Personal Note
                 </p>
-                <blockquote className="mt-3 text-base italic text-[color:var(--color-fg)] sm:text-lg">
-                  Our goal has always been simple: to pack joy, flavor, and innovation into a tiny cap, so you can transform your water anytime, anywhere.
+                <blockquote className="mt-3 text-base italic leading-relaxed text-[color:var(--color-brand-cream)] sm:text-lg">
+                  “Our goal has always been simple: to pack joy, flavor, and innovation into a tiny cap, so you can transform your water anytime, anywhere.”
                 </blockquote>
-                <p className="mt-3 text-sm font-semibold">— Akhilesh, Founder</p>
+                <p className="mt-3 text-sm font-semibold text-[color:var(--color-brand-cream)]">
+                  — Akhilesh, Founder
+                </p>
               </aside>
             </div>
           </div>

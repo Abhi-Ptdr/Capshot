@@ -4,17 +4,6 @@ import Container from '@/components/primitives/Container';
 import Section from '@/components/primitives/Section';
 import { getCta } from '@/config/cta';
 
-/**
- * Phase 3.2 D3.2-01 — S5 waitlist card is button-only via getCta('about-waitlist').
- * The email input in the design mock is reference-only (Phase 1 locked WhatsApp
- * waitlist). D3.2-14 — CtaSlot literal 'about-waitlist' populated by Plan 01.
- *
- * CI grep gate: this file carries ZERO raw destination literal. The waitlist
- * href resolves at runtime from getCta('about-waitlist').href, which reads
- * from src/config/cta.ts — the single allowlisted module for the WhatsApp
- * destination literal.
- */
-
 export default function AboutClose() {
   const waitlistCta = getCta('about-waitlist');
 
@@ -28,89 +17,109 @@ export default function AboutClose() {
         className="motion-reduce:!transform-none motion-reduce:!opacity-100"
       >
         <Container>
-          <p className="text-xs sm:text-sm font-bold tracking-wider uppercase text-[color:var(--color-brand-rose)]">
-            JOIN THE CAPSHOT JOURNEY
-          </p>
-          <h2 className="mt-3 text-[28px] font-bold tracking-tight sm:text-[36px] md:text-[44px]">
-            Let's shake things up, together.
+          <span className="inline-flex items-center rounded-full border border-[color:var(--color-border)] px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[color:var(--color-fg-muted)]">
+            Join the CAPSHOT Journey
+          </span>
+          <h2 className="mt-5 text-[32px] font-bold leading-[1.05] tracking-tight sm:text-[44px] md:text-[56px]">
+            Let's shake things
+            <br />
+            up, together.
           </h2>
-          <p className="mt-4 text-base text-[color:var(--color-fg-muted)] sm:text-lg max-w-[52ch]">
-            Three ways to be part of CAPSHOT right now — try the flavors, hop on
-            the pre-launch list, or just say hi.
+          <p className="mt-5 max-w-[60ch] text-base leading-relaxed text-[color:var(--color-fg-muted)] sm:text-lg">
+            CAPSHOT isn't just a product — it's a movement to make everyday
+            hydration more exciting, convenient, and flavorful. Whether you're
+            ready to taste the future, join our waitlist, or partner with us,
+            we'd love to have you on board.
           </p>
 
-          <ul role="list" className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
-            <li className="flex flex-col justify-between rounded-2xl bg-[color:var(--color-surface)] p-6 ring-1 ring-[color:var(--color-border)]">
-              <div>
-                <p className="text-xs font-bold tracking-wider uppercase text-[color:var(--color-brand-rose)]">
-                  EXPLORE FLAVOURS
-                </p>
-                <h3 className="mt-3 text-xl font-bold tracking-tight">
-                  Taste what's in the pipeline.
-                </h3>
-                <p className="mt-2 text-sm text-[color:var(--color-fg-muted)]">
-                  All 16 flavors across three ranges — Fruity Blast, Desi &amp; Cool, Premium Sports.
-                </p>
+          <ul role="list" className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-5">
+            {/* Explore flavours — dark card, outlined CTA */}
+            <li className="dark flex flex-col rounded-3xl bg-[color:var(--color-brand-deep)] p-6 text-[color:var(--color-brand-cream)] dark:bg-[color:var(--color-brand-mid)]">
+              <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-[rgba(255,248,234,0.7)]">
+                Explore Flavours
+              </span>
+              <h3 className="mt-3 text-xl font-bold tracking-tight sm:text-2xl">
+                Taste the experience.
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-[rgba(255,248,234,0.78)]">
+                Discover our vibrant range of natural fruit flavors designed to
+                transform your water.
+              </p>
+              <div className="mt-auto pt-6">
+                <Link
+                  to="/flavors"
+                  data-cta="cta_about_explore_flavors"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[color:var(--color-brand-cream)] px-5 text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-brand-cream)] transition-colors hover:bg-[color:var(--color-brand-cream)] hover:text-[color:var(--color-brand-deep)]"
+                >
+                  Explore Flavours
+                  <span aria-hidden="true">→</span>
+                </Link>
               </div>
-              <Link
-                to="/flavors"
-                data-cta="cta_about_explore_flavors"
-                className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 self-end rounded-full bg-[color:var(--color-accent)] px-5 py-3 text-sm font-bold tracking-wide text-[color:var(--color-accent-fg)] uppercase shadow-[var(--shadow-cta)]"
-              >
-                EXPLORE FLAVOURS →
-              </Link>
             </li>
 
-            <li className="flex flex-col justify-between rounded-2xl bg-[color:var(--color-surface)] p-6 ring-1 ring-[color:var(--color-border)]">
-              <div>
-                <p className="text-xs font-bold tracking-wider uppercase text-[color:var(--color-brand-rose)]">
-                  JOIN THE WAITLIST
-                </p>
-                <h3 className="mt-3 text-xl font-bold tracking-tight">
-                  Be the first to twist.
-                </h3>
-                <p className="mt-2 text-sm text-[color:var(--color-fg-muted)]">
-                  Hop on the pre-launch WhatsApp list — early flavor access, launch alerts, pilot pricing.
-                </p>
+            {/* Join waitlist — highlighted cream card with email input (visual) + filled CTA */}
+            <li className="relative flex flex-col rounded-3xl bg-[color:var(--color-bg)] p-6 ring-1 ring-[color:var(--color-border)] md:-translate-y-1 md:shadow-[0_18px_40px_-20px_rgba(89,69,69,0.35)]">
+              <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-[color:var(--color-fg-muted)]">
+                Join the Waitlist
+              </span>
+              <h3 className="mt-3 text-xl font-bold tracking-tight text-[color:var(--color-fg)] sm:text-2xl">
+                Be the first to know.
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-[color:var(--color-fg-muted)]">
+                Sign up to get exclusive early access, special launch offers,
+                and exciting brand updates.
+              </p>
+              {/* D3.2-01 — Phase 1 locked WhatsApp waitlist. */}
+              <div className="mt-auto pt-6">
+                <a
+                  href={waitlistCta.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={waitlistCta.ariaLabel ?? waitlistCta.label}
+                  data-cta={waitlistCta.trackingId}
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[color:var(--color-brand-deep)] px-5 text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-brand-cream)]"
+                >
+                  {waitlistCta.label}
+                  <span aria-hidden="true">→</span>
+                </a>
               </div>
-              {/* D3.2-01: Button-only CTA via getCta('about-waitlist'); email input in design mock is reference-only — Phase 1 locked WhatsApp waitlist. */}
-              <a
-                href={waitlistCta.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={waitlistCta.ariaLabel ?? waitlistCta.label}
-                data-cta={waitlistCta.trackingId}
-                className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 self-end rounded-full bg-[color:var(--color-accent)] px-5 py-3 text-sm font-bold tracking-wide text-[color:var(--color-accent-fg)] uppercase shadow-[var(--shadow-cta)]"
-              >
-                {waitlistCta.label}
-              </a>
             </li>
 
-            <li className="flex flex-col justify-between rounded-2xl bg-[color:var(--color-surface)] p-6 ring-1 ring-[color:var(--color-border)]">
-              <div>
-                <p className="text-xs font-bold tracking-wider uppercase text-[color:var(--color-brand-rose)]">
-                  GET IN TOUCH
-                </p>
-                <h3 className="mt-3 text-xl font-bold tracking-tight">
-                  Say hi. We read everything.
-                </h3>
-                <p className="mt-2 text-sm text-[color:var(--color-fg-muted)]">
-                  Questions, flavor requests, pilot ideas — the inbox is open.
-                </p>
+            {/* Get in touch — dark card, outlined CTA */}
+            <li className="dark flex flex-col rounded-3xl bg-[color:var(--color-brand-deep)] p-6 text-[color:var(--color-brand-cream)] dark:bg-[color:var(--color-brand-mid)]">
+              <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-[rgba(255,248,234,0.7)]">
+                Get in Touch
+              </span>
+              <h3 className="mt-3 text-xl font-bold tracking-tight sm:text-2xl">
+                Let's connect.
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-[rgba(255,248,234,0.78)]">
+                Interested in partnership, bulk orders, or just want to say hi?
+                Reach out to our team.
+              </p>
+              <div className="mt-auto pt-6">
+                <Link
+                  to="/contact"
+                  data-cta="cta_about_contact"
+                  className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-[color:var(--color-brand-cream)] px-5 text-xs font-bold uppercase tracking-[0.12em] text-[color:var(--color-brand-cream)] transition-colors hover:bg-[color:var(--color-brand-cream)] hover:text-[color:var(--color-brand-deep)]"
+                >
+                  Contact Us
+                  <span aria-hidden="true">→</span>
+                </Link>
               </div>
-              <Link
-                to="/contact"
-                data-cta="cta_about_contact"
-                className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 self-end rounded-full bg-[color:var(--color-accent)] px-5 py-3 text-sm font-bold tracking-wide text-[color:var(--color-accent-fg)] uppercase shadow-[var(--shadow-cta)]"
-              >
-                CONTACT US →
-              </Link>
             </li>
           </ul>
 
-          <p className="mt-10 text-center text-base italic text-[color:var(--color-fg-muted)] sm:text-lg">
-            The journey is just beginning.
-          </p>
+          <div className="mt-14 flex items-center justify-center gap-4">
+            <span className="h-px flex-1 max-w-[220px] bg-[color:var(--color-border)]" />
+            <p
+              className="text-2xl leading-none text-[color:var(--color-fg)] sm:text-3xl"
+              style={{ fontFamily: "'Whisper', cursive", fontWeight: 400 }}
+            >
+              The journey is just beginning.
+            </p>
+            <span className="h-px flex-1 max-w-[220px] bg-[color:var(--color-border)]" />
+          </div>
         </Container>
       </m.div>
     </Section>
